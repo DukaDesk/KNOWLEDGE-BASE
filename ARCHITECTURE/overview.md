@@ -1,20 +1,8 @@
-# KB-007 — System Architecture
+# DUKADESK Architecture Overview
 
-**Part II — Platform Architecture | System Architecture**
+**Last Updated:** 2026-07-09
 
-| Metadata | Value |
-|----------|-------|
-| KB-ID | KB-007 |
-| Title | System Architecture |
-| Version | 0.1.0 |
-| Status | Drafting |
-| Owner | Engineering |
-| Review Status | Not Reviewed |
-| Last Updated | 2026-07-09 |
-| Depends On | KB-001, KB-006 |
-| Required By | KB-008, KB-009, all specifications |
-
-## 1. System Context
+## System Context
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -49,87 +37,56 @@
 └─────────────────────────────────────────────────┘
 ```
 
-## 2. Data Flow
+## Data Flow
 
 ```
-Tenant JSON
-    │
-    ▼
-ApiClient.getManifest() → Manifest
-    │
-    ├── ApiClient.getTheme() → ThemeDefinition
-    ├── ApiClient.getNavigation() → NavigationDefinition
-    └── ApiClient.getScreen() → ScreenDefinition (per screen)
-            │
-            ▼
-    ManifestResolver
-            │
-            ▼
-    ResolvedTenant { manifest, theme, navigation, screens: Map<screenId, ScreenDefinition> }
-            │
-            ▼
-    ScreenRenderer(screenId)
-            │
-            ├── Screen has layout?
-            │   └→ LayoutRenderer(layout.children) → RegistryRenderer per node
-            │
-            └── Screen has children?
-                └→ View(children.map → RegistryRenderer)
-                        │
-                        ▼
-                Component.render(props + actions)
-                        │
-                        ▼
-                User interaction → dispatchAction(actions.someKey)
-                        │
-                        ▼
-                ActionEngine → handler(action, node)
-                        │
-                        ├── navigate → router.push()
-                        ├── switch_screen → EventBus.emit('navigation:switch_screen')
-                        ├── filter → EventBus.emit('filter:changed')
-                        ├── api_request → network layer request()
-                        ├── add_to_cart → tenantStore.addToCart()
-                        └── ...
+Tenant JSON → ApiClient.getManifest() → Manifest
+  ├→ ApiClient.getTheme() → ThemeDefinition
+  ├→ ApiClient.getNavigation() → NavigationDefinition
+  └→ ApiClient.getScreen() → ScreenDefinition (per screen)
+       ↓
+  ManifestResolver → ResolvedTenant
+       ↓
+  ScreenRenderer(screenId)
+    ├─ layout? → LayoutRenderer → RegistryRenderer per node
+    └─ children? → View(children.map → RegistryRenderer)
+         ↓
+    Component.render(props + actions)
+         ↓
+    User interaction → dispatchAction(actions.someKey)
+         ↓
+    ActionEngine → handler(action, node)
 ```
 
-## 3. Module System
+## Module System
 
-```
-moduleRegistry.getDefaultScreens(capabilityIds)
-    │
-    ▼
-Map<screenId, ScreenDefinition> (module defaults)
-    │
-    ▼
-Overlay with tenant manifest screens
-    │
-    ▼
-Final Map<screenId, ScreenDefinition>
-```
+Module defaults provide baseline implementations per capability. Tenant screens in the manifest override module defaults. This allows tenant customization without forking.
 
-Modules provide baseline implementations. Tenant screens override when provided in the manifest. This allows tenants to customize without forking the codebase.
-
-## 4. State Management
-
+## State Management
 - **Zustand** for global state (cart, session, tenant)
 - **useState** for local component state
 - **EventBus** for cross-component events
 - **Network layer** (Axios) for API communication
 
-## 5. API Client
+## Repositories Governed
 
-The ApiClient interface defines the contract for all data access:
+| Repository | Purpose | Status |
+|------------|---------|--------|
+| `backend` | API services, events, queues, persistence | Active |
+| `mobile` | React Native / Expo mobile app | Active |
+| `builder` | Visual SDUI builder | Planned |
+| `website` | Public website + docs | Planned |
+| `business-dashboard` | Business admin dashboard | Planned |
+| `tenant-dashboard` | Tenant admin dashboard | Planned |
+| `sdk` | Integration SDK | Planned |
+| `cli` | CLI tooling | Planned |
 
-- `getManifest(tenantId)` → Manifest
-- `getTheme(tenantId)` → ThemeDefinition
-- `getNavigation(tenantId)` → NavigationDefinition
-- `getScreen(tenantId, screenId)` → ScreenDefinition
-- `getAssetUrl(tenantId, assetId)` → string | number
+## Technology Stack
 
-A MockClient implementation provides static JSON data. An HTTP Client implementation will connect to the backend when available.
-
----
-
-**Parent:** KB-001 — README
-**See also:** KB-006 — Platform Overview, KB-008 — Service Boundaries, KB-009 — Runtime Overview
+| Surface | Technology | Status |
+|---------|------------|--------|
+| Mobile | React Native / Expo | Active |
+| Backend | TBD | Planned |
+| Builder | TBD | Planned |
+| Dashboards | TBD | Planned |
+| Website | TBD | Planned |
