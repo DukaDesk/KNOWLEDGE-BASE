@@ -13,12 +13,12 @@
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Runtime Engine | 🔧 In Progress | Screen rendering, component registry, action system working. Layout engine incomplete (node-level layout/children/visibleWhen not evaluated) |
+| Runtime Engine | 🔧 In Progress | Screen rendering, component registry, action system working. node-level visibleWhen/children/layout now evaluated in RegistryRenderer |
 | Module System | 🔧 In Progress | Module registry working with default screens |
 | Manifest Resolver | ✅ Complete | Fetches tenant data, merges module defaults with tenant overrides |
 | Network Layer | ✅ Complete | Axios-based, interceptors, offline queue, caching |
 | Auth System | ✅ Complete | Login/signup/reset flow, session management |
-| State Management | 🔧 In Progress | Zustand stores. CartStore works, form state pending |
+| State Management | 🔧 In Progress | Zustand stores. CartStore works, form data context implemented |
 | Event Bus | ✅ Complete | Pub/sub for cross-component communication |
 | Error Boundary | ✅ Complete | Component-level error catching |
 
@@ -28,12 +28,12 @@
 |-----------|--------|-------|
 | Explore/Home Screen | ✅ Complete | Store discovery, search |
 | Desk Screen | 🔧 In Progress | Tab navigation, screen switching, splash screen working |
-| Screen Renderer | 🔧 In Progress | Layout path works, children path works. node-level `visibleWhen`, `children`, `layout` not evaluated |
+| Screen Renderer | ✅ Complete | Layout path works, children path works. node-level `visibleWhen`, `children`, `layout` evaluated |
 | Component Registry | 🔧 In Progress | 50+ components registered. Some unused, some incomplete |
 | Section Components | 🔧 In Progress | CategoryPills, MenuGrid, InfoList, OrderHistory, EmptyState, ReportAction wired to actions. AddressForm, CartSummary added |
-| Action Engine | 🔧 In Progress | 15+ handlers. `submit_form`, `open_modal`, `close_modal`, `authenticate`, `scan_qr` handlers missing/partial |
+| Action Engine | ✅ Complete | All 21 ActionType values have registered handlers |
 | Cart Flow | 🔧 In Progress | Add/remove works. Checkout screen exists |
-| Orders | 🔧 In Progress | Order history rendered. No order detail screen |
+| Orders | 🔧 In Progress | Order history + order detail screens for both tenants |
 | Notifications | 🔧 In Progress | Notification list rendered. Dismiss + markAllRead + tap-to-screen working |
 | Booking (MK only) | 🔧 In Progress | Booking screen rendered, confirm API action works. Calendar/slot selection UI present |
 | Splash Screen | ✅ Complete | Branded splash with logo image + initials fallback |
@@ -73,8 +73,8 @@
 
 ## Known Gaps
 
-1. `RuntimeActionHandler` type fixed to 1 arg. All components updated.
-2. `MenuGridSection` needs per-item RuntimeNodes for action system add_to_cart (currently uses internal store call + payload dispatch)
-3. `submit_form` handler emits event + calls API. No form data context yet.
-4. No order detail screen exists for any tenant.
-5. node-level `visibleWhen`, `children`, `layout` defined in types but never evaluated by engine.
+1. `MenuGridSection` needs per-item RuntimeNodes for action system add_to_cart (currently uses internal store call + payload dispatch)
+2. `FormEngine` (multi-step forms) not yet wired to FormDataContext — standalone `AddressFormSection` is
+3. No backend exists — all data is mocked
+4. Builder, dashboards not yet started
+5. No persistence layer for form data across app restarts
