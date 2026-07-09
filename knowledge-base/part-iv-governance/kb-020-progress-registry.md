@@ -25,15 +25,15 @@ The Progress Registry is the central tracking system for the DUKADESK platform. 
 | KB-001 | README | 0.1.0 | Drafting | Engineering | Not Reviewed | 2026-07-09 |
 | KB-002 | Vision & Mission | — | Planned | — | Not Reviewed | — |
 | KB-003 | Platform Philosophy | — | Planned | — | Not Reviewed | — |
-| KB-004 | Core Principles | — | Planned | — | Not Reviewed | — |
-| KB-005 | Terminology & Glossary | — | Planned | — | Not Reviewed | — |
-| KB-006 | Platform Overview | — | Planned | — | Not Reviewed | — |
-| KB-007 | System Architecture | — | Planned | — | Not Reviewed | — |
+| KB-004 | Core Principles | 0.1.0 | Drafting | Engineering | Not Reviewed | 2026-07-09 |
+| KB-005 | Terminology & Glossary | 0.1.0 | Drafting | Engineering | Not Reviewed | 2026-07-09 |
+| KB-006 | Platform Overview | 0.1.0 | Drafting | Engineering | Not Reviewed | 2026-07-09 |
+| KB-007 | System Architecture | 0.1.0 | Drafting | Engineering | Not Reviewed | 2026-07-09 |
 | KB-008 | Service Boundaries | — | Planned | — | Not Reviewed | — |
 | KB-009 | Runtime Overview | — | Planned | — | Not Reviewed | — |
 | KB-010 | Technology Stack | — | Planned | — | Not Reviewed | — |
-| KB-011 | Naming Standards | — | Planned | — | Not Reviewed | — |
-| KB-012 | Coding Standards | — | Planned | — | Not Reviewed | — |
+| KB-011 | Naming Standards | 0.1.0 | Drafting | Engineering | Not Reviewed | 2026-07-09 |
+| KB-012 | Coding Standards | 0.1.0 | Drafting | Engineering | Not Reviewed | 2026-07-09 |
 | KB-013 | API Standards | — | Planned | — | Not Reviewed | — |
 | KB-014 | Database Standards | — | Planned | — | Not Reviewed | — |
 | KB-015 | Event Standards | — | Planned | — | Not Reviewed | — |
@@ -42,27 +42,27 @@ The Progress Registry is the central tracking system for the DUKADESK platform. 
 | KB-018 | Architecture Decision Records | 0.1.0 | Drafting | Engineering | Not Reviewed | 2026-07-09 |
 | KB-019 | Review & Alignment Process | — | Planned | — | Not Reviewed | — |
 | KB-020 | Progress Registry | 0.1.0 | Drafting | Engineering | Not Reviewed | 2026-07-09 |
-| KB-021 | AI Context Guide | — | Planned | — | Not Reviewed | — |
+| KB-021 | AI Context Guide | 0.1.0 | Drafting | Engineering | Not Reviewed | 2026-07-09 |
 
 ## 3. Specification Status Tracking
 
 | SPEC-ID | Title | Domain | Version | Status | Aligned Against | Last Updated |
 |---------|-------|--------|---------|--------|----------------|--------------|
-| — | Backend Specification | Backend | — | Implemented | — | — |
-| — | Mobile Specification | Mobile | — | Implemented | — | — |
-| — | Business Dashboard | Dashboard | — | Planned | — | — |
-| — | Tenant Dashboard | Dashboard | — | Planned | — | — |
-| — | Website | Website | — | Planned | — | — |
-
-Specifications must be assigned SPEC-IDs and registered here once they move from Implemented to Under Review status.
+| SPEC-001 | Runtime Engine | Runtime | 0.1.0 | Implemented | — | 2026-07-09 |
+| SPEC-002 | Tenant Model | Data | 0.1.0 | Implemented | — | 2026-07-09 |
+| SPEC-003 | Component System | UI | 0.1.0 | Implemented | — | 2026-07-09 |
+| SPEC-004 | Action System | Runtime | 0.1.0 | Implemented | — | 2026-07-09 |
 
 ## 4. ADR Registry
 
 | ADR-ID | Title | Status | Date | Author | Supersedes | Superseded By |
 |--------|-------|--------|------|--------|------------|---------------|
-| — | — | — | — | — | — | — |
-
-No ADRs have been created yet. ADR-000-template.md is available in `adr/`.
+| ADR-001 | Runtime Engine Architecture | Accepted | 2026-06-01 | — | — | — |
+| ADR-002 | Data-Driven Screen System | Accepted | 2026-06-05 | — | — | — |
+| ADR-003 | Action System Design | Accepted | 2026-06-10 | — | — | — |
+| ADR-004 | Event Bus for Cross-Component Communication | Accepted | 2026-06-30 | — | — | — |
+| ADR-005 | Branded Splash Screen | Accepted | 2026-07-09 | — | — | — |
+| ADR-006 | Knowledge Base Initialization | Accepted | 2026-07-09 | — | — | — |
 
 ## 5. RFC Registry
 
@@ -72,30 +72,90 @@ No ADRs have been created yet. ADR-000-template.md is available in `adr/`.
 
 RFCs are stored in `project-management/rfc/`.
 
-## 6. Knowledge Base Version History
+## 6. Platform Infrastructure Status
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Runtime Engine | In Progress | Screen rendering, component registry, action system working |
+| Module System | In Progress | Module registry working with default screens |
+| Manifest Resolver | Complete | Fetches tenant data, merges module defaults with tenant overrides |
+| Network Layer | Complete | Axios-based, interceptors, offline queue, caching |
+| Auth System | Complete | Login/signup/reset flow, session management |
+| State Management | In Progress | Zustand stores. CartStore works, form data context implemented |
+| Event Bus | Complete | Pub/sub for cross-component communication |
+| Error Boundary | Complete | Component-level error catching |
+
+## 7. Mobile App Status
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Explore/Home Screen | Complete | Store discovery, search |
+| Desk Screen | In Progress | Tab navigation, screen switching, splash screen working |
+| Screen Renderer | Complete | Layout path works, children path works |
+| Component Registry | In Progress | 50+ components registered |
+| Section Components | In Progress | CategoryPills, MenuGrid, InfoList, etc. wired to actions |
+| Action Engine | Complete | All 21 ActionType values have registered handlers |
+| Cart Flow | In Progress | Add/remove works. Checkout screen exists |
+| Orders | In Progress | Order history + order detail screens |
+| Notifications | In Progress | Notification list, dismiss, markAllRead, tap-to-screen |
+| Booking (MK) | In Progress | Calendar/slot selection, confirm API action |
+| Splash Screen | Complete | Branded splash with logo + initials fallback |
+| Filter/Category | Complete | Category pills emit events, MenuGridSection filters items |
+
+## 8. Backend Status
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| API Design | Planned | Not yet implemented |
+| Data Model | Planned | Not yet implemented |
+| Tenant System | Planned | Not yet implemented |
+
+## 9. Builder & Dashboard Status
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Visual Builder | Planned | Not yet started |
+| SDUI Authoring | Planned | Not yet started |
+| Business Dashboard | Planned | Not yet started |
+| Tenant Dashboard | Planned | Not yet started |
+
+## 10. SDUI & Data Layer
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Mock Client | Complete | JSON-backed mock for all API methods |
+| ApiClient Interface | Complete | getManifest, getTheme, getNavigation, getScreen, getAssetUrl |
+| Tenant Data (MK) | Complete | Mama's Kitchen — menu, orders, offers, info, notifications, booking, checkout |
+| Tenant Data (GP) | Complete | Grace Pharmacy — products, orders, offers, info, notifications, checkout |
+| Asset System | Complete | getAssetUrl returns string | number. Mock serves local require'd assets |
+
+## 11. Known Gaps
+
+1. MenuGridSection needs per-item RuntimeNodes for action system add_to_cart (currently uses internal store call)
+2. FormEngine (multi-step forms) not yet wired to FormDataContext
+3. No backend exists — all data is mocked
+4. Builder, dashboards not yet started
+5. No persistence layer for form data across app restarts
+
+## 12. Knowledge Base Version History
 
 | KB Version | Date | Status | Changes |
 |------------|------|--------|---------|
 | 0.1.0 | 2026-07-07 | Drafting | Initial Knowledge Base structure created |
 
-The Knowledge Base follows semantic versioning (MAJOR.MINOR.PATCH) as defined in KB-001 §15.
+## 13. Alignment Report Index
 
-## 7. Alignment Report Index
-
-| Report | Domain | Knowledge Base Version | Specification Version | Verdict | Last Updated |
-|--------|--------|----------------------|----------------------|---------|--------------|
+| Report | Domain | KB Version | SPEC Version | Verdict | Last Updated |
+|--------|--------|------------|-------------|---------|--------------|
 | AR-mobile | Mobile | — | — | Not Started | — |
 | AR-backend | Backend | — | — | Not Started | — |
 | AR-dashboard | Dashboard | — | — | Not Started | — |
 | AR-website | Website | — | — | Not Started | — |
 | AR-builder | Builder | — | — | Not Started | — |
 
-## 8. Traceability Matrix
-
-The traceability matrix maps requirements from vision through to implementation and testing. Each row represents a traceable artifact.
+## 14. Traceability Matrix
 
 ### Platform Traceability
-
 ```
 Vision (KB-002)
   │
@@ -106,20 +166,8 @@ Core Principles (KB-004)
 Architecture (KB-006–KB-010)
   │
   ├──► Backend Specification
-  │       │
-  │       ▼
-  │     Implementation → Testing
-  │
   ├──► Mobile Specification
-  │       │
-  │       ▼
-  │     Implementation → Testing
-  │
   ├──► Dashboard Specification
-  │       │
-  │       ▼
-  │     Implementation → Testing
-  │
   └──► Website Specification
           │
           ▼
@@ -127,12 +175,10 @@ Architecture (KB-006–KB-010)
 ```
 
 ### Capability Traceability
-
 ```
-Capability System (KB-007 §4)
+Capability System
   │
   ├──► Architecture (KB-006, KB-008)
-  │       │
   │       ├──► Backend  →  Implementation
   │       ├──► Mobile   →  Implementation
   │       └──► Builder  →  Implementation
@@ -140,13 +186,7 @@ Capability System (KB-007 §4)
   └──► Documentation
 ```
 
-This matrix is expanded as specifications are written, aligned, and implemented.
-
-## 9. Engineering Dictionary
-
-The Engineering Dictionary defines ownership and relationships for every platform entity. Unlike the Glossary (KB-005), which explains what terms mean, the Dictionary defines who owns what and where entities appear.
-
-### Entity Registry
+## 15. Engineering Dictionary
 
 | Entity | Owner | Appears In | Related |
 |--------|-------|------------|---------|
@@ -164,18 +204,9 @@ The Engineering Dictionary defines ownership and relationships for every platfor
 | Payment | Platform | Backend, Mobile, Website | Order, Invoice, Provider |
 | Module | Platform | Builder, Backend | Component, Capability, Theme |
 | Component | Platform | Mobile, Builder, Website | UI, Module, Theme |
+| RuntimeNode | Platform | Mobile | Component, Screen, ActionDef |
 
-### Dictionary Maintenance
-
-- New entities must be added to the registry when introduced.
-- Entity ownership may change only through an ADR.
-- The Appears In field must be updated when a new surface implements the entity.
-
-## 10. Alignment Scores
-
-Alignment scores measure how well each domain specification aligns with the Knowledge Base. Scores are calculated during alignment review (KB-019) and updated when specifications are revised.
-
-### Current Scores
+## 16. Alignment Scores
 
 | Domain | Architecture | Terminology | API | Events | Security | Overall |
 |--------|-------------|-------------|-----|--------|----------|---------|
@@ -185,44 +216,23 @@ Alignment scores measure how well each domain specification aligns with the Know
 | Website | — | — | — | — | — | — |
 | Builder | — | — | — | — | — | — |
 
-Scores are populated after the first alignment review cycle. Each dimension is scored as a percentage (0-100%).
-
-### Score Calculation
-
-Each finding during alignment review reduces the score for the affected dimension:
-
-- Critical finding: -15%
-- Major finding: -8%
-- Minor finding: -3%
-- Observation: No score impact
-
-A dimension scoring below 80% is considered non-compliant and must be remediated before the specification can be marked Verified.
-
-## 11. Canonical Data Model
-
-The Canonical Data Model defines every entity in the DUKADESK platform. All specifications reference this model. No specification may introduce an entity that contradicts this model without an ADR.
-
-### Entity Catalog
+## 17. Canonical Data Model
 
 | Entity | Description | Key Attributes | Defined In |
 |--------|-------------|----------------|------------|
 | User | A person who interacts with the platform | id, email, name, roles, tenantId | KB-007 |
 | Tenant | An organization that uses the platform | id, name, domain, config | KB-007 |
-| Desk | A bookable desk resource | id, label, location, capabilities, themeId | KB-007 |
-| Workspace | A collection of desks assigned to a user or team | id, name, desks, userId | KB-007 |
-| Manifest | The configuration document that defines a desk's behavior | id, version, capabilities, theme, modules | KB-007 |
-| Publication | A published version of a Manifest | id, manifestId, status, timestamp | KB-007 |
-| Capability | A feature or permission gated by the capability system | id, name, description, constraints | KB-007 |
-| Theme | A set of visual and behavioral customizations | id, name, palette, typography, components | KB-007 |
-| Component | A UI building block | id, type, props, slots, theme | KB-007 |
-| Module | A composable unit of functionality | id, name, capabilities, components | KB-007 |
-| Event | A signal emitted when something happens | id, type, payload, source, timestamp | KB-015 |
+| Desk | A branded tenant-facing interface | tabNavigation, screens, capabilities | KB-007 |
+| Screen | A distinct view within a Desk | screenId, title, layout, children | KB-007 |
+| RuntimeNode | A component node in a screen tree | type, key, props, actions, children | KB-007 |
+| Manifest | Tenant configuration document | tenantId, version, capabilities, theme, navigation, screens | KB-007 |
+| Module | Packaged default screens for a capability | id, name, capabilities, defaultScreens | KB-007 |
+| Capability | A gated feature | id, name, description, constraints | KB-007 |
+| Theme | Visual customizations | colors, typography, spacing, roundness | KB-007 |
+| Event | A signal emitted by the system | id, type, payload, source, timestamp | KB-015 |
 | Notification | A message delivered to a user | id, type, recipient, channel, content | KB-015 |
-| Order | A request for a desk or service | id, userId, deskId, status, paymentId | TBD |
-| Booking | A confirmed reservation for a desk | id, orderId, deskId, start, end | TBD |
-| Payment | A financial transaction | id, orderId, amount, status, provider | TBD |
-
-This model is expanded as new entities are identified. Each entity must link to the KB document where it is formally defined.
+| Order | A request for a desk or service | id, userId, deskId, status, paymentId | KB-007 |
+| Booking | A confirmed reservation | id, orderId, deskId, start, end | KB-007 |
 
 ---
 
