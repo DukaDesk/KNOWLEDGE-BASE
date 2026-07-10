@@ -57,7 +57,8 @@ KNOWLEDGE-BASE/
 │   ├── marketplace-architecture.md ← KB-032 Marketplace Architecture
 │   ├── package-artifact-specification.md ← KB-033 Package & Artifact Specification
 │   ├── extension-plugin-framework.md ← KB-034 Extension & Plugin Framework
-│   └── capability-marketplace.md    ← KB-035 Capability Marketplace
+│   ├── capability-marketplace.md    ← KB-035 Capability Marketplace
+│   └── component-marketplace.md   ← KB-036 Component Marketplace
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
 │   └── ...
