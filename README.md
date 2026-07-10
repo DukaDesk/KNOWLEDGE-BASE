@@ -56,7 +56,8 @@ KNOWLEDGE-BASE/
 │   ├── publishing-pipeline.md     ← KB-031 Publishing Pipeline
 │   ├── marketplace-architecture.md ← KB-032 Marketplace Architecture
 │   ├── package-artifact-specification.md ← KB-033 Package & Artifact Specification
-│   └── extension-plugin-framework.md ← KB-034 Extension & Plugin Framework
+│   ├── extension-plugin-framework.md ← KB-034 Extension & Plugin Framework
+│   └── capability-marketplace.md    ← KB-035 Capability Marketplace
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
 │   └── ...

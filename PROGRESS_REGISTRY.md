@@ -88,7 +88,7 @@
 | Marketplace Architecture | ✅ Complete | KB-032 — Marketplace Architecture defined |
 | Package & Artifact Specification | ✅ Complete | KB-033 — Package & Artifact Specification defined |
 | Extension & Plugin Framework | ✅ Complete | KB-034 — Extension & Plugin Framework defined |
-| Capability Marketplace | ⏳ Planned | KB-035 — Not yet started |
+| Capability Marketplace | ✅ Complete | KB-035 — Capability Marketplace defined |
 | Component Marketplace | ⏳ Planned | KB-036 — Not yet started |
 | Theme Marketplace | ⏳ Planned | KB-037 — Not yet started |
 | Template Marketplace | ⏳ Planned | KB-038 — Not yet started |
