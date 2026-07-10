@@ -54,7 +54,7 @@
 | Desk Builder | ✅ Complete | KB-023 — Desk Builder Specification defined |
 | Screen & Layout Builder | ⏳ Planned | KB-024 — Not yet started |
 | Workflow Builder | ⏳ Planned | KB-025 — Not yet started |
-| Form Builder | ⏳ Planned | KB-026 — Not yet started |
+| Form Builder | ✅ Complete | KB-026 — Form Builder Specification defined |
 | Theme Builder | ⏳ Planned | KB-027 — Not yet started |
 | Data Model Builder | ⏳ Planned | KB-028 — Not yet started |
 | Preview Runtime | ⏳ Planned | KB-029 — Not yet started |

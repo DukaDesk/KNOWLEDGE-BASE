@@ -40,7 +40,10 @@ KNOWLEDGE-BASE/
 │   ├── state-management.md        ← KB-018 State Management
 │   ├── offline-synchronization.md ← KB-020 Offline & Synchronization
 │   ├── builder-studio.md          ← KB-022 Builder Studio Architecture
+│   ├── screen-layout-builder.md   ← KB-024 Screen & Layout Builder
+│   ├── workflow-builder.md         ← KB-025 Workflow Builder
 │   ├── desk-builder.md            ← KB-023 Desk Builder
+│   ├── form-builder.md             ← KB-026 Form Builder
 │   └── ...
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
