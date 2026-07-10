@@ -40,10 +40,15 @@ KNOWLEDGE-BASE/
 │   ├── state-management.md        ← KB-018 State Management
 │   ├── offline-synchronization.md ← KB-020 Offline & Synchronization
 │   ├── builder-studio.md          ← KB-022 Builder Studio Architecture
+│   ├── desk-builder.md            ← KB-023 Desk Builder
 │   ├── screen-layout-builder.md   ← KB-024 Screen & Layout Builder
 │   ├── workflow-builder.md         ← KB-025 Workflow Builder
-│   ├── desk-builder.md            ← KB-023 Desk Builder
 │   ├── form-builder.md             ← KB-026 Form Builder
+│   ├── theme-builder.md            ← KB-027 Theme Builder
+│   ├── data-model-builder.md       ← KB-028 Data Model Builder
+│   ├── preview-runtime.md          ← KB-029 Preview Runtime
+│   ├── validation-engine.md        ← KB-030 Validation Engine
+│   ├── publishing-pipeline.md      ← KB-031 Publishing Pipeline
 │   └── ...
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md

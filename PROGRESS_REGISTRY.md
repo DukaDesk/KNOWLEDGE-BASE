@@ -52,14 +52,14 @@
 |-----------|--------|-------|
 | Builder Studio Architecture | ✅ Complete | KB-022 — Builder Studio Architecture defined |
 | Desk Builder | ✅ Complete | KB-023 — Desk Builder Specification defined |
-| Screen & Layout Builder | ⏳ Planned | KB-024 — Not yet started |
-| Workflow Builder | ⏳ Planned | KB-025 — Not yet started |
+| Screen & Layout Builder | ✅ Complete | KB-024 — Screen & Layout Builder defined |
+| Workflow Builder | ✅ Complete | KB-025 — Workflow Builder defined |
 | Form Builder | ✅ Complete | KB-026 — Form Builder Specification defined |
-| Theme Builder | ⏳ Planned | KB-027 — Not yet started |
-| Data Model Builder | ⏳ Planned | KB-028 — Not yet started |
-| Preview Runtime | ⏳ Planned | KB-029 — Not yet started |
-| Validation Engine | ⏳ Planned | KB-030 — Not yet started |
-| Publishing Pipeline | ⏳ Planned | KB-031 — Not yet started |
+| Theme Builder | ✅ Complete | KB-027 — Theme Builder defined |
+| Data Model Builder | ✅ Complete | KB-028 — Data Model Builder defined |
+| Preview Runtime | ✅ Complete | KB-029 — Preview Runtime defined |
+| Validation Engine | ✅ Complete | KB-030 — Validation Engine defined |
+| Publishing Pipeline | ✅ Complete | KB-031 — Publishing Pipeline defined |
 | SDUI Authoring | ⏳ Planned | Not yet started |
 | Business Dashboard | ⏳ Planned | Not yet started |
 | Tenant Dashboard | ⏳ Planned | Not yet started |
