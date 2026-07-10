@@ -55,7 +55,8 @@ KNOWLEDGE-BASE/
 │   ├── validation-engine.md       ← KB-030 Validation Engine
 │   ├── publishing-pipeline.md     ← KB-031 Publishing Pipeline
 │   ├── marketplace-architecture.md ← KB-032 Marketplace Architecture
-│   └── package-artifact-specification.md ← KB-033 Package & Artifact Specification
+│   ├── package-artifact-specification.md ← KB-033 Package & Artifact Specification
+│   └── extension-plugin-framework.md ← KB-034 Extension & Plugin Framework
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
 │   └── ...
