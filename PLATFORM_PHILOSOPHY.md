@@ -12,7 +12,7 @@
 | Review Status | Not Reviewed |
 | Last Updated | 2026-07-09 |
 | Depends On | KB-002 |
-| Required By | KB-004, KB-006, KB-007, KB-008, KB-009, all platform specifications |
+| Required By | KB-004, KB-005, KB-006, KB-007, KB-008, KB-009, all platform specifications |
 
 ---
 
@@ -843,12 +843,13 @@ Artifacts that cannot demonstrate alignment with these principles are considered
 
 | Reference | Relationship |
 |-----------|-------------|
-| KB-002 | Vision & Mission — defines the vision that these principles realize |
+| KB-002 | Platform Terminology & Glossary — defines the vocabulary that operationalizes these principles |
 | KB-004 | Core Principles — derives actionable engineering rules from this philosophy |
-| KB-006 | Platform Overview — describes the platform structure shaped by these principles |
-| KB-007 | System Architecture — translates these principles into system design |
-| KB-008 | Service Boundaries — applies modularity and capability principles to service design |
-| KB-009 | Runtime Overview — applies SDUI, runtime, and presentation principles |
+| KB-005 | Platform Overview — describes the platform structure shaped by these principles |
+| KB-006 | System Architecture — translates these principles into system design |
+| KB-007 | Service Boundaries — applies modularity and capability principles to service design |
+| KB-008 | Runtime Overview — describes the Runtime execution environment |
+| KB-009 | Manifest Specification — defines the configuration artifact that applies SDUI and runtime principles |
 | ENGINEERING_STANDARDS.md | Engineering process standards governing how principles are enforced |
 | CORE_PRINCIPLES.md | Condensed engineering rules derived from this philosophy |
 
@@ -870,7 +871,7 @@ Artifacts that cannot demonstrate alignment with these principles are considered
 - [ ] No specific technologies (languages, frameworks, databases, cloud providers) are mentioned unless necessary
 - [ ] All cross-references use canonical IDs
 - [ ] No internal contradictions
-- [ ] No contradictions with KB-002
+- [ ] No contradictions with KB-002 (Glossary) or KB-003
 - [ ] Revision History documents all changes
 
 ---
@@ -884,4 +885,4 @@ Artifacts that cannot demonstrate alignment with these principles are considered
 ---
 
 **Parent:** README.md
-**See also:** KB-002 — Vision & Mission, CORE_PRINCIPLES.md, ARCHITECTURE/overview.md
+**See also:** KB-002 — Platform Terminology & Glossary, KB-004 — Core Principles, ARCHITECTURE/overview.md

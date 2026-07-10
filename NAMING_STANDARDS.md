@@ -1,6 +1,18 @@
 # DUKADESK Naming Standards
 
-**Last Updated:** 2026-07-09
+**KB-011 — Part III: Engineering Standards**
+
+| Metadata | Value |
+|----------|-------|
+| KB-ID | KB-011 |
+| Title | Naming Standards |
+| Version | 0.1.0 |
+| Status | Drafting |
+| Owner | Engineering |
+| Depends On | KB-003 (Platform Philosophy), KB-004 (Core Principles) |
+| Required By | All specifications, all implementations |
+| Review Status | Not Reviewed |
+| Last Updated | 2026-07-09 |
 
 ## Screen IDs
 Lowercase, singular nouns, hyphen-separated. Examples: `menu`, `orders`, `notifications`.

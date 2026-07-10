@@ -10,7 +10,7 @@
 | Status | Drafting |
 | Owner | Architecture |
 | Dependencies | KB-005 (Platform Overview), KB-003 (Platform Philosophy) |
-| Related Documents | KB-007 (Runtime Overview), KB-008 (Service Boundaries), KB-010 (Technology Stack) |
+| Related Documents | KB-005 (Platform Overview), KB-007 (Service Boundaries), KB-010 (Capability System) |
 | Review Status | Not Reviewed |
 | Last Updated | 2026-07-10 |
 
@@ -826,15 +826,15 @@ KB-006 (System Architecture) ← You are here
     │  Architectural domains, boundaries, communication.
     │  The blueprint every implementation follows.
     │
-    ├──► KB-007 (Runtime Overview)
-    │       Deep dive into the Runtime Domain.
-    │       Lifecycle, state management, offline execution.
-    │
-    ├──► KB-008 (Service Boundaries)
+    ├──► KB-007 (Service Boundaries)
     │       Detailed domain ownership matrix.
     │       Service decomposition guidance.
     │
-    ├──► KB-010 (Technology Stack)
+    ├──► KB-008 (Runtime Overview)
+    │       Deep dive into the Runtime Domain.
+    │       Lifecycle, state management, offline execution.
+    │
+    ├──► KB-010 (Capability System)
     │       Approved technologies per domain.
     │       Technology decision framework.
     │

@@ -1,6 +1,18 @@
 # DUKADESK Core Principles
 
-**Last Updated:** 2026-07-09
+**KB-004 — Part I: Foundation | Core Principles**
+
+| Metadata | Value |
+|----------|-------|
+| KB-ID | KB-004 |
+| Title | Core Principles |
+| Version | 0.1.0 |
+| Status | Drafting |
+| Owner | Engineering |
+| Depends On | KB-003 (Platform Philosophy) |
+| Required By | All KB documents, all specifications, all implementations |
+| Review Status | Not Reviewed |
+| Last Updated | 2026-07-09 |
 
 ## Meta-Principles
 

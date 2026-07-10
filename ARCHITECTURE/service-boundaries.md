@@ -1484,9 +1484,9 @@ KB-007 (Service Boundaries) ← You are here
     │       Deep dive into the Runtime Service.
     │       Runtime lifecycle, state management, offline execution.
     │
-    ├──► KB-010 (Technology Stack)
-    │       Approved technologies per service.
-    │       Technology choices must respect service boundaries.
+    ├──► KB-010 (Capability System)
+    │       Capability lifecycle and ownership.
+    │       Capability boundaries must respect service boundaries.
     │
     ├──► KB-013 (API Standards)
     │       API design conventions that all services must follow.

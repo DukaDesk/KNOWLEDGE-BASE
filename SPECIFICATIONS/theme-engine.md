@@ -9,7 +9,7 @@
 | **Version** | 0.1.0 |
 | **Status** | Drafting |
 | **Owner** | Architecture |
-| **Dependencies** | KB-005 (Glossary), KB-007 (System Architecture), KB-011 (Naming Standards), KB-013 (Component Model) |
+| **Dependencies** | KB-002 (Glossary), KB-006 (System Architecture), KB-011 (Naming Standards), KB-013 (Component Model) |
 | **Related Documents** | Renderer Architecture, Layout System, Component Model, Manifest Specification, Builder Studio, Marketplace, Runtime Overview |
 | **Review Status** | Pending |
 | **Last Updated** | 2026-07-09 |

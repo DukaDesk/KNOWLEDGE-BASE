@@ -10,7 +10,7 @@
 | Status | Drafting |
 | Owner | Architecture |
 | Dependencies | KB-003 (Platform Philosophy), KB-004 (Core Principles) |
-| Related Documents | KB-006 (System Architecture), KB-007 (Runtime Overview), KB-008 (Service Boundaries) |
+| Related Documents | KB-006 (System Architecture), KB-007 (Service Boundaries) |
 | Review Status | Not Reviewed |
 | Last Updated | 2026-07-10 |
 
@@ -31,8 +31,8 @@ It is the first architecture document that every engineer, architect, AI assista
 This document intentionally avoids implementation details. It establishes the conceptual foundation that subsequent Knowledge Base documents build upon:
 
 - **KB-006 (System Architecture)** provides the system-level component breakdown.
-- **KB-007 (Runtime Overview)** details the runtime environment.
-- **KB-008 (Service Boundaries)** defines service ownership and communication.
+- **KB-007 (Service Boundaries)** defines service ownership and communication.
+- **KB-008 (Runtime Overview)** details the runtime environment.
 - **Specifications** describe concrete implementations of specific subsystems.
 
 Think of this document as the map of a city. Subsequent documents are the blueprints of individual buildings. Both are necessary, but you need the map first to understand where the buildings sit and how they connect.
@@ -577,11 +577,11 @@ KB-005 (Platform Overview) ← You are here
     │       Detailed component breakdown of every subsystem.
     │       Builds on the platform components introduced here.
     │
-    ├──► KB-007 (Runtime Overview)
-    │       Deep dive into the Platform Runtime.
-    │       Explains lifecycle management, configuration, capability loading.
+    ├──► KB-007 (Service Boundaries)
+    │       Defines service ownership, communication patterns, data ownership.
+    │       Maps services to the Service Layer introduced here.
     │
-    ├──► KB-008 (Service Boundaries)
+    ├──► KB-008 (Runtime Overview)
     │       Defines service ownership, communication patterns, data ownership.
     │       Maps services to the Service Layer introduced here.
     │
@@ -608,8 +608,8 @@ New contributors should read in this order:
 1. **KB-005 (Platform Overview)** — The conceptual map (this document)
 2. **KB-003 (Platform Philosophy)** — The principles behind the architecture
 3. **KB-006 (System Architecture)** — How the platform is built
-4. **KB-007 (Runtime Overview)** — How Desks execute
-5. **KB-008 (Service Boundaries)** — How services are organized
+4. **KB-007 (Service Boundaries)** — How services are organized
+5. **KB-008 (Runtime Overview)** — How Desks execute
 6. **Relevant Specification** — The specific subsystem to work on
 
 This document intentionally provides the "what" and "why." Subsequent documents provide the "how."

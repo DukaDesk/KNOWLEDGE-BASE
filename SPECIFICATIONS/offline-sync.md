@@ -9,8 +9,8 @@
 | **Version** | 0.1.0 |
 | **Status** | Drafting |
 | **Owner** | Architecture |
-| **Dependencies** | KB-005 (Glossary), KB-007 (System Architecture), KB-015 (Action Engine), KB-018 (State Management), KB-019 (Event Bus) |
-| **Related Documents** | Runtime Overview, State Management, Event Bus, Action Engine, Capability System, Publication Pipeline, Backend Architecture, Builder Studio |
+| **Dependencies** | KB-002 (Glossary), KB-006 (System Architecture), KB-015 (Action Engine), KB-018 (State Management), KB-019 (Event Bus) |
+| **Related Documents** | Runtime Overview (KB-008), State Management (KB-018), Event Bus (KB-019), Action Engine (KB-015), Capability System (KB-010), Publishing Pipeline (KB-031), Backend Architecture, Builder Studio (KB-022) |
 | **Review Status** | Pending |
 | **Last Updated** | 2026-07-09 |
 
@@ -1116,7 +1116,7 @@ interface SyncHistoryEntry {
 | **State Management (KB-018)** | Local state is persisted through the Local Data Store. State is updated on sync completion and conflict resolution. |
 | **Navigation Engine (KB-016)** | Navigation metadata is stored locally for offline navigation. Sync state may influence navigation availability. |
 | **Component Model (KB-013)** | Components display offline status and sync progress. User-assisted conflict resolution may be rendered through components. |
-| **Publication Pipeline (KB-021)** | Publication deployment must respect offline capabilities. Updates may be queued for offline installation. |
+| **Publishing Pipeline (KB-031)** | Publication deployment must respect offline capabilities. Updates may be queued for offline installation. |
 | **Capability System** | Capabilities declare sync policies and conflict resolution strategies. Capability data is persisted and synchronized according to declared policies. |
 | **Backend Architecture** | Backend exposes sync APIs, conflict detection, and version management. Sync contracts are defined collaboratively with backend. |
 | **Builder Studio** | Provides offline simulation, queue inspection, conflict simulation, and sync testing tools. |

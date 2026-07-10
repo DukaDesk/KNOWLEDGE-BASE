@@ -9,7 +9,7 @@
 | **Version** | 0.1.0 |
 | **Status** | Drafting |
 | **Owner** | Architecture |
-| **Dependencies** | KB-005 (Glossary), KB-007 (System Architecture), KB-011 (Naming Standards), KB-015 (Action Engine), KB-018 (State Management) |
+| **Dependencies** | KB-002 (Glossary), KB-006 (System Architecture), KB-011 (Naming Standards), KB-015 (Action Engine), KB-018 (State Management) |
 | **Related Documents** | Runtime Overview, Action Engine, State Management, Navigation Engine, Offline & Synchronization, Capability System, Builder Studio, Marketplace |
 | **Review Status** | Pending |
 | **Last Updated** | 2026-07-09 |
@@ -1138,7 +1138,7 @@ interface EventTrace {
 | **Capability System** | Capabilities publish domain events. Subscribe to cross-capability events. |
 | **Builder Studio** | Uses the Event Bus for workflow triggers, event simulation, and live monitoring. |
 | **Marketplace** | Extensions publish and subscribe to events through the Event Bus. Event permissions are declared in extension manifests. |
-| **Publication Pipeline (KB-021)** | May subscribe to publication lifecycle events for deployment automation. |
+| **Publishing Pipeline (KB-031)** | May subscribe to publication lifecycle events for deployment automation. |
 
 ---
 

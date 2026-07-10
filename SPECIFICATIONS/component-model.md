@@ -9,7 +9,7 @@
 | **Version** | 0.1.0 |
 | **Status** | Drafting |
 | **Owner** | Architecture |
-| **Dependencies** | KB-005 (Glossary), KB-007 (System Architecture), KB-011 (Naming Standards) |
+| **Dependencies** | KB-002 (Glossary), KB-006 (System Architecture), KB-011 (Naming Standards) |
 | **Related Documents** | Runtime Engine, Layout System, Action Engine, Theme Engine, Navigation Engine, State Management, Event Bus, Component Registry |
 | **Review Status** | Pending |
 | **Last Updated** | 2026-07-09 |

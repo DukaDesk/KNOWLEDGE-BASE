@@ -58,7 +58,12 @@ KNOWLEDGE-BASE/
 │   ├── package-artifact-specification.md ← KB-033 Package & Artifact Specification
 │   ├── extension-plugin-framework.md ← KB-034 Extension & Plugin Framework
 │   ├── capability-marketplace.md    ← KB-035 Capability Marketplace
-│   └── component-marketplace.md   ← KB-036 Component Marketplace
+│   ├── component-marketplace.md   ← KB-036 Component Marketplace
+│   ├── theme-marketplace.md       ← KB-037 Theme Marketplace
+│   ├── template-marketplace.md    ← KB-038 Template Marketplace
+│   ├── marketplace-certification-trust.md ← KB-039 Marketplace Certification & Trust
+│   ├── marketplace-distribution-lifecycle.md ← KB-040 Marketplace Distribution & Lifecycle
+│   └── runtime-architecture-overview.md    ← KB-041 Runtime Architecture Overview
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
 │   └── ...

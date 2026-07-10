@@ -99,7 +99,24 @@ When conflicts are discovered: report the conflict, identify affected documents,
 | Navigation Engine | ARCHITECTURE/navigation-engine.md | — | — | — |
 | State Management | ARCHITECTURE/state-management.md | — | — | — |
 | Offline & Sync | ARCHITECTURE/offline-synchronization.md | — | — | — |
-| Event Bus | ARCHITECTURE/overview.md | SPECIFICATIONS/action-system.md | ADR-004 | Mobile — EventBus |
+| Platform Overview | ARCHITECTURE/overview.md | — | — | — |
+| System Architecture | ARCHITECTURE/system-architecture.md | — | — | — |
+| Service Boundaries | ARCHITECTURE/service-boundaries.md | — | — | — |
+| Runtime Overview | ARCHITECTURE/runtime-overview.md | — | — | — |
+| Manifest Specification | ARCHITECTURE/manifest-specification.md | — | — | — |
+| Capability System | ARCHITECTURE/capability-system.md | — | — | — |
+| Builder Studio | ARCHITECTURE/builder-studio.md | — | — | — |
+| Desk Builder | ARCHITECTURE/desk-builder.md | — | — | — |
+| Screen & Layout Builder | ARCHITECTURE/screen-layout-builder.md | — | — | — |
+| Workflow Builder | ARCHITECTURE/workflow-builder.md | — | — | — |
+| Form Builder | ARCHITECTURE/form-builder.md | — | — | — |
+| Theme Builder | ARCHITECTURE/theme-builder.md | — | — | — |
+| Data Model Builder | ARCHITECTURE/data-model-builder.md | — | — | — |
+| Preview Runtime | ARCHITECTURE/preview-runtime.md | — | — | — |
+| Validation Engine | ARCHITECTURE/validation-engine.md | — | — | — |
+| Publishing Pipeline | ARCHITECTURE/publishing-pipeline.md | — | — | — |
+| Marketplace Architecture | ARCHITECTURE/marketplace-architecture.md | — | — | — |
+| Event Bus | ARCHITECTURE/overview.md | SPECIFICATIONS/event-bus.md | ADR-004 | Mobile — EventBus |
 | Tenant Model | ARCHITECTURE/overview.md | SPECIFICATIONS/tenant-model.md | — | Mobile — ManifestResolver |
 | Module System | ARCHITECTURE/overview.md | SPECIFICATIONS/tenant-model.md | — | Mobile — ModuleRegistry |
 | Manifest | GLOSSARY.md | SPECIFICATIONS/tenant-model.md | — | Mobile — MockClient |

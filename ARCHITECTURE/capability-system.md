@@ -9,8 +9,8 @@
 | Version | 0.1.0 |
 | Status | Drafting |
 | Owner | Architecture |
-| Dependencies | KB-005 (Platform Overview), KB-006 (System Architecture), KB-007 (Runtime Overview) |
-| Related Documents | KB-012 (Manifest Specification), KB-014 (Module System), KB-016 (Marketplace), KB-017 (Builder) |
+| Dependencies | KB-005 (Platform Overview), KB-006 (System Architecture), KB-007 (Service Boundaries) |
+| Related Documents | KB-009 (Manifest Specification), KB-012 (Component Registry), KB-014 (Layout System), KB-016 (Navigation Engine), KB-017 (Theme Engine) |
 | Review Status | Not Reviewed |
 | Last Updated | 2026-07-10 |
 
@@ -890,20 +890,20 @@ KB-006 (System Architecture)
 KB-010 (Capability System) ← You are here
     │  Defines what capabilities are and how they work.
     │
-    ├──► KB-007 (Runtime Overview)
+    ├──► KB-008 (Runtime Overview)
     │       How the Runtime loads, initializes, and manages capabilities.
     │
-    ├──► KB-012 (Manifest Specification)
+    ├──► KB-009 (Manifest Specification)
     │       How Desks declare which capabilities they use.
     │
-    ├──► KB-014 (Module System)
-    │       How capabilities are implemented as composable modules.
+    ├──► KB-012 (Component Registry)
+    │       How capability components are registered and resolved.
     │
-    ├──► KB-016 (Marketplace Specification)
-    │       How capabilities are distributed and installed.
+    ├──► KB-016 (Navigation Engine)
+    │       How capability navigation contributions are integrated.
     │
-    ├──► KB-017 (Builder Specification)
-    │       How the Builder discovers and configures capabilities.
+    ├──► KB-017 (Theme Engine)
+    │       How capability themes and visual tokens are applied.
     │
     └──► Specifications
             Concrete capability specifications (Commerce, Booking, etc.).

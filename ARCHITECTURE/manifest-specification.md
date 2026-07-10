@@ -858,13 +858,16 @@ The Runtime and Manifest negotiate compatibility through the `schemaVersion` and
 | **KB-006 (System Architecture)** | The Manifest is consumed by the Runtime Domain described in System Architecture |
 | **KB-007 (Service Boundaries)** | The Manifest defines which capabilities from which services a Desk uses |
 | **KB-010 (Capability System)** | The Capability Declarations section of the Manifest is consumed by the Capability System |
-| **KB-011 (Renderer Architecture)** | Screen Definitions in the Manifest are rendered by the Renderer |
 | **KB-012 (Component Registry)** | Component types referenced in the Manifest are resolved through the Component Registry |
-| **KB-013 (Action Engine)** | Actions defined in the Manifest are executed by the Action Engine |
-| **KB-014 (Navigation Engine)** | Navigation declarations in the Manifest are interpreted by the Navigation Engine |
-| **KB-015 (Theme Engine)** | Theme configuration in the Manifest is applied by the Theme Engine |
-| **KB-018 (Offline & Synchronization)** | Offline configuration in the Manifest determines offline behavior |
-| **KB-019 (Publication Pipeline)** | The Publication Pipeline distributes published Manifests to Runtime nodes |
+| **KB-013 (Component Model)** | Components defined in the Manifest conform to the Component Model |
+| **KB-014 (Layout System)** | Screen layouts in the Manifest are resolved by the Layout System |
+| **KB-015 (Action Engine)** | Actions defined in the Manifest are executed by the Action Engine |
+| **KB-016 (Navigation Engine)** | Navigation declarations in the Manifest are interpreted by the Navigation Engine |
+| **KB-017 (Theme Engine)** | Theme configuration in the Manifest is applied by the Theme Engine |
+| **KB-018 (State Management)** | State bindings in the Manifest are managed by the State Management subsystem |
+| **KB-019 (Event Bus)** | Events declared in the Manifest flow through the Event Bus |
+| **KB-020 (Offline & Synchronization)** | Offline configuration in the Manifest determines offline behavior |
+| **KB-031 (Publishing Pipeline)** | The Publishing Pipeline distributes published Manifests to Runtime nodes |
 | **Builder Specification** | The Builder generates Manifests from visual compositions |
 | **Runtime Specification** | The Runtime consumes and executes Manifests |
 

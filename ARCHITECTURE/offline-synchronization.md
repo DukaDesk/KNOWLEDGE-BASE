@@ -10,7 +10,7 @@
 | **Status** | Drafting |
 | **Owner** | Architecture Team |
 | **Dependencies** | KB-018 State Management, KB-019 Event Bus, KB-015 Action Engine |
-| **Related Documents** | Runtime Overview, State Management (KB-018), Event Bus (KB-019), Action Engine (KB-015), Capability System, Publication Pipeline (KB-021), Backend Architecture, Builder Studio |
+| **Related Documents** | Runtime Overview (KB-008), State Management (KB-018), Event Bus (KB-019), Action Engine (KB-015), Capability System (KB-010), Publishing Pipeline (KB-031), Backend Architecture, Builder Studio (KB-022) |
 | **Review Status** | Pending |
 | **Last Updated** | 2026-07-10 |
 
@@ -1277,7 +1277,7 @@ Synchronization scheduling may become context-aware:
 | **KB-015 — Action Engine** | Actions produce the mutations that enter the Offline queue. The Action Engine is unaware of connectivity state — the Offline subsystem handles the routing. |
 | **Runtime Overview** | The Runtime owns the Offline Manager lifecycle — initialization, suspend, resume, and shutdown. |
 | **Capability System** | Capabilities declare their offline requirements (data entities, sync strategy, conflict resolution) to the Offline Manager. |
-| **KB-021 — Publication Pipeline** | The Publication Pipeline may trigger synchronization as part of content publication workflows. |
+| **KB-031 — Publishing Pipeline** | The Publishing Pipeline may trigger synchronization as part of content publication workflows. |
 | **Backend Architecture** | The backend exposes synchronization endpoints that the Sync Manager communicates with. |
 | **Builder Studio** | The Builder provides offline simulation, queue inspection, conflict testing, and diagnostics based on this specification. |
 

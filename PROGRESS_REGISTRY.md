@@ -90,10 +90,27 @@
 | Extension & Plugin Framework | ✅ Complete | KB-034 — Extension & Plugin Framework defined |
 | Capability Marketplace | ✅ Complete | KB-035 — Capability Marketplace defined |
 | Component Marketplace | ✅ Complete | KB-036 — Component Marketplace defined |
-| Theme Marketplace | ⏳ Planned | KB-037 — Not yet started |
-| Template Marketplace | ⏳ Planned | KB-038 — Not yet started |
-| Marketplace Certification & Trust | ⏳ Planned | KB-039 — Not yet started |
-| Marketplace Distribution & Lifecycle | ⏳ Planned | KB-040 — Not yet started |
+| Theme Marketplace | ✅ Complete | KB-037 — Theme Marketplace Specification defined |
+| Template Marketplace | ✅ Complete | KB-038 — Template Marketplace Specification defined |
+| Marketplace Certification & Trust | ✅ Complete | KB-039 — Marketplace Certification & Trust defined |
+| Marketplace Distribution & Lifecycle | ✅ Complete | KB-040 — Marketplace Distribution & Lifecycle defined |
+
+> **Marketplace Architecture Suite**: Complete ✅
+
+## Runtime & Rendering Architecture
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Runtime Architecture Overview | ✅ Complete | KB-041 — Runtime Architecture Overview defined |
+| Runtime Rendering Engine | ⏳ Planned | KB-042 — Not yet started |
+| SDUI Architecture | ⏳ Planned | KB-043 — Not yet started |
+| Runtime State Management | ⏳ Planned | KB-044 — Not yet started |
+| Runtime Navigation & Routing | ⏳ Planned | KB-045 — Not yet started |
+| Runtime Component Registry | ⏳ Planned | KB-046 — Not yet started |
+| Runtime Event & Action Pipeline | ⏳ Planned | KB-047 — Not yet started |
+| Runtime Caching & Synchronization | ⏳ Planned | KB-048 — Not yet started |
+| Runtime Security & Isolation | ⏳ Planned | KB-049 — Not yet started |
+| Runtime Observability & Diagnostics | ⏳ Planned | KB-050 — Not yet started |
 
 ## ADR Registry
 

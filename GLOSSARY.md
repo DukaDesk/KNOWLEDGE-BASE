@@ -1,17 +1,17 @@
 # DUKADESK Platform Terminology & Glossary
 
-**KB-004 — Part I: Foundation | Platform Terminology & Glossary**
+**KB-002 — Part I: Foundation | Platform Terminology & Glossary**
 
 | Metadata | Value |
 |----------|-------|
-| KB-ID | KB-004 |
+| KB-ID | KB-002 |
 | Title | Platform Terminology & Glossary |
 | Version | 0.1.0 |
 | Status | Drafting |
 | Owner | Engineering |
 | Review Status | Not Reviewed |
 | Last Updated | 2026-07-09 |
-| Depends On | KB-001, KB-002, KB-003 |
+| Depends On | KB-001, KB-003 |
 | Required By | All KB documents, all specifications, all implementations |
 
 ---
@@ -693,6 +693,56 @@ The following principles govern the naming of all platform concepts.
 
 ---
 
+#### Builder Shell
+
+| Field | Value |
+|-------|-------|
+| **Definition** | The host environment within Builder Studio that integrates all Builder modules, editors, panels, and services into a cohesive user interface. |
+| **Purpose** | To provide a consistent workspace framework that coordinates the lifecycle and interaction of all sub-builders. |
+| **Responsibilities** | Managing workspace layout, hosting editors and panels, coordinating module lifecycle, providing common services (theming, localization, keyboard shortcuts). |
+| **Relationships** | Hosts all Builder modules (Desk Builder, Screen Builder, Workflow Builder, etc.). Integrates with the Plugin Manager for extensions. |
+| **Related Terms** | Builder, Manifest Generator, Validation Engine, Preview Runtime, Publishing Pipeline |
+
+#### Manifest Generator
+
+| Field | Value |
+|-------|-------|
+| **Definition** | The Builder Studio subsystem responsible for translating a project's visual and declarative configuration into valid, schema-compliant Manifest artifacts. |
+| **Purpose** | To produce the canonical configuration artifact that the Runtime consumes, ensuring every Manifest is structurally sound and schema-valid before publication. |
+| **Responsibilities** | Translating project state into Manifest format, resolving references, inlining assets where appropriate, ensuring schema compliance. |
+| **Relationships** | Consumes project state from all Builder modules. Produces Manifests validated by the Validation Engine. |
+| **Related Terms** | Builder, Manifest, Validation Engine, Publishing Pipeline |
+
+#### Validation Engine
+
+| Field | Value |
+|-------|-------|
+| **Definition** | The Builder Studio subsystem responsible for analyzing all project artifacts against schema definitions, platform standards, security policies, accessibility requirements, and publishing readiness criteria. |
+| **Purpose** | To ensure that only correct, compliant, and consistent applications reach the Publishing Pipeline by detecting defects at authoring time. |
+| **Responsibilities** | Running continuous, on-demand, and pre-publish validation. Reporting errors, warnings, and info messages with actionable fix suggestions. Enforcing the quality gate before publication. |
+| **Relationships** | Receives project state from Builder modules. Produces validation reports consumed by the Publishing Pipeline. Complements the Preview Runtime (static analysis vs. dynamic execution). |
+| **Related Terms** | Builder, Manifest Generator, Preview Runtime, Publishing Pipeline |
+
+#### Preview Runtime
+
+| Field | Value |
+|-------|-------|
+| **Definition** | The Builder Studio subsystem that provides a simulated Runtime environment within the Builder for live, interactive preview of applications before publication. |
+| **Purpose** | To enable builders to see and interact with their application as it would appear on target platforms before committing to publication. |
+| **Responsibilities** | Loading project artifacts, simulating Runtime execution, rendering screens, executing workflows in simulation, providing responsive preview, supporting mock data and diagnostics. |
+| **Relationships** | Mirrors production Runtime behavior through shared contracts. Uses mock services instead of real integrations. Complements the Validation Engine (dynamic execution vs. static analysis). |
+| **Related Terms** | Builder, Validation Engine, Publishing Pipeline, Runtime |
+
+#### Publishing Pipeline
+
+| Field | Value |
+|-------|-------|
+| **Definition** | The Builder Studio subsystem responsible for packaging validated project artifacts into deployable releases, submitting them to target environments, managing versioned release history, and supporting rollback. |
+| **Purpose** | To transform an authoring project into a deployment-ready, versioned, integrity-verified package that the Runtime can load and execute. |
+| **Responsibilities** | Enforcing validation and approval gates, resolving dependencies, bundling assets, assigning versions, registering releases, deploying to target environments, managing rollback. |
+| **Relationships** | Receives validated project state from the Validation Engine. Delivers release packages to target environments for Runtime consumption. |
+| **Related Terms** | Builder, Validation Engine, Manifest, Runtime, Release |
+
 #### Marketplace
 
 | Field | Value |
@@ -703,6 +753,48 @@ The following principles govern the naming of all platform concepts.
 | **Relationships** | The Marketplace contains Packages. The Marketplace is accessible from the Builder and Dashboards. The Marketplace connects Extension creators with Tenants. |
 | **Related Terms** | Package, Extension, Plugin, Theme, Template |
 | **Notes** | The Marketplace is distinct from a Package registry. It includes commerce, review, and governance infrastructure that a simple registry does not. |
+
+---
+
+#### Package (Marketplace)
+
+| Field | Value |
+|-------|-------|
+| **Definition** | A versioned, signed, self-describing collection of platform artifacts published to the Marketplace. Packages are the unit of distribution, installation, and update. |
+| **Purpose** | To package reusable platform assets — capabilities, components, themes, templates, workflows, integrations, AI agents, SDK extensions, or complete Desks — into a standardized format that the Marketplace can distribute and target environments can consume. |
+| **Responsibilities** | Declaring package identity, metadata, dependencies, compatibility, license, and content manifest. Enabling integrity verification through digital signatures. |
+| **Relationships** | Packages are stored in the Package Registry. Packages are discovered through the Discovery Service. Packages are installed through the Installation Manager. |
+| **Related Terms** | Marketplace, Publisher, Package Registry, Certification |
+
+#### Publisher
+
+| Field | Value |
+|-------|-------|
+| **Definition** | A verified entity — individual, organization, or team — that creates, signs, and distributes packages through the Marketplace. |
+| **Purpose** | To establish accountability and trust for all packages in the Marketplace. Every package is traceable to its publisher. |
+| **Responsibilities** | Creating and maintaining packages, signing packages with verified identity, responding to certification feedback, providing updates and migration paths, managing deprecation and retirement. |
+| **Relationships** | Publishers submit packages through the Publishing Pipeline. Publisher identity is verified by the Trust & Certification Manager. |
+| **Related Terms** | Marketplace, Package, Certification, Digital Signature |
+
+#### Package Registry
+
+| Field | Value |
+|-------|-------|
+| **Definition** | The Marketplace subsystem that stores, indexes, and serves all published packages across all versions, categories, certification levels, and publishers. |
+| **Purpose** | To provide a single authoritative source for all platform-distributable artifacts. The Package Registry is the system of record for every version of every package. |
+| **Responsibilities** | Storing package metadata and artifacts, maintaining version history, indexing for search, enforcing retention policies, serving package data to discovery, installation, and update services. |
+| **Relationships** | Receives packages from the certification pipeline. Serves packages to the Discovery Service and Installation Manager. Retains history for audit and rollback. |
+| **Related Terms** | Marketplace, Package, Certification, Publisher |
+
+#### Certification (Marketplace)
+
+| Field | Value |
+|-------|-------|
+| **Definition** | The process of validating that a Marketplace package meets platform standards for compatibility, security, quality, and metadata completeness before it is made available for distribution. |
+| **Purpose** | To protect consumers from incompatible, insecure, or low-quality packages by establishing a quality bar that all Marketplace artifacts must meet. |
+| **Responsibilities** | Running automated compatibility checks, verifying security posture, validating metadata completeness, assigning certification levels (certified, verified, trusted), maintaining certification history. |
+| **Relationships** | Certification is performed by the Trust & Certification Manager. Certification status is displayed in package metadata and enforced by organization trust policies. |
+| **Related Terms** | Marketplace, Package, Publisher, Trust & Certification Manager |
 
 ---
 
@@ -916,7 +1008,7 @@ Screen
 Knowledge Base
      │
      ├── Principles (KB-003)
-     ├── Terminology (KB-004)
+     ├── Terminology (KB-002)
      ├── Standards (KB-011 – KB-017)
      │
      ▼
@@ -1055,7 +1147,7 @@ Adherence to this document is mandatory for all platform Specifications, impleme
 | Reference | Relationship |
 |-----------|-------------|
 | KB-001 | README — defines the Knowledge Base structure and the One Concept Has One Definition principle |
-| KB-002 | Vision & Mission — establishes the vision that this terminology serves |
+| KB-002 | Platform Terminology & Glossary (this document) — establishes the vocabulary that all platform documents use |
 | KB-003 | Platform Philosophy — defines the engineering principles that this terminology operationalizes |
 | KB-011 | Naming Standards — defines the naming conventions for identifiers, files, APIs, and events |
 | README.md | Repository README — defines the Knowledge Base governance context |
@@ -1076,7 +1168,7 @@ Adherence to this document is mandatory for all platform Specifications, impleme
 - [ ] Future Expansion explains how the glossary grows
 - [ ] No internal contradictions between term definitions
 - [ ] All cross-references use canonical names
-- [ ] No contradictions with KB-002 or KB-003
+- [ ] No contradictions with KB-003
 - [ ] Revision History documents all changes
 
 ---
@@ -1090,4 +1182,4 @@ Adherence to this document is mandatory for all platform Specifications, impleme
 ---
 
 **Parent:** README.md
-**See also:** KB-002 — Vision & Mission, KB-003 — Platform Philosophy, KB-011 — Naming Standards
+**See also:** KB-003 — Platform Philosophy, KB-011 — Naming Standards
