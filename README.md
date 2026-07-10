@@ -2,7 +2,7 @@
 
 **Version:** 0.1.0
 **Status:** Drafting
-**Last Updated:** 2026-07-09
+**Last Updated:** 2026-07-10
 
 ## What This Is
 
@@ -34,6 +34,11 @@ KNOWLEDGE-BASE/
 │   └── ...
 ├── ARCHITECTURE/                 ← Architecture documentation
 │   ├── overview.md
+│   ├── component-registry.md     ← KB-012 Component Registry
+│   ├── layout-system.md          ← KB-014 Layout System
+│   ├── navigation-engine.md      ← KB-016 Navigation Engine
+│   ├── state-management.md        ← KB-018 State Management
+│   ├── offline-synchronization.md ← KB-020 Offline & Synchronization
 │   └── ...
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
@@ -60,6 +65,7 @@ Every developer and AI agent MUST read the following before starting work:
 5. **GLOSSARY** — terminology
 6. **ENGINEERING STANDARDS** — process rules
 7. **Target specification** — the relevant domain spec
+8. **ARCHITECTURE** — system architecture, component registry, and related documents
 
 ## Platform Status
 

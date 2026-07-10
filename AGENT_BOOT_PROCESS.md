@@ -1,6 +1,6 @@
 # DUKADESK AI Agent Boot Process
 
-**Last Updated:** 2026-07-09
+**Last Updated:** 2026-07-10
 
 Every AI engineering agent MUST execute this sequence before performing any task.
 
@@ -48,13 +48,15 @@ Generate Summary
 
 ## Required Reading
 
-| Minimum Required | Strongly Recommended |
-|------------------|---------------------|
-| README | All KB documents |
-| CORE_PRINCIPLES.md | |
-| GLOSSARY.md | |
-| ENGINEERING_STANDARDS.md | |
-| AGENT_BOOT_PROCESS.md | |
+| Minimum Required | Strongly Recommended | Task-Specific |
+|------------------|----------------------|---------------|
+| README | All KB documents | ARCHITECTURE/ (all) |
+| CORE_PRINCIPLES.md | | SPECIFICATIONS/ (target domain) |
+| GLOSSARY.md | | |
+| ENGINEERING_STANDARDS.md | | |
+| AGENT_BOOT_PROCESS.md | | |
+| PROGRESS_REGISTRY.md | | |
+| ADRs/ADR-INDEX.md | | |
 
 ## Behavioral Rules
 1. Read before writing
@@ -91,7 +93,12 @@ When conflicts are discovered: report the conflict, identify affected documents,
 |---------|----------|---------------|-----|----------------|
 | Runtime Engine | ARCHITECTURE/overview.md | SPECIFICATIONS/runtime-engine.md | ADR-001 | Mobile — ScreenRenderer |
 | Action System | CORE_PRINCIPLES.md | SPECIFICATIONS/action-system.md | ADR-003 | Mobile — ActionEngine |
-| Component System | ARCHITECTURE/overview.md | SPECIFICATIONS/component-system.md | ADR-002 | Mobile — ComponentRegistry |
+| Component System | ARCHITECTURE/component-registry.md | SPECIFICATIONS/component-system.md | ADR-002 | Mobile — ComponentRegistry |
+| Component Registry | ARCHITECTURE/component-registry.md | — | ADR-002 | — |
+| Layout System | ARCHITECTURE/layout-system.md | — | — | — |
+| Navigation Engine | ARCHITECTURE/navigation-engine.md | — | — | — |
+| State Management | ARCHITECTURE/state-management.md | — | — | — |
+| Offline & Sync | ARCHITECTURE/offline-synchronization.md | — | — | — |
 | Event Bus | ARCHITECTURE/overview.md | SPECIFICATIONS/action-system.md | ADR-004 | Mobile — EventBus |
 | Tenant Model | ARCHITECTURE/overview.md | SPECIFICATIONS/tenant-model.md | — | Mobile — ManifestResolver |
 | Module System | ARCHITECTURE/overview.md | SPECIFICATIONS/tenant-model.md | — | Mobile — ModuleRegistry |
