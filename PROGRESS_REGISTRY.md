@@ -1,6 +1,6 @@
 # DUKADESK Progress Registry
 
-**Last Updated:** 2026-07-09
+**Last Updated:** 2026-07-10
 
 ## Status Key
 - ✅ Complete — Production ready
@@ -50,7 +50,16 @@
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Visual Builder | ⏳ Planned | Not yet started |
+| Builder Studio Architecture | ✅ Complete | KB-022 — Builder Studio Architecture defined |
+| Desk Builder | ✅ Complete | KB-023 — Desk Builder Specification defined |
+| Screen & Layout Builder | ⏳ Planned | KB-024 — Not yet started |
+| Workflow Builder | ⏳ Planned | KB-025 — Not yet started |
+| Form Builder | ⏳ Planned | KB-026 — Not yet started |
+| Theme Builder | ⏳ Planned | KB-027 — Not yet started |
+| Data Model Builder | ⏳ Planned | KB-028 — Not yet started |
+| Preview Runtime | ⏳ Planned | KB-029 — Not yet started |
+| Validation Engine | ⏳ Planned | KB-030 — Not yet started |
+| Publishing Pipeline | ⏳ Planned | KB-031 — Not yet started |
 | SDUI Authoring | ⏳ Planned | Not yet started |
 | Business Dashboard | ⏳ Planned | Not yet started |
 | Tenant Dashboard | ⏳ Planned | Not yet started |
@@ -69,7 +78,7 @@
 1. MenuGridSection needs per-item RuntimeNodes for action system add_to_cart
 2. FormEngine (multi-step forms) not yet wired to FormDataContext
 3. No backend exists — all data is mocked
-4. Builder, dashboards not yet started
+4. Screen & Layout Builder (KB-024) through Publishing Pipeline (KB-031) not yet started
 5. No persistence layer for form data across app restarts
 
 ## ADR Registry

@@ -39,6 +39,8 @@ KNOWLEDGE-BASE/
 │   ├── navigation-engine.md      ← KB-016 Navigation Engine
 │   ├── state-management.md        ← KB-018 State Management
 │   ├── offline-synchronization.md ← KB-020 Offline & Synchronization
+│   ├── builder-studio.md          ← KB-022 Builder Studio Architecture
+│   ├── desk-builder.md            ← KB-023 Desk Builder
 │   └── ...
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
