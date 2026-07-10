@@ -33,23 +33,29 @@ KNOWLEDGE-BASE/
 │   ├── tenant-model.md
 │   └── ...
 ├── ARCHITECTURE/                 ← Architecture documentation
-│   ├── overview.md
-│   ├── component-registry.md     ← KB-012 Component Registry
-│   ├── layout-system.md          ← KB-014 Layout System
-│   ├── navigation-engine.md      ← KB-016 Navigation Engine
+│   ├── overview.md                ← KB-005 Platform Overview
+│   ├── system-architecture.md     ← KB-006 System Architecture
+│   ├── service-boundaries.md      ← KB-007 Service Boundaries
+│   ├── runtime-overview.md        ← KB-008 Runtime Overview
+│   ├── manifest-specification.md  ← KB-009 Manifest Specification
+│   ├── capability-system.md       ← KB-010 Capability System
+│   ├── component-registry.md      ← KB-012 Component Registry
+│   ├── layout-system.md           ← KB-014 Layout System
+│   ├── navigation-engine.md       ← KB-016 Navigation Engine
 │   ├── state-management.md        ← KB-018 State Management
 │   ├── offline-synchronization.md ← KB-020 Offline & Synchronization
 │   ├── builder-studio.md          ← KB-022 Builder Studio Architecture
 │   ├── desk-builder.md            ← KB-023 Desk Builder
 │   ├── screen-layout-builder.md   ← KB-024 Screen & Layout Builder
-│   ├── workflow-builder.md         ← KB-025 Workflow Builder
-│   ├── form-builder.md             ← KB-026 Form Builder
-│   ├── theme-builder.md            ← KB-027 Theme Builder
-│   ├── data-model-builder.md       ← KB-028 Data Model Builder
-│   ├── preview-runtime.md          ← KB-029 Preview Runtime
-│   ├── validation-engine.md        ← KB-030 Validation Engine
-│   ├── publishing-pipeline.md      ← KB-031 Publishing Pipeline
-│   └── ...
+│   ├── workflow-builder.md        ← KB-025 Workflow Builder
+│   ├── form-builder.md            ← KB-026 Form Builder
+│   ├── theme-builder.md           ← KB-027 Theme Builder
+│   ├── data-model-builder.md      ← KB-028 Data Model Builder
+│   ├── preview-runtime.md         ← KB-029 Preview Runtime
+│   ├── validation-engine.md       ← KB-030 Validation Engine
+│   ├── publishing-pipeline.md     ← KB-031 Publishing Pipeline
+│   ├── marketplace-architecture.md ← KB-032 Marketplace Architecture
+│   └── package-artifact-specification.md ← KB-033 Package & Artifact Specification
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
 │   └── ...

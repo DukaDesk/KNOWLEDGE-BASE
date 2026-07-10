@@ -81,6 +81,20 @@
 4. Screen & Layout Builder (KB-024) through Publishing Pipeline (KB-031) not yet started
 5. No persistence layer for form data across app restarts
 
+## Marketplace
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Marketplace Architecture | ✅ Complete | KB-032 — Marketplace Architecture defined |
+| Package & Artifact Specification | ✅ Complete | KB-033 — Package & Artifact Specification defined |
+| Extension & Plugin Framework | ⏳ Planned | KB-034 — Not yet started |
+| Capability Marketplace | ⏳ Planned | KB-035 — Not yet started |
+| Component Marketplace | ⏳ Planned | KB-036 — Not yet started |
+| Theme Marketplace | ⏳ Planned | KB-037 — Not yet started |
+| Template Marketplace | ⏳ Planned | KB-038 — Not yet started |
+| Marketplace Certification & Trust | ⏳ Planned | KB-039 — Not yet started |
+| Marketplace Distribution & Lifecycle | ⏳ Planned | KB-040 — Not yet started |
+
 ## ADR Registry
 
 | ID | Title | Status | Date |
