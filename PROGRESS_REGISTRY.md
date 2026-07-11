@@ -120,10 +120,10 @@
 |-----------|--------|-------|
 | Runtime Architecture Overview | ✅ Complete | KB-051 — Runtime Architecture Overview defined |
 | Runtime Rendering Engine | 🔧 In Progress | KB-052 — Rendering Engine Architecture defined — Draft |
-| SDUI Architecture | ⏳ Planned | KB-053 — Not yet started |
-| Runtime State Management | ⏳ Planned | KB-054 — Not yet started |
-| Runtime Navigation & Routing | ⏳ Planned | KB-055 — Not yet started |
-| Runtime Component Registry | ⏳ Planned | KB-056 — Not yet started |
+| SDUI Architecture | 🔧 In Progress | KB-053 — Rendering Pipeline Architecture defined — Draft |
+| Runtime Component Registry | 🔧 In Progress | KB-054 — Runtime Component Registry Architecture defined — Draft |
+| Runtime State Engine | 🔧 In Progress | KB-055 — Runtime State Engine Architecture defined — Draft |
+| Runtime Navigation Engine | ⏳ Planned | KB-056 — Not yet started |
 | Runtime Event & Action Pipeline | ⏳ Planned | KB-057 — Not yet started |
 | Runtime Caching & Synchronization | ⏳ Planned | KB-058 — Not yet started |
 | Runtime Security & Isolation | ⏳ Planned | KB-059 — Not yet started |
