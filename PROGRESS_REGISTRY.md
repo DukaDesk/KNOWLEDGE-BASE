@@ -139,7 +139,8 @@
 |-----------|--------|-------|
 | Identity Platform Architecture | 🔧 In Progress | KB-063 — Identity Platform Architecture defined — Draft |
 | Authentication Architecture | 🔧 In Progress | KB-064 — Authentication Architecture defined — Draft |
-| Authorization & RBAC Architecture | ⏳ Planned | KB-065 — Not yet started |
+| Authorization & RBAC Architecture | 🔧 In Progress | KB-065 — Authorization & RBAC Architecture defined — Draft |
+| Universal Consumer Identity | ⏳ Planned | KB-066 — Not yet started |
 
 ## ADR Registry
 
