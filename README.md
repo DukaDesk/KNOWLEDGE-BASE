@@ -67,6 +67,7 @@ KNOWLEDGE-BASE/
 │   ├── marketplace-distribution-lifecycle.md ← KB-040 Marketplace Distribution & Lifecycle
 │   ├── application-architecture-overview.md ← KB-041 Application Architecture Overview
 │   ├── application-manifest-specification.md ← KB-042 Application Manifest Specification
+│   ├── workspace-tenant-model.md           ← KB-043 Workspace & Tenant Model
 │   └── runtime-architecture-overview.md    ← KB-051 Runtime Architecture Overview
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
