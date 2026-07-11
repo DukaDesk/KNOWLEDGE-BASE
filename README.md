@@ -4,6 +4,8 @@
 **Status:** Drafting
 **Last Updated:** 2026-07-10
 
+> **Current Suite:** Marketplace Architecture — KB-032 (done), KB-033–040 (pending)
+
 ## What This Is
 
 This is the **Engineering Knowledge Base** for the DUKADESK platform.
@@ -97,6 +99,9 @@ Every developer and AI agent MUST read the following before starting work:
 | Surface | Status |
 |---------|--------|
 | Knowledge Base | Drafting |
+| Platform Runtime Architecture | Complete |
+| Builder Studio Architecture | Complete |
+| Marketplace Architecture | KB-032 done, KB-033–040 pending |
 | Mobile Specification | Implemented |
 | Backend Specification | Planned |
 | Business Dashboard | Planned |
