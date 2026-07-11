@@ -125,9 +125,11 @@
 | Runtime State Engine | 🔧 In Progress | KB-055 — Runtime State Engine Architecture defined — Draft |
 | Runtime Navigation Engine | 🔧 In Progress | KB-056 — Runtime Navigation Engine Architecture defined — Draft |
 | Runtime Security Architecture | 🔧 In Progress | KB-057 — Runtime Security Architecture defined — Draft |
-| Runtime Observability & Diagnostics | ⏳ Planned | KB-058 — Not yet started |
+| Runtime Observability & Diagnostics | 🔧 In Progress | KB-058 — Runtime Observability & Diagnostics Architecture defined — Draft |
 | Runtime Performance & Optimization | 🔧 In Progress | KB-059 — Runtime Performance & Optimization Architecture defined — Draft |
-| Runtime Lifecycle Management | ⏳ Planned | KB-060 — Not yet started |
+| Runtime Lifecycle Management | 🔧 In Progress | KB-060 — Runtime Lifecycle Management Architecture defined — Draft |
+| Runtime Update & Versioning | 🔧 In Progress | KB-061 — Runtime Update & Versioning Architecture defined — Draft |
+| Runtime Deployment & Environment | ⏳ Planned | KB-062 — Not yet started |
 
 ## ADR Registry
 
