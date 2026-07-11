@@ -124,9 +124,9 @@
 | Runtime Component Registry | 🔧 In Progress | KB-054 — Runtime Component Registry Architecture defined — Draft |
 | Runtime State Engine | 🔧 In Progress | KB-055 — Runtime State Engine Architecture defined — Draft |
 | Runtime Navigation Engine | 🔧 In Progress | KB-056 — Runtime Navigation Engine Architecture defined — Draft |
-| Runtime Event & Action Pipeline | ⏳ Planned | KB-057 — Not yet started |
-| Runtime Caching & Synchronization | ⏳ Planned | KB-058 — Not yet started |
-| Runtime Security & Isolation | ⏳ Planned | KB-059 — Not yet started |
+| Runtime Event & Action Pipeline | ⏳ Planned | KB-058 — Not yet started |
+| Runtime Caching & Synchronization | ⏳ Planned | KB-059 — Not yet started |
+| Runtime Security Architecture | 🔧 In Progress | KB-057 — Runtime Security Architecture defined — Draft |
 | Runtime Observability & Diagnostics | ⏳ Planned | KB-060 — Not yet started |
 
 ## ADR Registry
