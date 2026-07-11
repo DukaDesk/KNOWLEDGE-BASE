@@ -102,7 +102,7 @@
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Application Architecture Overview | ✅ Complete | KB-041 — Application Architecture Overview defined |
-| Application Manifest Specification | ⏳ Planned | KB-042 — Not yet started |
+| Application Manifest Specification | ✅ Complete | KB-042 — Application Manifest Specification defined |
 | Workspace & Tenant Model | ⏳ Planned | KB-043 — Not yet started |
 | Navigation Model | ⏳ Planned | KB-044 — Not yet started |
 | Screen Model | ⏳ Planned | KB-045 — Not yet started |

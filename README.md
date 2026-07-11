@@ -66,6 +66,7 @@ KNOWLEDGE-BASE/
 │   ├── marketplace-certification-trust.md ← KB-039 Marketplace Certification & Trust
 │   ├── marketplace-distribution-lifecycle.md ← KB-040 Marketplace Distribution & Lifecycle
 │   ├── application-architecture-overview.md ← KB-041 Application Architecture Overview
+│   ├── application-manifest-specification.md ← KB-042 Application Manifest Specification
 │   └── runtime-architecture-overview.md    ← KB-051 Runtime Architecture Overview
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
