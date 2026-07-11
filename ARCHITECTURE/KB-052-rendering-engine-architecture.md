@@ -10,8 +10,8 @@
 | **Status** | Draft |
 | **Owner** | Architecture Team |
 | **Suite** | Runtime & Rendering Architecture |
-| **Dependencies** | KB-051 Runtime Architecture Overview, KB-046 Component Tree Model, KB-045 Screen Model, KB-049 Theme & Design Token Model, KB-047 Action & Event Model, KB-044 Navigation Architecture, KB-012 Component Registry |
-| **Related Documents** | KB-053 SDUI Architecture, KB-054 Runtime State Management, KB-056 Runtime Component Registry, KB-057 Runtime Event & Action Pipeline, KB-008 Runtime Overview, KB-009 Manifest Specification, KB-042 Application Manifest Specification, KB-043 Workspace & Tenant Model |
+| **Dependencies** | KB-051 Runtime Architecture Overview, KB-046 Component Tree Model, KB-045 Screen Model, KB-049 Theme & Design Token Model, KB-047 Action & Event Model, KB-044 Navigation Architecture, KB-048 Application State Model, KB-042 Application Manifest Specification, KB-012 Component Registry, KB-014 Layout System |
+| **Related Documents** | KB-041 Application Architecture Overview, KB-043 Workspace & Tenant Model, KB-050 Capability Composition Model, KB-053 SDUI Architecture, KB-054 Runtime State Management, KB-055 Runtime Navigation & Routing, KB-056 Runtime Component Registry, KB-057 Runtime Event & Action Pipeline, KB-008 Runtime Overview, KB-009 Manifest Specification |
 | **Review Status** | Pending |
 | **Last Updated** | 2026-07-11 |
 
@@ -29,1087 +29,1393 @@
 
 ### 1.1 Purpose
 
-This document defines the Rendering Engine Architecture for the DUKADESK platform. The Rendering Engine is the subsystem within the Runtime responsible for transforming declarative screen definitions into rendered, interactive user interfaces on the target platform.
+This document defines the Rendering Engine Architecture for the DUKADESK platform. The Rendering Engine is the central subsystem within the Runtime responsible for transforming declarative application definitions — Manifests, screen models, navigation structures, component trees, state bindings, theme tokens, capability definitions, and action configurations — into rendered, interactive user experiences across all supported platforms.
 
-The Rendering Engine occupies the critical path between application definitions and user experience. Every screen, component, layout, data binding, theme token, and action handler passes through the Rendering Engine. Its architecture directly determines application performance, responsiveness, consistency, and cross-platform behavior.
+The Rendering Engine is the heart of the Runtime Platform. Every application definition, every screen, every component, every data binding, every theme token, and every event handler passes through the Rendering Engine. Its architecture directly determines application performance, responsiveness, visual consistency, cross-platform behavior, security posture, and developer experience.
 
-This document is the detailed specification of the Renderer subsystem introduced in KB-051 Runtime Architecture Overview (section 5.6). It defines the Rendering Engine's internal architecture, rendering pipeline, component lifecycle, layout model, data binding strategy, responsive adaptation model, performance model, error handling, and platform adaptation mechanisms.
+This document defines the architecture of the Rendering Engine in isolation from implementation concerns. It establishes architectural principles, canonical definitions, subsystem responsibilities, rendering pipeline stages, data structures, lifecycle models, security boundaries, performance expectations, and cross-system relationships that must be honored by any implementation. Implementation decisions — language, framework, library, platform-specific rendering technology — are intentionally out of scope.
 
 ### 1.2 Scope
 
-This document covers:
+**In scope:**
 
-- Rendering Engine architecture: subsystems, pipeline stages, data flow
-- Screen resolution: from screen identifier to rendered output
-- Component resolution: from component identifier to mounted component instance
-- Layout model: composition, containers, sizing, positioning, overflow, scroll, z-order
-- Data binding: sources, resolution modes, reactivity, transformation
-- Theme binding: token resolution, mode adaptation, inheritance
-- Action binding: handler registration, trigger wiring, argument resolution
-- Component lifecycle: resolve, instantiate, bind, mount, update, unmount, destroy
-- Screen lifecycle: load, render, appear, interact, background, disappear
-- Responsive adaptation: breakpoints, density, orientation, input modality
-- Incremental rendering: virtualization, deferred rendering, priority-based rendering
-- Error handling: error boundaries, fallback rendering, graceful degradation
-- Platform adaptation layer: renderers, layout engines, input handling
-- Performance model: render budget, frame timing, measurement, optimization strategies
+- Architectural principles governing all rendering behavior
+- Canonical definitions of Rendering Engine, Render Pipeline, Render Tree, Render Context, Render Pass, Render Node, Render Target, Render Session, Render Cycle, and Render Output
+- Rendering responsibilities across all resolution domains
+- Rendering pipeline architecture from Application Manifest through Runtime Rendering
+- Render Tree structure: root, layout, component, capability nodes, bindings
+- Rendering lifecycle: initialize, load, validate, resolve, compose, render, observe, update, dispose
+- Rendering context hierarchy: organization, tenant, workspace, application, user, session, device, runtime, environment
+- Rendering modes: initial, incremental, partial, lazy, background, preview, offline, recovery
+- Rendering boundaries and isolation between applications, workspaces, tenants, sessions, extensions, capabilities
+- Rendering resolution model for navigation, screens, layouts, components, themes, capabilities, actions, state
+- Rendering cache architecture and responsibilities
+- Subsystem responsibility model: Runtime, Builder, Manifest, Registry
+- Security model: trusted definitions, signature validation, isolation, sandbox boundaries
+- Performance architecture: incremental rendering, lazy loading, virtualization, memory management, scheduling, cache optimization
+- Offline behavior: cached definitions, offline rendering, recovery, deferred resolution
+- Observability: render metrics, resolution metrics, diagnostics, performance measurement
+- Failure scenarios and responses
+- Anti-patterns
+- Future evolution roadmap
+- Cross-references to all related KB documents
 
-Out of scope:
+**Out of scope:**
 
+- Implementation details: programming languages, frameworks, libraries, rendering technologies
+- Platform-specific rendering optimizations
 - Component Registry implementation (handled by KB-056)
-- Theme Engine implementation (handled by KB-017 and KB-049)
+- Theme Engine implementation (handled by KB-017, KB-049)
 - State Management implementation (handled by KB-054)
 - Action Dispatcher implementation (handled by KB-057)
 - Navigation Engine implementation (handled by KB-055)
 - Specific component implementations (handled by component authors)
-- Platform-specific rendering optimizations (handled by platform adaptation layer)
+- Manifest Resolver implementation (handled by KB-009, KB-042)
+- Package Resolver implementation (handled by KB-051)
+- SDUI protocol details (handled by KB-053)
+- Cache Manager implementation (handled by KB-051)
+- Event Bus implementation (handled by KB-019)
 
 ---
 
-## 2. Rendering Engine Architecture
+## 2. Architectural Principles
 
-### 2.1 Position Within the Runtime
+The Rendering Engine is governed by a set of architectural principles that constrain all design decisions and implementation choices.
 
-The Rendering Engine is one of several cooperating subsystems within the Runtime. It receives resolved definitions from upstream subsystems and produces rendered output on the target platform.
+### 2.1 Declarative Rendering
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        Runtime                               │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │ Manifest │  │ Package  │  │ Theme    │  │ Navigation│   │
-│  │ Resolver │  │ Resolver │  │ Engine   │  │ Engine   │   │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘   │
-│       │              │             │              │          │
-│       ▼              ▼             ▼              ▼          │
-│  ┌──────────────────────────────────────────────────────┐   │
-│  │                  Rendering Engine                     │   │
-│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌────────┐  │   │
-│  │  │ Screen  │→│ Layout  │→│Component│→│Platform │  │   │
-│  │  │ Resolver│  │ Engine  │  │ Renderer│  │ Adapter │  │   │
-│  │  └─────────┘  └─────────┘  └─────────┘  └────────┘  │   │
-│  └──────────────────────────────────────────────────────┘   │
-│       │              │             │              │          │
-│       ▼              ▼             ▼              ▼          │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │Component │  │  State   │  │  Action  │  │   Event  │   │
-│  │ Registry │  │ Manager  │  │Dispatcher│  │   Bus    │   │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘   │
-└─────────────────────────────────────────────────────────────┘
-```
+The Rendering Engine consumes only declarative definitions. Every visual element, layout constraint, data binding, theme token, and action handler is expressed declaratively — describing what to render, not how to render it. The Rendering Engine interprets these declarations and handles the imperative details of platform-specific rendering. Declarative definitions are safer, more auditable, more portable, and more testable than imperative rendering code.
 
-### 2.2 Subsystem Overview
+### 2.2 Manifest-Driven
 
-The Rendering Engine is composed of four internal subsystems:
+The Rendering Engine is driven exclusively by the Application Manifest. Every screen, component, capability, theme, navigation structure, and permission rule that the Rendering Engine processes originates from the Manifest. The Manifest is the single source of truth for application structure. The Rendering Engine never derives application structure from platform APIs, file system inspection, or runtime heuristics.
 
-| Subsystem | Primary Responsibility |
-|-----------|----------------------|
-| Screen Resolver | Receive screen identifiers, resolve screen definitions, validate structure, produce resolved screen models for rendering |
-| Layout Engine | Parse screen layout definitions, construct spatial hierarchies, compute positions and dimensions, manage overflow, scroll, and z-order |
-| Component Renderer | Resolve component implementations from the Component Registry, instantiate components, bind properties, data, theme, and actions, manage component lifecycle |
-| Platform Adapter | Abstract platform-specific rendering, layout, and input handling behind a unified interface |
+### 2.3 Runtime Independent
 
-### 2.3 Rendering Pipeline
+The Rendering Engine architecture is independent of any specific Runtime environment. The same architectural model applies to mobile Runtimes (iOS, Android), web Runtimes (browsers), desktop Runtimes (Windows, macOS, Linux), and future Runtime environments. Runtime-specific behavior is abstracted behind the Platform Adaptation Layer defined in this document.
 
-The Rendering Engine processes screen definitions through a linear pipeline. Each stage transforms the definition toward platform-specific rendered output.
+### 2.4 Platform Agnostic
 
-```
-Screen Request
-    │
-    ▼
-┌─────────────────────┐
-│  1. Screen Load     │  Fetch + validate screen definition
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│  2. Definition Parse │  Parse layout, component refs, bindings
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│  3. Component       │  Resolve all component implementations
-│     Resolution      │
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│  4. Layout Compute   │  Build spatial tree, compute positions
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│  5. Data Binding     │  Bind state values, theme tokens, actions
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│  6. Component Mount  │  Instantiate + mount each component
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│  7. Platform Render  │  Delegate to platform adapter for output
-└────────┬────────────┘
-         │
-         ▼
-    Rendered Screen
-```
+The Rendering Engine does not contain platform-specific logic. All platform-specific rendering, layout, input handling, accessibility, and animation behavior is delegated to the Platform Adaptation Layer. The engine operates against abstract interfaces that each platform implements. Platform-specific adaptations are isolated, documented, and versioned.
 
-#### 2.3.1 Stage 1 — Screen Load
+### 2.5 Deterministic Rendering
 
-The Screen Resolver receives a screen request from the Navigation Engine. The request includes a screen identifier, optional parameters, and navigation context. The Screen Resolver fetches the screen definition from the cache or Manifest Resolver, validates it against the screen schema, and produces a resolved Screen Model.
+Given the same Manifest, theme, state, and inputs, the Rendering Engine produces the same rendered output on every invocation. Deterministic rendering enables reliable testing, predictable behavior across devices, reproducible bug reports, and confidence in deployment. Non-determinism — random values, timing-dependent behavior, platform-specific divergence — is explicitly prohibited or documented.
 
-**Input**: Screen identifier, parameters, navigation context
-**Output**: Resolved Screen Model
-**Failure**: Screen not found → navigation fallback. Screen invalid → validation error with details.
+### 2.6 Incremental Rendering
 
-#### 2.3.2 Stage 2 — Definition Parse
+The Rendering Engine renders incrementally. It does not re-render the entire application on every change. Only the components, screens, and boundaries affected by a change are re-rendered. Incremental rendering is the foundation of the engine's performance model.
 
-The Layout Engine parses the screen's layout definition into an internal layout tree. The layout tree is a structured representation of the screen's component hierarchy, including containers, spacers, dividers, and leaf components. Each node carries its layout properties — size constraints, alignment, margins, padding, flex behavior.
+### 2.7 Lazy Resolution
 
-**Input**: Resolved Screen Model
-**Output**: Layout tree (abstract syntax tree of layout nodes)
-**Failure**: Malformed layout definition → partial rendering with error markers.
+The Rendering Engine resolves definitions lazily. Definitions — screens, components, capabilities, themes, assets — are resolved only when they are needed for rendering, not when the application starts. Lazy resolution minimizes startup time, reduces memory footprint, and enables efficient handling of large applications.
 
-#### 2.3.3 Stage 3 — Component Resolution
+### 2.8 Component Virtualization
 
-The Component Renderer traverses the layout tree and resolves each component reference against the Component Registry. For each component, it retrieves the component's registered implementation, property schema, and platform-specific renderer. Components that fail resolution receive fallback placeholder components.
+The Rendering Engine virtualizes component rendering in scrollable contexts. Only components within the visible viewport are instantiated and rendered. Components outside the viewport exist as lightweight metadata entries until they scroll into view. Virtualization is transparent to application definitions — screen and component definitions do not need to account for virtualization.
 
-**Input**: Layout tree
-**Output**: Resolved component tree (each node linked to its registered component implementation)
-**Failure**: Unregistered component identifier → placeholder/fallback component. Version mismatch → nearest compatible version.
+### 2.9 Event-Driven Updates
 
-#### 2.3.4 Stage 4 — Layout Compute
+The Rendering Engine reacts to events. State changes, theme switches, navigation requests, data updates, and system events trigger targeted re-renders. The engine does not poll for changes or re-render on a timer. Event-driven updates ensure efficient rendering and responsive user interfaces.
 
-The Layout Engine performs spatial computation on the resolved component tree. It calculates each component's position and dimensions based on its layout properties, parent container constraints, and sibling relationships. Layout computation respects the platform's layout model (flexbox on web, auto layout on native) through the Platform Adapter.
+### 2.10 Observable Rendering
 
-**Input**: Resolved component tree
-**Output**: Positioned component tree (each node with computed bounds)
-**Failure**: Unsolvable layout constraints → constraint relaxation with warning. Overflow → scroll container insertion.
-
-#### 2.3.5 Stage 5 — Data Binding
-
-The Component Renderer binds runtime data to each component. Data sources include state values from the State Manager, theme tokens from the Theme Engine, action handlers from the Action Dispatcher, and static configuration values from the screen definition. Binding resolution follows a defined precedence: explicit values override state bindings, state bindings override defaults, defaults override fallbacks.
-
-**Input**: Positioned component tree
-**Output**: Bound component tree (each node with resolved property values)
-**Failure**: Missing state path → fallback value or empty state. Invalid theme token → default token value.
-
-#### 2.3.6 Stage 6 — Component Mount
-
-The Component Renderer instantiates each component and mounts it into the rendering tree. Mounting involves creating the component instance, applying bound properties, registering event handlers, subscribing to state changes, and inserting the component into the visual tree. Mount order follows the layout tree hierarchy — parents mount before children, siblings mount in document order.
-
-**Input**: Bound component tree
-**Output**: Mounted component tree (live component instances)
-**Failure**: Component instantiation failure → error boundary activation. Mount timeout → fallback UI.
-
-#### 2.3.7 Stage 7 — Platform Render
-
-The Platform Adapter receives the mounted component tree and delegates to the platform-specific rendering system. On mobile, this maps to native view hierarchies. On web, this maps to DOM elements. On desktop, this maps to the desktop UI framework. The Platform Adapter handles platform-specific concerns — coordinate systems, event dispatch, accessibility, input handling.
-
-**Input**: Mounted component tree
-**Output**: Platform-rendered visual output
-**Failure**: Platform rendering error → platform error boundary. Memory pressure → graceful degradation.
+Every rendering operation is observable. Component resolution, layout computation, data binding, mount, update, and unmount events are published for telemetry, diagnostics, and debugging. Observable rendering enables performance analysis, usage analytics, anomaly detection, and debugging without modifying application definitions.
 
 ---
 
-## 3. Screen Resolution
+## 3. Canonical Definitions
 
-### 3.1 Screen Model
+### 3.1 Rendering Engine
 
-The Screen Resolver operates on the Screen Model defined in KB-045. A resolved screen consists of:
+The subsystem within the Runtime responsible for transforming declarative application definitions into platform-specific rendered output. The Rendering Engine receives resolved definitions from the Manifest Resolver, Package Resolver, Theme Engine, and Navigation Engine; coordinates with the Component Registry, State Manager, Action Dispatcher, and Event Bus; and produces rendered user interfaces through the Platform Adaptation Layer.
 
-```
-Screen {
-  id: string
-  type: ScreenType          // standard, modal, wizard, embedded
-  layout: LayoutDefinition
-  components: ComponentDefinition[]
-  dataBindings: DataBinding[]
-  themeOverrides: ThemeOverride[]
-  actions: ActionBinding[]
-  permissions: PermissionRule[]
-  lifecycle: ScreenLifecycleHooks
-  responsive: ResponsiveRules
-  metadata: ScreenMetadata
-}
-```
+### 3.2 Render Pipeline
 
-### 3.2 Resolution Process
+The structured sequence of stages through which a screen definition passes to become rendered output. The pipeline transforms a screen request through screen load, definition parse, component resolution, layout computation, data binding, component mount, and platform render stages. Each stage has defined inputs, outputs, and failure modes.
 
-Screen resolution follows a deterministic process:
+### 3.3 Render Tree
 
-1. **Cache Check** — The screen definition is looked up in the Runtime cache. Cache hit returns the cached definition. Cache miss proceeds to definition fetch.
-2. **Definition Fetch** — The screen definition is loaded from the Manifest Resolver. The definition may be embedded in the Manifest or referenced by URI.
-3. **Schema Validation** — The definition is validated against the Screen Schema. Structural validity is enforced — required fields must be present, field types must match, references must be resolvable.
-4. **Reference Resolution** — Component references, data source references, theme token references, and action references are resolved to their concrete definitions. Circular references are detected and rejected.
-5. **Permission Evaluation** — Permission rules on the screen are evaluated against the current user context. Screens the user is not authorized to view are blocked with a permission error.
-6. **Responsive Selection** — If the screen defines responsive variants, the variant matching the current platform context is selected. Variant selection considers platform type, screen dimensions, orientation, and input modality.
-7. **Theme Application** — Screen-level theme overrides are applied on top of the active theme. Theme tokens referenced by the screen are validated against the resolved theme.
-8. **Screen Model Construction** — The resolved Screen Model is assembled from the validated and resolved definitions.
+The in-memory tree structure representing the rendered state of a screen. The render tree mirrors the visual hierarchy of the screen. Each node in the render tree represents a visual element — a layout container, a component instance, a capability boundary, or a binding reference. The render tree is the primary data structure the Rendering Engine operates on.
 
-### 3.3 Screen Parameters
+### 3.4 Render Context
 
-Screens accept parameters passed from navigation actions or deep links. Parameters are typed, validated against the screen's parameter schema, and made available to the screen's components through the parameter binding source.
+The hierarchical context within which rendering occurs. The render context carries organization, tenant, workspace, application, user, session, device, runtime, and environment information. Every rendering operation evaluates against its render context. Context determines theme selection, permission evaluation, data scoping, and localization.
 
-```
-Screen Parameter Definition (in Manifest):
-{
-  "screen": "order-detail",
-  "parameters": {
-    "orderId": { "type": "string", "required": true },
-    "tab": { "type": "string", "required": false, "default": "items" }
-  }
-}
-```
+### 3.5 Render Pass
+
+A single traversal of the render tree to produce, update, or dispose rendered output. A render pass may be full (traverse the entire tree), partial (traverse only affected subtrees), or targeted (update specific nodes). Each render pass has a defined purpose, scope, and budget.
+
+### 3.6 Render Node
+
+A single node in the render tree. Render nodes are typed — layout nodes represent spatial containers, component nodes represent registered UI components, capability nodes represent capability boundaries, binding nodes represent data/theme/event connections. Each render node carries its resolved properties, computed bounds, lifecycle state, and platform view reference.
+
+### 3.7 Render Target
+
+The destination for rendered output. A render target may be the device screen, an off-screen buffer for preview rendering, a screenshot capture surface, a remote display for collaborative rendering, or a diagnostic overlay. The Rendering Engine supports multiple concurrent render targets.
+
+### 3.8 Render Session
+
+A continuous period of rendering activity for a single application instance. A render session begins when the application is loaded and ends when the application is terminated. The render session encompasses all render passes, screen transitions, state changes, and theme switches that occur during the application's lifetime.
+
+### 3.9 Render Cycle
+
+The sequence of operations the Rendering Engine performs to produce a single frame of rendered output. A render cycle includes collecting pending updates, identifying affected render nodes, recomputing layouts as needed, resolving binding changes, updating component instances, and committing visual output to the platform. Render cycles are synchronized with the platform's frame timing.
+
+### 3.10 Render Output
+
+The platform-specific result of rendering. Render output may be a native view hierarchy (mobile), a DOM tree (web), a desktop window tree (desktop), a bitmap (screenshot), or a serialized frame (remote/streaming). The Rendering Engine produces render output through the Platform Adaptation Layer and does not interact with platform-specific output mechanisms directly.
 
 ---
 
-## 4. Layout Model
+## 4. Architectural Principles (Expanded)
 
-### 4.1 Layout Definition
+### 4.1 Declarative Rendering
 
-Layouts are defined declaratively as a tree of layout nodes. Each node represents either a container (which holds child nodes) or a leaf component. The layout tree mirrors the visual hierarchy of the screen.
+All visual structure is defined declaratively. Screens describe their component hierarchy, layouts describe their spatial relationships, and components describe their property bindings — all without imperative construction code. The Rendering Engine interprets these descriptions and performs the imperative work of creating, configuring, and managing platform views.
 
-```
-Layout Definition (JSON):
-{
-  "layout": {
-    "type": "column",
-    "padding": 16,
-    "spacing": 12,
-    "children": [
-      {
-        "type": "row",
-        "align": "center",
-        "spacing": 8,
-        "children": [
-          { "type": "component", "component": "avatar", "size": 40 },
-          { "type": "component", "component": "heading", "text": "{order.number}" }
-        ]
-      },
-      {
-        "type": "component",
-        "component": "status-badge",
-        "status": "{order.status}"
-      },
-      {
-        "type": "column",
-        "flex": 1,
-        "children": [
-          { "type": "component", "component": "product-list" }
-        ]
-      }
-    ]
-  }
-}
-```
+**Rule:** No component or screen definition may contain imperative rendering logic. All rendering behavior must be expressible as declarative data.
 
-### 4.2 Layout Node Types
+### 4.2 Manifest-Driven
 
-| Node Type | Behavior | Properties |
-|-----------|----------|------------|
-| `row` | Lays out children horizontally | spacing, align, justify, wrap, reverse |
-| `column` | Lays out children vertically | spacing, align, justify, reverse |
-| `stack` | Layers children on top of each other (z-order) | align, justify |
-| `scroll` | Wraps a single child in a scrollable viewport | direction, showsScrollbar, pagingEnabled |
-| `spacer` | Takes remaining space in the parent | minSize, flex |
-| `divider` | Renders a visual separator | orientation, thickness, color |
-| `component` | Renders a registered component | component, props, flex, align, sizing |
-| `conditional` | Renders children based on a condition | condition, then, else |
-| `repeat` | Renders children for each item in a data source | source, itemKey, template |
-| `safe-area` | Insets children within platform safe area | edges |
+The Application Manifest (KB-042) is the sole source of application structure. The Manifest declares which screens exist, which components they use, which capabilities are installed, which themes are available, and how navigation connects them. The Rendering Engine reads the Manifest and derives its entire rendering strategy from it.
 
-### 4.3 Layout Properties
+**Rule:** The Rendering Engine must not fabricate screens, components, or navigation routes that are not declared in the Manifest.
 
-Every layout node supports a common set of layout properties:
+### 4.3 Runtime Independent
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `width` | dimension | auto | Explicit width (px, %, dp) |
-| `height` | dimension | auto | Explicit height |
-| `minWidth` | dimension | 0 | Minimum width constraint |
-| `maxWidth` | dimension | none | Maximum width constraint |
-| `flex` | number | 0 | Flex grow factor in parent container |
-| `flexShrink` | number | 1 | Flex shrink factor |
-| `alignSelf` | alignment | auto | Alignment override for this node |
-| `margin` | edgeInsets | 0 | Outer spacing |
-| `padding` | edgeInsets | 0 | Inner spacing |
-| `position` | positioning | relative | Relative or absolute positioning |
-| `top` / `left` / `right` / `bottom` | dimension | auto | Absolute position offsets |
-| `visible` | boolean | true | Visibility — invisible nodes maintain layout space |
-| `opacity` | number (0-1) | 1 | Opacity of the node and its children |
-| `zIndex` | number | 0 | Stacking order within parent |
-| `elevation` | number | 0 | Shadow/elevation (platform-specific) |
+The same Rendering Engine architecture applies across mobile, web, desktop, and future Runtimes. The engine does not know which Runtime it is running on. Runtime differences — process model, threading model, memory model, graphics stack — are abstracted by the Platform Adaptation Layer.
 
-### 4.4 Layout Computation
+**Rule:** No rendering logic may reference Runtime-specific APIs or concepts.
 
-Layout computation proceeds in two phases:
+### 4.4 Platform Agnostic
 
-**Phase 1 — Measure**: Each node determines its desired size based on its content, intrinsic size, and explicit sizing properties. Containers measure their children recursively. The measure phase respects flex grow/shrink constraints within each container.
+Platform-specific behavior — coordinate systems, input event models, layout engines, accessibility APIs, animation frameworks — is isolated in the Platform Adaptation Layer. The Rendering Engine defines abstract interfaces; each platform provides concrete implementations.
 
-**Phase 2 — Layout**: Each node receives its final position and size from its parent container. The layout phase assigns bounds to each child based on measured sizes, alignment, justification, and spacing. Absolute-positioned nodes are placed at their specified offsets.
+**Rule:** Platform-specific code may exist only in the Platform Adaptation Layer. The Rendering Engine core must contain zero platform-specific imports or references.
 
-### 4.5 Overflow and Scroll
+### 4.5 Deterministic Rendering
 
-Nodes whose content exceeds their allocated bounds trigger overflow handling:
+The Rendering Engine is a pure function of its inputs: Manifest → theme → state → rendered output. Side effects are isolated and managed. Randomness, timing-dependent behavior, and platform divergence are prohibited.
 
-1. **Overflow detection** — After layout computation, nodes whose children extend beyond their bounds are flagged.
-2. **Scroll container insertion** — Flagged containers are automatically wrapped in a scroll node unless explicitly configured to clip or expand.
-3. **Directional scroll** — Scroll direction is determined by the overflow direction (horizontal, vertical, both).
-4. **Scroll indicators** — Platform-appropriate scroll indicators are rendered.
+**Rule:** Two invocations with identical inputs must produce identical output.
 
-### 4.6 Z-Order
+### 4.6 Incremental Rendering
 
-Z-order is determined by three factors in precedence order:
+The engine tracks which components depend on which state values, theme tokens, and context properties. When a dependency changes, only the dependent components are re-rendered. Unaffected components retain their existing rendered state.
 
-1. **Explicit zIndex** — Nodes with a specified zIndex are stacked accordingly.
-2. **Layout tree depth** — Children stack above parents (deeper nodes render on top).
-3. **Sibling order** — Later siblings stack above earlier siblings in the same parent.
+**Rule:** A state change must not trigger re-render of components that do not depend on the changed value.
 
-The Stack layout type provides explicit z-order management for overlay and modal use cases.
+### 4.7 Lazy Resolution
+
+Definitions are resolved at the latest possible moment. Components are resolved when they are about to be mounted. Screens are loaded when they are about to be rendered. Capabilities are activated when their screens are navigated to. Lazy resolution is the default; eager resolution is the exception and must be explicitly configured.
+
+**Rule:** The Rendering Engine must not resolve definitions before they are needed for rendering.
+
+### 4.8 Component Virtualization
+
+The engine virtualizes rendering for scrollable containers automatically. Only components within the visible viewport (plus configurable overscan) are physically rendered. Components outside the viewport are represented as lightweight entries until they scroll into view.
+
+**Rule:** Any scrollable container may virtualize its children without modifying the component or screen definition.
+
+### 4.9 Event-Driven Updates
+
+The Rendering Engine subscribes to state changes, theme changes, and system events. When an event occurs, the engine identifies affected render nodes and schedules targeted re-renders. The engine does not poll, use timers for rendering, or perform periodic full re-renders.
+
+**Rule:** Re-renders must be triggered only by specific events that affect rendered output.
+
+### 4.10 Observable Rendering
+
+Every significant rendering operation emits a structured event. Events include screen load start/complete/fail, component resolve/mount/unmount/error, binding resolve, layout compute, and frame timing. Events are published to the Event Bus for consumption by Telemetry, Diagnostics, and Analytics subsystems.
+
+**Rule:** All rendering operations must be observable through published events. No rendering operation may be invisible to observability tooling.
 
 ---
 
-## 5. Component Resolution
+## 5. Rendering Engine Architecture
 
-### 5.1 Resolution Process
+### 5.1 Position Within the Platform
 
-The Component Renderer resolves each component reference in the layout tree to a concrete component instance. Resolution follows a multi-step process:
+```mermaid
+flowchart TB
+    subgraph "Definition Producers"
+        BUILDER["Builder"]
+        MARKETPLACE["Marketplace"]
+    end
+    
+    subgraph "Runtime"
+        MR["Manifest Resolver"]
+        PR["Package Resolver"]
+        TE["Theme Engine"]
+        NE["Navigation Engine"]
+        
+        subgraph "Rendering Engine"
+            SR["Screen Resolver"]
+            LE["Layout Engine"]
+            CR["Component Renderer"]
+            PA["Platform Adapter"]
+        end
+        
+        subgraph "Runtime Services"
+            CREG["Component Registry"]
+            SM["State Manager"]
+            AD["Action Dispatcher"]
+            EB["Event Bus"]
+        end
+    end
+    
+    subgraph "Platform"
+        IOS["iOS"]
+        AND["Android"]
+        WEB["Web"]
+        DESK["Desktop"]
+    end
+    
+    BUILDER --> MR
+    MARKETPLACE --> PR
+    MR --> SR
+    PR --> CREG
+    TE --> CR
+    NE --> SR
+    SR --> LE
+    LE --> CR
+    CR --> PA
+    PA --> IOS
+    PA --> AND
+    PA --> WEB
+    PA --> DESK
+    CREG --> CR
+    SM --> CR
+    AD --> CR
+    EB --> CR
+```
 
-1. **Registry Lookup** — The component identifier is looked up in the Component Registry. The registry returns the component's registered definition — its property schema, default property values, event contracts, and platform implementations.
-2. **Property Schema Validation** — The component's declared properties from the screen definition are validated against the component's property schema. Invalid or unexpected properties are rejected with warnings.
-3. **Default Application** — Default values from the component's schema are applied for any required properties not explicitly provided.
-4. **Platform Selection** — The platform-specific implementation is selected from the component's registered implementations. If the exact platform is not available, the nearest compatible platform implementation is used.
-5. **Version Resolution** — If multiple versions of the component are registered, the version matching the component reference's version constraint is selected. The latest compatible version within the constraint is preferred.
+### 5.2 Subsystem Composition
 
-### 5.2 Component Properties
+```mermaid
+flowchart LR
+    subgraph "Rendering Engine"
+        SR["Screen Resolver\nResolve screen definitions\nValidate structure\nApply permissions"]
+        LE["Layout Engine\nParse layout trees\nCompute positions\nHandle overflow/scroll"]
+        CR2["Component Renderer\nResolve components\nBind properties/state/theme\nManage lifecycle"]
+        PA2["Platform Adapter\nAbstract platform rendering\nMap coordinates/events\nBridge accessibility"]
+    end
+    
+    SR --> LE
+    LE --> CR2
+    CR2 --> PA2
+```
 
-Properties are provided to components through three mechanisms:
+| Subsystem | Primary Responsibility | Consumes From | Produces For |
+|-----------|----------------------|--------------|-------------|
+| Screen Resolver | Resolve screen identifiers to validated Screen Models | Manifest Resolver, Navigation Engine | Layout Engine |
+| Layout Engine | Parse layouts, construct spatial trees, compute positions | Screen Resolver | Component Renderer |
+| Component Renderer | Resolve, instantiate, bind, mount, update, unmount components | Layout Engine, Component Registry, State Manager, Theme Engine, Action Dispatcher | Platform Adapter |
+| Platform Adapter | Abstract platform-specific rendering behind unified interface | Component Renderer | Platform output |
 
-| Mechanism | Source | Precedence |
-|-----------|--------|------------|
-| Explicit | Defined inline in the screen definition | Highest |
-| Data-bound | References a state value or data source | Medium |
-| Default | From the component's property schema | Lowest |
+### 5.3 Rendering Pipeline
 
-Property resolution checks each mechanism in precedence order. The first resolved value is used.
+```mermaid
+flowchart TB
+    START(["Application Manifest"])
+    START --> S1
+    
+    subgraph S1["1. Manifest Resolution"]
+        MR2["Parse Manifest\nValidate schema\nResolve references"]
+    end
+    
+    S1 --> S2
+    
+    subgraph S2["2. Navigation Resolution"]
+        NR["Resolve navigation structure\nDetermine target screen\nExtract parameters"]
+    end
+    
+    S2 --> S3
+    
+    subgraph S3["3. Screen Resolution"]
+        SR2["Load screen definition\nValidate screen schema\nApply responsive variants\nEvaluate permissions"]
+    end
+    
+    S3 --> S4
+    
+    subgraph S4["4. Component Resolution"]
+        CR3["Resolve component identifiers\nLook up Component Registry\nValidate property schemas\nSelect platform implementation"]
+    end
+    
+    S4 --> S5
+    
+    subgraph S5["5. Capability Resolution"]
+        CAPR["Activate capability\nResolve capability assets\nRegister capability components"]
+    end
+    
+    S5 --> S6
+    
+    subgraph S6["6. Theme Resolution"]
+        TR["Resolve theme tokens\nApply theme mode\nApply screen overrides\nResolve token values"]
+    end
+    
+    S6 --> S7
+    
+    subgraph S7["7. State Binding"]
+        SB["Bind state values\nResolve data sources\nApply transforms\nSubscribe to changes"]
+    end
+    
+    S7 --> S8
+    
+    subgraph S8["8. Layout Resolution"]
+        LR["Parse layout tree\nMeasure nodes\nCompute positions\nHandle overflow/scroll"]
+    end
+    
+    S8 --> S9
+    
+    subgraph S9["9. Render Tree Construction"]
+        RTC["Build render tree\nCreate render nodes\nWire bindings\nSet lifecycle state"]
+    end
+    
+    S9 --> S10
+    
+    subgraph S10["10. Runtime Rendering"]
+        RR["Instantiate components\nBind platform views\nMount to visual tree\nBegin interaction"]
+    end
+    
+    S10 --> END2(["Interactive Application"])
+```
 
-### 5.3 Component Fallback
+**Pipeline Stages:**
 
-When a component cannot be resolved, the Rendering Engine employs a fallback chain:
-
-1. **Placeholder component** — A generic placeholder is rendered showing the component name and a "not available" indicator. The placeholder occupies the same layout space as the intended component, preserving layout integrity.
-2. **Error boundary** — If the placeholder is not suitable, the error boundary catches the resolution failure and renders the boundary's fallback UI.
-3. **Layout removal** — As a last resort, the unresolved component is removed from the layout tree, and sibling components reflow to fill the gap.
+| Stage | Input | Output | Failure Mode |
+|-------|-------|--------|-------------|
+| 1. Manifest Resolution | Application Manifest | Resolved definition set | Invalid Manifest → load error |
+| 2. Navigation Resolution | Navigation request, params | Target screen identifier, context | Unresolvable route → navigation fallback |
+| 3. Screen Resolution | Screen identifier, params | Resolved Screen Model | Missing screen → error boundary |
+| 4. Component Resolution | Component identifiers | Resolved component implementations | Unregistered component → placeholder |
+| 5. Capability Resolution | Capability declarations | Activated capability assets | Invalid capability → degraded rendering |
+| 6. Theme Resolution | Theme reference, mode | Resolved token values | Missing token → default value |
+| 7. State Binding | State paths, data sources | Resolved property values | Missing state → fallback value |
+| 8. Layout Resolution | Layout definition, constraints | Computed positions and sizes | Unsolvable constraints → relaxation |
+| 9. Render Tree Construction | Resolved definitions, bindings | Complete render tree | Circular reference → rejection |
+| 10. Runtime Rendering | Render tree, platform target | Platform-rendered output | Platform error → error boundary |
 
 ---
 
-## 6. Data Binding
+## 6. Render Tree
 
-### 6.1 Binding Model
+### 6.1 Render Tree Structure
 
-Data binding connects component properties to runtime data sources. Bindings are defined declaratively in the screen definition and resolved at render time.
-
+```mermaid
+flowchart TB
+    ROOT["Root Node\nScreen Boundary"]
+    
+    ROOT --> LB1["Layout Boundary\nSafe Area / Scroll"]
+    ROOT --> CB1["Capability Boundary\nActive Capability"]
+    
+    LB1 --> LN1["Layout Node\nColumn"]
+    LN1 --> LN2["Layout Node\nRow"]
+    LN1 --> CN1["Component Node\nheading"]
+    LN1 --> CN2["Component Node\nproduct-list"]
+    
+    LN2 --> CN3["Component Node\navatar"]
+    LN2 --> CN4["Component Node\nstatus-badge"]
+    
+    CB1 --> CN5["Component Node\ncapability-header"]
+    CB1 --> CN6["Component Node\ncapability-content"]
+    
+    CN1 --- SB1["State Binding\norder.number"]
+    CN2 --- SB2["State Binding\norder.items[]"]
+    CN4 --- SB3["State Binding\norder.status"]
+    CN1 --- TB1["Theme Binding\ncolor.primary"]
+    CN3 --- TB2["Theme Binding\nspacing.md"]
+    CN1 --- EB1["Event Binding\nonPress → navigate"]
+    CN2 --- EB2["Event Binding\nonItemSelect → view-detail"]
 ```
-Data Binding Definition:
-{
-  "bindings": [
-    {
-      "target": "heading.text",
-      "source": "state",
-      "path": "order.number",
-      "transform": "uppercase",
-      "fallback": "Order #---"
-    },
-    {
-      "target": "avatar.uri",
-      "source": "state",
-      "path": "order.restaurant.logo"
-    }
-  ]
-}
-```
 
-### 6.2 Binding Sources
+### 6.2 Render Node Types
 
-| Source | Provider | Resolution | Reactivity |
-|--------|----------|------------|------------|
-| `state` | State Manager | Path-based lookup into application state | Re-renders on state change |
-| `theme` | Theme Engine | Token-based lookup | Re-renders on theme switch |
-| `params` | Navigation Engine | Screen parameter lookup | Static for screen duration |
-| `context` | Runtime Context | Context path lookup | Changes with context |
-| `static` | Screen Definition | Literal value | Never changes |
-| `computed` | Binding Engine | Expression evaluation against sources | Re-evaluates on dependency change |
-| `localized` | Localization Service | Key-based lookup with locale | Re-renders on locale change |
+| Node Type | Purpose | Children | Properties |
+|-----------|---------|----------|------------|
+| **Root Node** | Screen boundary, lifecycle owner | Layout nodes, capability boundaries | screenId, lifecycleState, renderMode |
+| **Layout Node** | Spatial container, positions children | Layout nodes, component nodes | type, width, height, flex, margin, padding, align, justify |
+| **Component Node** | Registered UI component instance | None (leaf) | componentId, instanceId, props, bindings, platformView |
+| **Capability Node** | Capability boundary, isolation scope | Component nodes, layout nodes | capabilityId, version, permissions, stateScope |
+| **State Binding** | Links component property to state value | None (metadata) | source, path, transform, fallback, subscription |
+| **Event Binding** | Links component event to action | None (metadata) | event, action, params, handler |
+| **Theme Binding** | Links component property to theme token | None (metadata) | token, mode, fallback |
 
-### 6.3 Binding Resolution
+### 6.3 Render Tree Invariants
 
-Each binding is resolved following a resolution pipeline:
+1. **Single root** — Every screen has exactly one root render node.
+2. **Acyclic** — The render tree is a directed acyclic graph. Parent-child cycles are detected and rejected.
+3. **Typed nodes** — Every render node has a defined type. Untyped nodes are invalid.
+4. **Parent-owned children** — Child nodes are owned by exactly one parent. Shared nodes are not permitted in the render tree (shared state is handled through bindings, not tree sharing).
+5. **Component leaves** — Component nodes are leaf nodes. They cannot have children. Container behavior is achieved through layout nodes.
+6. **Capability boundaries** — Capability nodes form strict boundaries. Components inside a capability boundary cannot reference components outside the boundary.
 
-1. **Source identification** — The binding source determines which provider to query.
-2. **Path resolution** — The path is traversed on the provider's data structure. Nested paths (e.g., `order.items[0].name`) are supported.
-3. **Type coercion** — The resolved value is coerced to the target property's expected type. Type mismatches trigger fallback.
-4. **Transformation** — Optional transform functions are applied (uppercase, lowercase, currency formatting, date formatting, truncation).
-5. **Fallback application** — If resolution fails at any step, the defined fallback value is used. If no fallback is defined, the component's default value is used.
+### 6.4 Render Tree Construction
 
-### 6.4 Reactivity
+The render tree is constructed during the rendering pipeline, not defined in application definitions. Application definitions define screen layouts, component references, and bindings. The Rendering Engine transforms these definitions into a render tree by:
 
-Data bindings are reactive by default. When a bound state value changes, the Rendering Engine triggers a targeted re-render of only the components that depend on that value.
-
-Reactivity model:
-
-1. Each binding registers a subscription to its source during component mount.
-2. When the source publishes a change, the binding engine identifies all dependent components.
-3. Dependent components are queued for re-render in the next frame.
-4. Re-renders are batched — multiple changes to the same component within a frame result in a single re-render.
-5. Unused bindings are unsubscribed during component unmount.
-
-### 6.5 Computed Bindings
-
-Computed bindings derive values from one or more source bindings through a transform expression. Computed bindings are evaluated lazily — they compute only when a dependency changes.
-
-```
-Computed Binding:
-{
-  "target": "total.text",
-  "source": "computed",
-  "expression": "formatCurrency(subtotal + tax + tip, locale)",
-  "dependencies": [
-    { "source": "state", "path": "order.subtotal" },
-    { "source": "state", "path": "order.tax" },
-    { "source": "state", "path": "order.tip" },
-    { "source": "context", "path": "locale" }
-  ]
-}
-```
+1. Creating a root node for the screen
+2. Wrapping the root in appropriate layout boundaries (safe area, scroll)
+3. Recursively building layout nodes from the layout definition
+4. Creating component nodes for each component reference and linking them to registry implementations
+5. Inserting capability boundary nodes around capability-scoped content
+6. Wiring state bindings from defined data sources
+7. Wiring event bindings from defined action references
+8. Wiring theme bindings from theme token references
+9. Setting initial lifecycle state on all nodes
 
 ---
 
-## 7. Theme Binding
+## 7. Rendering Responsibilities
 
-### 7.1 Token Resolution
+The Rendering Engine owns rendering responsibilities across multiple resolution domains. Each responsibility describes what the engine must resolve and how it integrates with upstream subsystems.
 
-Theme tokens are resolved through the Theme Engine and applied to component properties. Token references in screen definitions follow the `{token.path}` syntax.
+### 7.1 Manifest Resolution Responsibility
 
-```
-Theme Binding Example:
-{
-  "component": "heading",
-  "props": {
-    "color": "{color.primary}",
-    "fontSize": "{typography.heading.size}",
-    "fontWeight": "{typography.heading.weight}",
-    "marginBottom": "{spacing.md}"
-  }
-}
-```
+The Rendering Engine is not the Manifest Resolver, but it depends on resolved Manifest definitions. The engine's responsibility is to consume resolved Manifest data and map it to renderable structures.
 
-### 7.2 Resolution Order
+| Responsibility | Description |
+|--------------|-------------|
+| Manifest consumption | Receive resolved Manifest from Manifest Resolver |
+| Definition extraction | Extract screen, component, capability, theme, and navigation definitions |
+| Reference verification | Verify all cross-references in definitions are resolvable |
+| Schema compliance | Validate that Manifest-derived definitions comply with render-time schemas |
 
-Theme token resolution follows a precedence chain:
+### 7.2 Navigation Resolution Responsibility
 
-1. **Screen-level override** — Theme overrides defined at the screen level take highest precedence.
-2. **Component-level override** — Theme overrides defined for a specific component instance.
-3. **Theme mode variant** — Tokens specific to the active theme mode (light, dark, high-contrast).
-4. **Theme default** — The token value from the active theme definition.
-5. **Platform default** — Fallback to platform-default token values.
+| Responsibility | Description |
+|--------------|-------------|
+| Screen target resolution | Determine which screen to render from navigation request |
+| Parameter extraction | Extract and validate navigation parameters |
+| Route validation | Validate that the target route exists and is accessible |
+| Deep link resolution | Resolve deep link URIs to screen identifiers with parameters |
 
-### 7.3 Mode Adaptation
+### 7.3 Screen Resolution Responsibility
 
-When the theme mode changes (e.g., user switches from light to dark mode), the Rendering Engine:
+| Responsibility | Description |
+|--------------|-------------|
+| Screen definition loading | Load screen definition from Manifest Resolver or cache |
+| Schema validation | Validate screen structure against Screen Model schema |
+| Responsive variant selection | Select appropriate variant for current viewport and platform |
+| Permission evaluation | Evaluate screen-level permission rules |
+| Screen model construction | Assemble resolved Screen Model for downstream stages |
 
-1. Receives a mode change event from the Theme Engine.
-2. Re-resolves all theme-dependent bindings.
-3. Triggers targeted re-renders of only the components affected by changed tokens.
-4. Animates transitions for components that define transition properties.
+### 7.4 Component Resolution Responsibility
+
+| Responsibility | Description |
+|--------------|-------------|
+| Component lookup | Resolve component identifiers against Component Registry |
+| Property schema validation | Validate declared properties against component schema |
+| Platform selection | Select platform-specific component implementation |
+| Version resolution | Select component version matching declared constraints |
+| Fallback resolution | Determine fallback behavior for unresolvable components |
+
+### 7.5 Capability Resolution Responsibility
+
+| Responsibility | Description |
+|--------------|-------------|
+| Capability activation | Activate capability when its screen or component is rendered |
+| Asset registration | Register capability-provided components, themes, and actions |
+| Boundary enforcement | Enforce capability isolation boundaries in the render tree |
+| Permission scoping | Apply capability-specific permission rules |
+
+### 7.6 Theme Resolution Responsibility
+
+| Responsibility | Description |
+|--------------|-------------|
+| Token resolution | Resolve theme token values for all token references |
+| Mode adaptation | Apply theme mode (light, dark, high-contrast) |
+| Override application | Apply screen-level and component-level theme overrides |
+| Fallback application | Apply default values for unresolvable tokens |
+
+### 7.7 State Resolution Responsibility
+
+| Responsibility | Description |
+|--------------|-------------|
+| State lookup | Resolve state values for binding paths |
+| Subscription management | Subscribe to state changes for reactive re-renders |
+| Transform application | Apply defined transforms to resolved values |
+| Fallback application | Apply fallback values for unresolvable paths |
+
+### 7.8 Event Registration Responsibility
+
+| Responsibility | Description |
+|--------------|-------------|
+| Event handler binding | Bind component events to action dispatcher handlers |
+| Argument resolution | Resolve event handler arguments at trigger time |
+| Handler lifecycle | Register handlers on mount, unregister on unmount |
+
+### 7.9 Runtime Composition Responsibility
+
+| Responsibility | Description |
+|--------------|-------------|
+| Multi-source composition | Compose render tree from Manifest, capabilities, and extensions |
+| Conflict resolution | Resolve definition conflicts between sources |
+| Merge precedence | Apply correct precedence when multiple sources define the same element |
 
 ---
 
-## 8. Action Binding
+## 8. Rendering Lifecycle
 
-### 8.1 Action Wiring
+### 8.1 Lifecycle Stages
 
-Actions are wired to component events through action bindings in the screen definition. Each action binding specifies the triggering event, the action to execute, and optional arguments.
-
+```mermaid
+flowchart TB
+    INIT["Initialize\nCreate Rendering Engine\nSet up subsystems"]
+    INIT --> LOAD
+    
+    LOAD["Load Manifest\nFetch application Manifest\nEstablish definition sources"]
+    LOAD --> VALIDATE
+    
+    VALIDATE["Validate\nValidate definitions\nVerify schema compliance\nCheck references"]
+    VALIDATE --> RESOLVE
+    
+    RESOLVE["Resolve\nResolve screens, components\ncapabilities, themes\nResolve all references"]
+    RESOLVE --> COMPOSE
+    
+    COMPOSE["Compose\nBuild render tree\nWire bindings\nSet up event handlers"]
+    COMPOSE --> RENDER
+    
+    RENDER["Render\nMount components\nBind platform views\nDisplay to user"]
+    RENDER --> OBSERVE
+    
+    OBSERVE["Observe\nSubscribe to events\nMonitor state changes\nTrack performance"]
+    OBSERVE --> UPDATE
+    
+    UPDATE["Update\nRe-render on changes\nRe-resolve as needed\nRe-compose affected subtrees"]
+    UPDATE --> DISPOSE
+    
+    DISPOSE["Dispose\nUnmount components\nRelease resources\nClean up subscriptions"]
 ```
-Action Binding:
-{
-  "component": "checkout-button",
-  "bindings": {
-    "onPress": {
-      "action": "navigate",
-      "params": {
-        "screen": "checkout",
-        "mode": "push"
-      }
-    },
-    "onLongPress": {
-      "action": "show-tooltip",
-      "params": {
-        "text": "Proceed to payment"
-      }
-    }
-  }
-}
-```
 
-### 8.2 Argument Resolution
+| Stage | Description | Entry Criteria | Exit Criteria | Failure Mode |
+|-------|-------------|---------------|--------------|-------------|
+| **Initialize** | Create the Rendering Engine and its subsystems. Establish Platform Adapter connection. | Runtime startup signal | All subsystems initialized and ready | Initialization timeout → safe mode |
+| **Load Manifest** | Fetch and load the Application Manifest from the Manifest Resolver. | Initialization complete | Manifest loaded and parsed | Manifest load failure → load error |
+| **Validate** | Validate all definitions against their schemas. Verify cross-references. | Manifest loaded | All definitions validated | Validation failure → detailed error report |
+| **Resolve** | Resolve all definitions to concrete implementations — screens to Screen Models, components to registry entries, themes to token values. | Validation complete | All definitions resolved | Resolution failure → fallback or degraded mode |
+| **Compose** | Build the initial render tree from resolved definitions. Wire bindings and event handlers. | Resolution complete | Render tree constructed and ready | Composition failure → error boundary |
+| **Render** | Mount the render tree to the platform. Create platform views and display initial screen. | Composition complete | Screen visible and interactive | Render failure → graceful degradation |
+| **Observe** | Subscribe to state changes, theme changes, and system events for reactive updates. | Render complete | All subscriptions active | Subscription failure → degraded reactivity |
+| **Update** | Process incoming changes. Re-render affected components. Re-compose affected subtrees as needed. | Active subscriptions | All pending updates processed | Update failure → error boundary |
+| **Dispose** | Clean up all resources when screen or application terminates. | Shutdown signal | All resources released | Dispose failure → resource warning |
 
-Action arguments support the same binding mechanisms as component properties — static values, state bindings, theme tokens, and computed expressions. Arguments are resolved at action execution time, not at bind time.
+### 8.2 Lifecycle State Machine
 
----
-
-## 9. Component Lifecycle
-
-### 9.1 Lifecycle Stages
-
-Every rendered component passes through a defined lifecycle:
+Each render node in the tree maintains a lifecycle state that determines what operations are valid:
 
 ```
 ┌──────────┐
-│ Resolved │  Component identifier resolved to registered definition
+│ Pending  │  Node created but not yet resolved
 └────┬─────┘
-     │
+     │ resolve
      ▼
 ┌──────────┐
-│Created   │  Component instance created with default properties
+│ Resolved │  Definition resolved, implementation identified
 └────┬─────┘
-     │
+     │ compose
      ▼
 ┌──────────┐
-│ Bound    │  Properties, data bindings, theme, and actions applied
+│ Composed │  Node inserted into render tree with bindings
 └────┬─────┘
-     │
+     │ render
      ▼
 ┌──────────┐
-│ Mounted  │  Component inserted into the visual tree, visible to user
+│ Mounted  │  Platform view created and attached
 └────┬─────┘
-     │
+     │ update
      ▼
 ┌──────────┐
-│ Updated  │  Component re-rendered in response to state, theme, or prop changes
+│ Updated  │  Node re-rendered with latest values
 └────┬─────┘
-     │
+     │ unmount
      ▼
 ┌──────────┐
-│Unmounted │  Component removed from the visual tree
+│Unmounted │  Platform view removed, resources retained
 └────┬─────┘
-     │
+     │ dispose
      ▼
 ┌──────────┐
-│ Destroyed│  Component resources released, subscriptions cleaned up
+│ Disposed │  All resources released, node destroyed
 └──────────┘
 ```
 
-### 9.2 Lifecycle Hooks
+---
 
-Components may implement lifecycle hooks to participate in their lifecycle:
+## 9. Rendering Context
 
-| Hook | Timing | Purpose |
-|------|--------|---------|
-| `onCreated` | After instance creation | Initialize internal state, set up non-reactive data |
-| `onBound` | After all bindings applied | Perform post-binding setup, validate property combinations |
-| `onMounted` | After insertion into visual tree | Start animations, begin data fetching, register for platform events |
-| `onUpdated` | After each re-render | React to property or state changes, perform side effects |
-| `onUnmounted` | Before removal from visual tree | Stop animations, clean up platform resources |
-| `onDestroyed` | After resource cleanup | Final cleanup, logging, analytics |
+### 9.1 Context Hierarchy
 
-### 9.3 Update Triggers
+```mermaid
+flowchart TB
+    ORG["Organization\nGlobal platform configuration\nBrand defaults\nGovernance policies"]
+    ORG --> TENANT
+    
+    TENANT["Tenant\nOrganization configuration\nTenant-specific branding\nData scoping rules"]
+    TENANT --> WORKSPACE
+    
+    WORKSPACE["Workspace\nDesk configuration\nActive capabilities\nWorkspace state"]
+    WORKSPACE --> APP
+    
+    APP["Application\nManifest definitions\nInstalled packages\nApplication state"]
+    APP --> USER
+    
+    USER["User\nIdentity and roles\nPermissions\nPreferences\nSession token"]
+    USER --> SESSION
+    
+    SESSION["Session\nSession identifier\nStart time\nAccumulated metrics"]
+    SESSION --> DEVICE
+    
+    DEVICE["Device\nPlatform type\nScreen dimensions\nInput modality\nNetwork status"]
+    DEVICE --> RUNTIME2
+    
+    RUNTIME2["Runtime\nRuntime version\nFeature flags\nEnvironment (prod/staging/dev)"]
+    RUNTIME2 --> ENV
+    
+    ENV["Environment\nLocale and timezone\nConnectivity state\nResource availability"]
+```
 
-A component is queued for re-render when:
+### 9.2 Context Definitions
 
-- A bound state value changes
-- A theme token it depends on changes
-- Its parent re-renders and passes new properties
-- An action callback modifies its internal state
-- The component's screen receives a forced update signal
+| Context Level | Scope | Lifetime | Content | Affects |
+|--------------|-------|----------|---------|---------|
+| **Organization** | All tenants, all applications | Immutable per Runtime build | Global defaults, platform policies | Theme defaults, permission baselines |
+| **Tenant** | Single tenant session | Fixed per session | Branding, configuration, data scoping | Theme, permissions, data visibility |
+| **Workspace** | Single Desk | Fixed per Desk navigation | Desk config, active capabilities | Available screens, components |
+| **Application** | Single application | Entire render session | Manifest, installed packages | Screen structure, component availability |
+| **User** | Authenticated user | Changes on auth state change | Identity, roles, permissions, preferences | Permission evaluation, personalization |
+| **Session** | Single Runtime session | Session duration | ID, start time, accumulators | Analytics, session-scoped state |
+| **Device** | Physical device | Immutable per session | Type, OS, screen, input, network | Responsive adaptation, platform selection |
+| **Runtime** | Runtime environment | Immutable per session | Version, features, environment | Feature gating, behavior flags |
+| **Environment** | Operational context | Changes dynamically | Locale, timezone, connectivity, resources | Localization, offline mode, performance |
 
-### 9.4 Update Batching
+### 9.3 Context Propagation
 
-Updates are batched to avoid redundant re-renders. The batching window is one frame (approximately 16ms at 60fps). During a frame:
+Context flows from outer levels to inner levels. Inner contexts may override outer context values for their scope. Context propagation rules:
 
-1. All update triggers are collected.
-2. Duplicate triggers for the same component are collapsed.
-3. Affected components are re-rendered in tree order.
-4. Changed visual output is committed to the platform.
+1. **Inheritance** — Each context inherits all properties from its parent.
+2. **Override** — Inner contexts may override inherited properties within their scope.
+3. **Restriction** — Inner contexts may restrict but not expand outer context permissions.
+4. **Isolation** — Contexts at the same level cannot access each other's properties.
+5. **Access** — All rendering operations have read access to the full context chain.
 
 ---
 
-## 10. Screen Lifecycle
+## 10. Rendering Modes
 
-### 10.1 Lifecycle Stages
+The Rendering Engine supports multiple rendering modes, each optimized for a specific operational scenario.
 
-Screens have their own lifecycle, which governs screen-level initialization, rendering, and cleanup.
+### 10.1 Mode Definitions
 
-```
-┌────────────┐
-│   Loaded   │  Screen definition resolved and validated
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│  Rendered  │  Screen layout computed, components mounted
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│  Appeared  │  Screen visible and interactive to the user
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│Interacting │  User interacting with screen content
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│Backgrounded│  Screen no longer visible (covered by another screen)
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│  Resumed   │  Screen becomes visible again (returned from background)
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│Disappeared │  Screen removed from navigation stack
-└─────┬──────┘
-      │
-      ▼
-┌────────────┐
-│  Destroyed │  Screen resources released, components unmounted
-└────────────┘
+```mermaid
+flowchart TB
+    subgraph "Rendering Modes"
+        direction TB
+        IM["Initial Render\nFirst render of a screen\nFull pipeline execution"]
+        INCR["Incremental Render\nRe-render affected nodes\nPartial pipeline execution"]
+        PR["Partial Render\nRender a subtree only\nScoped pipeline"]
+        LR["Lazy Render\nDeferred resolution + render\nMinimal initial work"]
+        BR["Background Render\nNon-visible screen update\nLow priority execution"]
+        PVR["Preview Render\nOff-screen or thumbnail\nLimited resource allocation"]
+        OFFR["Offline Render\nRender from cache only\nNo remote resolution"]
+        RR["Recovery Render\nRe-render after failure\nConservative execution"]
+    end
 ```
 
-### 10.2 Screen Lifecycle Hooks
+| Mode | Trigger | Pipeline Scope | Resource Budget | Use Case |
+|------|---------|---------------|----------------|----------|
+| **Initial Render** | Screen navigation | Full pipeline | Full frame budget | First visit to a screen |
+| **Incremental Render** | State/theme/context change | Components with changed dependencies | Partial frame budget | Reactive updates |
+| **Partial Render** | Targeted update request | Specified subtree only | Targeted budget | Optimistic UI updates |
+| **Lazy Render** | Below-fold component approaching viewport | Component resolution + render | Deferred budget | Virtualized lists, long screens |
+| **Background Render** | Non-visible screen state change | Low-priority full pipeline | Idle budget | Tab screen updates, page prefetch |
+| **Preview Render** | Thumbnail, widget, screenshot | Abbreviated pipeline | Minimal budget | App switcher, notifications, widgets |
+| **Offline Render** | No network connectivity | Cache-only resolution | Available budget | Offline operation |
+| **Recovery Render** | Rendering failure, state corruption | Conservative pipeline | Safe budget | Error recovery |
 
-| Hook | Timing | Purpose |
-|------|--------|---------|
-| `onLoad` | Screen definition loaded | Initialize screen-level state, prefetch data |
-| `onRender` | Layout computed and components mounting | Prepare entrance animations |
-| `onAppear` | Screen visible to user | Start screen-level timers, analytics tracking |
-| `onBackground` | Screen covered by another screen | Pause animations, release non-visible resources |
-| `onResume` | Screen becomes visible again | Refresh data, resume animations |
-| `onDisappear` | Screen removed from navigation stack | Clean up screen-level subscriptions |
-| `onDestroy` | Screen fully destroyed | Final cleanup, release all resources |
+### 10.2 Mode Transition Rules
 
-### 10.3 Screen Caching
-
-Screens that have been rendered but are not currently visible may be cached to preserve their state and avoid re-render on return. Caching strategy is configurable:
-
-| Strategy | Behavior | Use Case |
-|----------|----------|----------|
-| `none` | Screen destroyed on disappear | One-time screens, wizards |
-| `state-only` | Screen state preserved but components unmounted | Screens with heavy rendering cost |
-| `full` | Screen and components preserved in memory | Frequently revisited screens, tab screens |
+| From Mode | To Mode | Condition |
+|-----------|---------|-----------|
+| Initial | Incremental | After first render completes |
+| Incremental | Partial | Developer-initiated targeted update |
+| Lazy | Initial | Component enters viewport |
+| Background | Incremental | Screen becomes visible |
+| Preview | None | Preview completed, render tree disposed |
+| Offline | Initial | Network connectivity restored |
+| Recovery | Initial | Recovery render completes successfully |
+| Recovery | Offline | Network unavailable during recovery |
+| Any | Recovery | Fatal rendering error detected |
 
 ---
 
-## 11. Responsive Adaptation
+## 11. Rendering Boundaries
 
-### 11.1 Adaptation Dimensions
+### 11.1 Boundary Model
 
-The Rendering Engine adapts rendered output across four dimensions:
+The Rendering Engine enforces strict isolation boundaries between different concerns. Boundaries prevent cross-contamination of rendering state, permissions, and behavior.
 
-| Dimension | Triggers | Adaptation Strategy |
-|-----------|----------|-------------------|
-| Viewport size | Width/height breakpoints | Variant selection, layout reflow, component substitution |
-| Pixel density | DPR value | Asset density selection, resolution-independent units |
-| Orientation | Portrait/landscape | Layout reflow, variant selection |
-| Input modality | Touch/mouse/keyboard | Interaction pattern adaptation, focus management |
-
-### 11.2 Breakpoint System
-
-Breakpoints are defined in the screen definition and matched against the current viewport:
-
-```
-Breakpoint Definition:
-{
-  "responsive": {
-    "breakpoints": [
-      { "name": "compact", "maxWidth": 375 },
-      { "name": "medium",  "minWidth": 376, "maxWidth": 768 },
-      { "name": "expanded", "minWidth": 769, "maxWidth": 1024 },
-      { "name": "large",   "minWidth": 1025 }
-    ],
-    "variants": {
-      "compact": { "layout": "compact-layout", "component": "compact-card" },
-      "medium":  { "layout": "default-layout" },
-      "expanded": { "layout": "expanded-layout", "component": "detailed-card" },
-      "large":   { "layout": "expanded-layout", "component": "detailed-card", "showSidebar": true }
-    }
-  }
-}
+```mermaid
+flowchart TB
+    subgraph "Rendering Boundaries"
+        APP_BOUNDARY["Application Boundary\nApplication A vs Application B\nFull isolation\nSeparate render trees"]
+        
+        subgraph "Application Render Tree"
+            WS_BOUNDARY["Workspace Boundary\nDesk A vs Desk B\nSeparate navigation\nIndependent state"]
+            
+            subgraph "Workspace Render Tree"
+                TENANT_BOUNDARY["Tenant Boundary\nTenant A vs Tenant B\nBranding isolation\nData scoping"]
+                
+                subgraph "Tenant Render Tree"
+                    SESSION_BOUNDARY["Session Boundary\nSession A vs Session B\nState isolation\nAnalytics separation"]
+                    
+                    subgraph "Session Render Tree"
+                        EXT_BOUNDARY["Extension Boundary\nExtension A vs Extension B\nComponent isolation\nPermission restriction"]
+                        
+                        subgraph "Extension Render Tree"
+                            CAP_BOUNDARY["Capability Boundary\nCapability A vs Capability B\nCapability components only\nScoped state access"]
+                        end
+                    end
+                end
+            end
+        end
+    end
 ```
 
-### 11.3 Variant Selection
+### 11.2 Boundary Enforcement
 
-At render time, the current viewport dimensions are evaluated against the breakpoint rules. The matching breakpoint determines:
+| Boundary | Isolation Mechanism | Cross-Boundary Communication | Violation Consequence |
+|----------|-------------------|------------------------------|----------------------|
+| **Application** | Separate Runtime instances | Platform IPC, shared storage | Rendering rejection |
+| **Workspace** | Separate render trees | Manifest-defined navigation | Navigation blocked |
+| **Tenant** | Tenant-scoped resolution | Manifest definition merging | Theme/policy error |
+| **Session** | Session-scoped state | Event Bus events | State access denied |
+| **Extension** | Component allow-list | Extension API | Component registration blocked |
+| **Capability** | Capability-scoped render subtree | Action dispatcher | Component isolation error |
 
-1. **Layout variant** — Different layout trees may be selected for different breakpoints.
-2. **Component variant** — Alternative component identifiers may be specified for different breakpoints (e.g., compact card vs. detailed card).
-3. **Property overrides** — Component properties may be overridden per breakpoint.
-4. **Visibility rules** — Certain components may be shown or hidden at specific breakpoints.
+### 11.3 Cross-Boundary Rendering
 
-### 11.4 Layout Reflow
+When a component needs to render content from another boundary (e.g., a capability embedding a component from another capability), explicit cross-boundary rendering is supported through:
 
-When viewport dimensions change (orientation change, window resize):
-
-1. The breakpoint evaluator determines if the active breakpoint has changed.
-2. If the breakpoint changed, the variant selection process re-runs.
-3. The Layout Engine recomputes positions for the new dimensions.
-4. Components are re-rendered with any variant-specific properties.
-5. Transitions are animated when component identity is preserved.
+1. **Exposed component references** — A capability may expose specific components for use by other capabilities.
+2. **Manifest-declared dependencies** — Cross-capability component references must be declared in the Manifest.
+3. **Boundary wrapping** — Cross-boundary components are wrapped in boundary nodes that enforce isolation.
+4. **Permission validation** — Cross-boundary rendering is subject to permission checks at both boundaries.
 
 ---
 
-## 12. Incremental Rendering
+## 12. Rendering Resolution
 
-### 12.1 Rendering Strategies
+The Rendering Engine resolves multiple definition types during the rendering pipeline. Resolution is the process of transforming a definition reference into a concrete, validated, ready-to-use object.
 
-The Rendering Engine supports multiple rendering strategies for performance optimization:
+### 12.1 Resolution Domains
 
-| Strategy | Mechanism | Use Case |
-|----------|-----------|----------|
-| Full render | Render all components in a single pass | Small screens, critical screens |
-| Virtualized | Render only visible components in scrollable containers | Long lists, grids |
-| Deferred | Render off-screen components after visible components | Heavy screens below the fold |
-| Progressive | Render high-priority components first, lower-priority later | Screen entrance experience |
-| Skeleton | Render placeholder skeleton UI while data loads | Data-dependent screens |
+| Domain | What Is Resolved | Source | Resolution Strategy |
+|--------|-----------------|--------|-------------------|
+| **Navigation** | Screen identifier, route parameters | Navigation Engine | Route matching, parameter validation |
+| **Screens** | Screen definition, layout, components | Manifest Resolver, Cache | Cache-first, fetch-on-miss |
+| **Layouts** | Layout tree, dimensions, constraints | Screen definition | Parse, build tree, measure |
+| **Components** | Component implementation, schema | Component Registry | Registry lookup, version matching |
+| **Themes** | Theme token values, mode variants | Theme Engine | Token path lookup, mode selection |
+| **Capabilities** | Capability assets, permissions | Package Resolver | Dependency resolution, activation |
+| **Actions** | Action handler, argument values | Action Dispatcher | Type lookup, argument evaluation |
+| **State** | State values, subscription paths | State Manager | Path traversal, subscription |
 
-### 12.2 Virtualization
+### 12.2 Resolution Precedence
 
-Virtualization optimizes rendering of scrollable content by only rendering components within the visible viewport. The virtualization system:
+When multiple sources provide definitions for the same target, resolution follows a strict precedence order:
 
-1. Measures each item's estimated or actual size.
-2. Computes the total scrollable content height from the measured sizes.
-3. Determines which items fall within the current viewport + overscan area.
-4. Renders only the visible items.
-5. Recycles component instances as items scroll out of view.
-6. Updates the scroll position and rendered set on each scroll event.
+1. **Explicit screen definition** (inline values in the screen definition)
+2. **Capability-provided definition** (from activated capabilities)
+3. **Extension-provided definition** (from installed extensions)
+4. **Manifest default definition** (default values in the Manifest)
+5. **Platform default definition** (Runtime-provided fallbacks)
 
-Virtualization properties:
+### 12.3 Resolution Caching
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `estimatedItemSize` | dimension | auto | Estimated size of each item for scroll height calculation |
-| `overscanCount` | number | 3 | Number of additional items to render beyond visible bounds |
-| `recycleComponents` | boolean | true | Whether to recycle component instances during scrolling |
-| `stickyHeaders` | boolean | false | Whether section headers remain visible during scroll |
-
-### 12.3 Deferred Rendering
-
-Components below the initial viewport are deferred — they are not rendered until the user scrolls near them. Deferred rendering:
-
-1. Identifies components outside the initial viewport during layout.
-2. Marks deferred components with their bounds and priority.
-3. Renders visible components first.
-4. Monitors scroll position and viewport changes.
-5. Renders deferred components when they approach the viewport (within a configurable threshold).
-
-### 12.4 Priority-Based Rendering
-
-Components are assigned render priorities that determine their position in the rendering queue:
-
-| Priority | Components | Timing |
-|----------|------------|--------|
-| `critical` | Navigation bars, headers, loading indicators | Immediate — before frame commit |
-| `high` | Primary content, actionable components | Within the first frame |
-| `normal` | Secondary content, supporting information | Within 2-3 frames |
-| `low` | Below-fold content, decorative elements | After first paint |
-| `background` | Analytics pixels, invisible tracking | When idle |
+Resolved definitions are cached at each stage of the pipeline. Cache keys are derived from the definition identifier, the current context, and the rendering mode. Cache entries are invalidated when:
+- The source definition changes (new Manifest version)
+- The rendering context changes (tenant switch, user switch)
+- The rendering mode changes (online to offline)
 
 ---
 
-## 13. Platform Adaptation Layer
+## 13. Rendering Cache
 
-### 13.1 Architecture
+### 13.1 Cache Architecture
 
-The Platform Adaptation Layer abstracts platform-specific rendering behind a unified interface. The Rendering Engine operates against this interface, never against platform-specific APIs directly.
-
-```
-┌──────────────────────────────────────────────────┐
-│                 Rendering Engine                   │
-│  ┌──────────┐  ┌──────────┐  ┌────────────────┐  │
-│  │  Screen  │  │  Layout  │  │   Component    │  │
-│  │ Resolver │  │  Engine  │  │   Renderer     │  │
-│  └──────────┘  └──────────┘  └───────┬────────┘  │
-│                                       │            │
-└───────────────────────────────────────┼────────────┘
-                                        │
-       ┌────────────────────────────────┼────────────────────┐
-       │           Platform Adaptation Layer                │
-       │  ┌──────────┐  ┌──────────┐  ┌────────────────┐   │
-       │  │  Layout  │  │  View    │  │  Event Input   │   │
-       │  │  Adapter │  │  Factory │  │  Handler       │   │
-       │  └──────────┘  └──────────┘  └────────────────┘   │
-       └──────────────────────┬─────────────────────────────┘
-                              │
-       ┌──────────────────────┼─────────────────────┐
-       │                      │                      │
-       ▼                      ▼                      ▼
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│  Native iOS  │    │   React      │    │    Web       │
-│  UIKit/SwiftUI│    │  Native     │    │    DOM       │
-└──────────────┘    └──────────────┘    └──────────────┘
+```mermaid
+flowchart TB
+    subgraph "Rendering Cache"
+        DC["Definition Cache\nScreen definitions\nLayout definitions\nComponent definitions"]
+        TC["Theme Cache\nResolved theme tokens\nToken values\nMode variants"]
+        MC["Manifest Cache\nParsed Manifest\nResolved references\nCapability registry"]
+        CC["Component Cache\nComponent implementations\nPlatform views\nInstance pools"]
+        CAPC["Capability Cache\nActivated capabilities\nCapability assets\nCapability state"]
+    end
+    
+    DC --> RC["Resolution Engine"]
+    TC --> RC
+    MC --> RC
+    CC --> RC
+    CAPC --> RC
+    
+    RC --> RT["Render Tree"]
 ```
 
-### 13.2 Adapter Responsibilities
+### 13.2 Cache Responsibilities
 
-| Adapter | Responsibility |
-|---------|---------------|
-| Layout Adapter | Map abstract layout primitives (row, column, stack, scroll) to platform-specific layout systems (flexbox, auto layout, grid) |
-| View Factory | Create, configure, and recycle platform-specific view instances for each component type |
-| Event Input Handler | Map platform-specific input events (touch, click, keyboard, focus) to the Rendering Engine's unified event model |
-| Accessibility Adapter | Map accessibility properties and roles to platform-specific accessibility APIs |
-| Animation Driver | Execute declarative animation definitions using platform-specific animation engines |
+| Cache | Stores | Eviction Strategy | Max Size | Persistence |
+|-------|--------|------------------|----------|-------------|
+| Definition Cache | Screen and layout definitions, component references | LRU, timeout | 50 screens | Session |
+| Theme Cache | Resolved token values by mode | Version invalidation | 3 themes | Session |
+| Manifest Cache | Parsed Manifest, resolved definitions | Version change | 1 Manifest | Session |
+| Component Cache | Component instances, platform view references | LRU, memory pressure | 200 instances | Session |
+| Capability Cache | Activated capability assets | Deactivation | 20 capabilities | Session |
 
-### 13.3 Platform Contracts
+### 13.3 Cache Invalidation
 
-Each platform must implement the Platform Adapter interface:
+| Event | Invalidates | Strategy |
+|-------|-------------|---------|
+| Manifest version change | Manifest Cache, Definition Cache | Full invalidation |
+| Theme switch | Theme Cache | Token re-resolution |
+| Capability deactivation | Capability Cache | Targeted invalidation |
+| Memory pressure | All caches | LRU eviction |
+| Tenant switch | All caches | Full invalidation |
+| Screen navigation (return) | None (cache hit expected) | — |
 
+---
+
+## 14. Subsystem Responsibilities
+
+### 14.1 Runtime Responsibilities
+
+| Responsibility | Description |
+|--------------|-------------|
+| Provide resolving services | The Runtime provides Manifest Resolver, Package Resolver, Theme Engine, Navigation Engine, State Manager, Action Dispatcher, Event Bus, Cache Manager, Permission Engine, and Security Manager services to the Rendering Engine |
+| Manage lifecycle | The Runtime's Lifecycle Manager controls the Rendering Engine's lifecycle — initialize, start, suspend, resume, stop |
+| Allocate resources | The Runtime allocates memory, threads, and platform resources for rendering |
+| Enforce security | The Runtime's Security Manager validates definitions, enforces isolation, and verifies signatures before definitions reach the Rendering Engine |
+| Provide telemetry | The Runtime's Telemetry subsystem collects and exports rendering metrics |
+| Report diagnostics | The Runtime's Diagnostics subsystem exposes rendering state for debugging |
+
+### 14.2 Builder Responsibilities
+
+| Responsibility | Description |
+|--------------|-------------|
+| Produce valid definitions | The Builder must produce Manifest-valid definitions that comply with the Screen Model, Component Tree Model, and Layout System schemas |
+| Reference registered components | The Builder must reference only components registered in the Component Registry |
+| Declare capability dependencies | The Builder must declare all capability dependencies in the Manifest for the Rendering Engine to activate |
+| Structure layout trees | The Builder must produce well-structured layout trees that can be parsed by the Layout Engine |
+| Provide fallback values | The Builder should provide fallback values for all data bindings to ensure graceful degradation |
+
+### 14.3 Manifest Responsibilities
+
+| Responsibility | Description |
+|--------------|-------------|
+| Define screen structure | The Manifest must define all screens, their layouts, component references, and bindings |
+| Declare capabilities | The Manifest must declare which capabilities the application requires |
+| Reference themes | The Manifest must reference the active theme and provide theme configuration |
+| Define navigation | The Manifest must define navigation structures for the Navigation Engine to resolve |
+| Configure permissions | The Manifest must declare permission rules for screens and capabilities |
+
+### 14.4 Registry Responsibilities
+
+| Responsibility | Description |
+|--------------|-------------|
+| Register components | The Component Registry must register all available components with their identifiers, schemas, default properties, event contracts, and platform implementations |
+| Provide schema validation | The Registry must provide component property schemas for validation during resolution |
+| Manage versions | The Registry must manage component versions and support version constraint resolution |
+| Support lazy loading | The Registry must support lazy loading of component implementations |
+| Report availability | The Registry must report component availability for diagnostics and missing component fallback |
+
+---
+
+## 15. Security Model
+
+### 15.1 Security Architecture
+
+```mermaid
+flowchart TB
+    subgraph "Definition Sources"
+        MANIFEST["Application Manifest"]
+        MARKETPLACE2["Marketplace Packages"]
+        EXTENSIONS["Extensions"]
+    end
+    
+    subgraph "Security Layer"
+        SV["Signature Validation\nVerify package signatures\nVerify definition integrity"]
+        TV["Trust Verification\nCheck allow-lists\nVerify source authenticity"]
+        PV["Permission Evaluation\nEvaluate permission rules\nCheck user authorization"]
+        IV["Isolation Verification\nEnforce boundaries\nValidate cross-boundary access"]
+    end
+    
+    subgraph "Rendering Engine"
+        RE["Secure Rendering\nAllow-listed components only\nSanitized properties\nBound state access\nRestricted actions"]
+    end
+    
+    MANIFEST --> SV
+    MARKETPLACE2 --> SV
+    EXTENSIONS --> SV
+    SV --> TV
+    TV --> PV
+    PV --> IV
+    IV --> RE
 ```
-interface PlatformAdapter {
-  // Layout
-  createLayoutNode(type: LayoutType, props: LayoutProps): PlatformNode
-  measureNode(node: PlatformNode, constraints: SizeConstraint): Size
-  layoutNode(node: PlatformNode, rect: Rect): void
-  
-  // Views
-  createView(componentType: string, props: ComponentProps): PlatformView
-  updateView(view: PlatformView, props: ComponentProps): void
-  removeView(view: PlatformView): void
-  
-  // Hierarchy
-  insertChild(parent: PlatformNode, child: PlatformNode, index: number): void
-  removeChild(parent: PlatformNode, child: PlatformNode): void
-  
-  // Events
-  registerEventHandler(view: PlatformView, event: string, handler: Function): void
-  unregisterEventHandler(view: PlatformView, event: string): void
-  
-  // Scroll
-  createScrollContainer(props: ScrollProps): PlatformScrollContainer
-  scrollTo(container: PlatformScrollContainer, offset: Point, animated: boolean): void
-  
-  // Accessibility
-  setAccessibilityProps(view: PlatformView, props: AccessibilityProps): void
-  
-  // Animation
-  animate(node: PlatformNode, animation: AnimationDefinition): AnimationHandle
-  cancelAnimation(handle: AnimationHandle): void
-  
-  // Lifecycle
-  mount(root: PlatformNode): void
-  unmount(root: PlatformNode): void
-}
-```
+
+### 15.2 Trusted Definitions
+
+The Rendering Engine renders only trusted definitions. A definition is considered trusted when:
+
+1. **Origin verified** — The definition originates from a verified source (validated Manifest, certified Marketplace package, authenticated Builder).
+2. **Integrity validated** — The definition has not been tampered with since publication (signature validation).
+3. **Schema compliant** — The definition complies with its expected schema.
+4. **Allow-listed** — The definition references only components, capabilities, and services that are on the allowed list.
+5. **Permission granted** — The current user has permission to access the definition's resources.
+
+### 15.3 Signature Validation
+
+All definitions entering the Rendering Engine must pass signature validation:
+
+| Artifact | Signature Source | Validation |
+|----------|-----------------|------------|
+| Application Manifest | Builder signing key | Verify Manifest signature against Builder's public key |
+| Marketplace packages | Marketplace signing key | Verify package signature against Marketplace's public key |
+| Extensions | Extension developer key | Verify extension signature against developer's registered key |
+| Components | Component publisher key | Verify component implementation hash |
+
+### 15.4 Rendering Isolation
+
+| Isolation Concern | Mechanism |
+|------------------|-----------|
+| Application isolation | Separate Runtime instances or sandboxed contexts |
+| Workspace isolation | Separate render trees, no cross-workspace component access |
+| Tenant isolation | Tenant-scoped resolution, tenant-scoped theme, tenant-scoped state |
+| Session isolation | Session-scoped state, session-scoped event subscriptions |
+| Extension isolation | Extension-scoped component registry, restricted API access |
+| Capability isolation | Capability-scoped render subtrees, scoped state access |
+
+### 15.5 Sandbox Boundaries
+
+The Rendering Engine enforces sandbox boundaries at multiple levels:
+
+1. **Component sandbox** — Component lifecycle hooks execute in a sandboxed context. Components cannot access other components, the file system, network APIs, or platform services directly.
+2. **Binding sandbox** — State bindings are read-only. Components cannot write to state through bindings. All state mutations go through the Action Dispatcher.
+3. **Theme sandbox** — Theme tokens are read-only. Components cannot modify theme tokens or define new tokens.
+4. **Action sandbox** — Components can trigger only actions declared in their definition. Actions are resolved and executed by the Action Dispatcher, not by components.
+5. **Registry sandbox** — Components can be rendered only if they are registered in the Component Registry. Ad-hoc component creation is blocked.
+
+### 15.6 Extension Isolation
+
+Extensions (capabilities, plugins) operate within strict isolation boundaries:
+
+- Extensions cannot access other extensions' component instances or state.
+- Extensions define their component allow-lists at install time.
+- Extension-provided components are registered in a scoped namespace.
+- Extension events are routed through the Event Bus with origin tracking.
+
+### 15.7 Runtime Integrity
+
+The Rendering Engine maintains runtime integrity through:
+
+1. **Definition immutability** — Loaded definitions are immutable during a render session. Definitions cannot be modified at runtime.
+2. **State immutability** — State values are immutable. State mutations produce new state objects rather than modifying existing ones.
+3. **Render tree immutability** — The render tree structure is immutable after composition. Updates produce new render nodes rather than modifying existing ones.
+4. **Audit logging** — All definition validation failures, permission denials, and isolation violations are logged for audit.
 
 ---
 
-## 14. Performance Model
+## 16. Performance
 
-### 14.1 Render Budget
+### 16.1 Performance Principles
 
-The Rendering Engine operates within a per-frame render budget. The target is 60 frames per second (approximately 16ms per frame). The render budget is allocated as:
+| Principle | Description |
+|-----------|-------------|
+| Incremental Rendering | Re-render only what changed, not everything |
+| Lazy Loading | Load and resolve definitions only when needed |
+| Virtualization | Render only visible components in scrollable contexts |
+| Memory Management | Release resources promptly, cache intelligently |
+| Render Scheduling | Prioritize visible content, defer non-critical work |
+| Cache Optimization | Cache aggressively, invalidate precisely |
 
-| Phase | Budget (16ms target) | Description |
-|-------|---------------------|-------------|
-| Layout computation | 4ms | Measure and layout passes |
-| Component resolution | 2ms | Registry lookups, schema validation |
-| Data binding resolution | 2ms | Source lookups, transform application |
-| Component update | 4ms | applyProps, onUpdated hooks |
-| Platform render commit | 4ms | Delegate to platform adapter |
+### 16.2 Incremental Rendering
 
-### 14.2 Performance Measurement
+The Rendering Engine performs incremental rendering by tracking dependency graphs between state values, theme tokens, context properties, and render nodes. When a dependency changes:
 
-The Rendering Engine collects performance metrics at each pipeline stage:
+1. **Change detection** — The State Manager, Theme Engine, or Event Bus publishes a change notification.
+2. **Dependency resolution** — The Rendering Engine identifies all render nodes that depend on the changed value.
+3. **Affected scope computation** — The minimum subtree containing all affected nodes is computed.
+4. **Targeted re-render** — Only the affected subtree is re-rendered. Sibling and parent nodes outside the subtree are not re-rendered.
+5. **Platform commit** — Only the platform views corresponding to changed nodes are updated.
 
-| Metric | Measured At | Unit |
-|--------|-------------|------|
-| screen-load-time | Screen load stage | ms |
-| layout-compute-time | Layout compute stage | ms |
-| component-resolve-time | Component resolution stage | ms |
-| bind-time | Data binding stage | ms |
-| mount-time | Component mount stage | ms |
-| frame-time | Per-frame total | ms |
-| render-count | Components rendered per frame | count |
-| re-render-count | Components re-rendered per frame | count |
-| layout-cache-hit-rate | Layout computation cache | percentage |
+### 16.3 Lazy Loading
 
-### 14.3 Optimization Strategies
+| Asset | Loading Point | Loading Strategy |
+|-------|--------------|------------------|
+| Screen definitions | When screen is navigated to | Load from cache or Manifest Resolver |
+| Component implementations | When component is first requested | Load from Component Registry (code-split) |
+| Capability assets | When capability screen is rendered | Load from Package Resolver |
+| Theme definitions | When theme is first applied | Load from Theme Engine |
+| Images and media | When component enters viewport | Progressive loading with placeholder |
 
-The Rendering Engine employs several optimization strategies:
+### 16.4 Virtualization
 
-**Layout caching** — Computed layout results are cached by screen and breakpoint. When a screen is revisited at the same breakpoint, the cached layout is reused.
+Virtualization is automatic for all scrollable containers. The Rendering Engine:
 
-**Component memoization** — Components with unchanged inputs skip re-render. The memoization key is computed from the component's bound properties, state dependencies, and theme dependencies.
+1. Measures estimated or actual item sizes during layout
+2. Computes total scrollable content size
+3. Determines which items fall within the visible viewport + overscan
+4. Renders only visible items as physical component instances
+5. Represents non-visible items as lightweight metadata entries
+6. Recycles component instances as items scroll out of view
+7. Updates the rendered set on each scroll event
 
-**Virtualized rendering** — Scrollable containers render only visible content, as described in section 12.2.
+### 16.5 Memory Management
 
-**Deferred binding** — Data binding resolution is deferred for components below the viewport fold. Bindings are resolved when the component approaches the visible area.
+| Strategy | Description |
+|----------|-------------|
+| Instance pooling | Recycle component instances in scrollable lists to reduce allocation |
+| View recycling | Reuse platform view instances for recycled components |
+| Cache limits | Enforce maximum sizes on all caches with LRU eviction |
+| Deferred destruction | Defer component destruction to idle periods |
+| Memory pressure response | Clear caches, reduce overscan, suspend animations on memory warning |
 
-**Batch updates** — State changes within a single frame are batched into a single re-render pass.
+### 16.6 Render Scheduling
 
-**Lazy component resolution** — Component implementations are loaded lazily. Only the components needed for the current screen are resolved and loaded.
+| Priority | Work | Timing |
+|----------|------|--------|
+| Critical | User interaction response, navigation transitions, loading indicators | Immediate — before next frame |
+| High | Primary content in viewport, actionable components | Within current frame |
+| Normal | Secondary content, supporting information | Within 1-2 frames |
+| Low | Below-fold content, non-visible screen preparation | Within 3-5 frames |
+| Idle | Cache warming, prefetching, analytics | During idle periods |
 
-**Tree diffing** — On re-render, the Rendering Engine diffs the previous and new component trees to minimize platform view mutations.
+### 16.7 Cache Optimization
 
----
-
-## 15. Error Handling
-
-### 15.1 Error Boundary Hierarchy
-
-Error boundaries catch rendering failures at multiple levels:
-
-| Boundary Level | Catches | Fallback Behavior |
-|----------------|---------|-------------------|
-| Component | Single component failure | Replace with placeholder component |
-| Container | Container and children failure | Show container-level error state |
-| Screen | Entire screen failure | Show screen-level error screen |
-| Runtime | Runtime-wide rendering failure | Show safe-mode diagnostic screen |
-
-### 15.2 Error Types and Responses
-
-| Error Type | Cause | Response |
-|------------|-------|----------|
-| Component resolution failure | Unregistered component identifier | Placeholder component with component name |
-| Property validation failure | Invalid property type or value | Apply default value, log warning |
-| Binding resolution failure | Missing state path or data source | Apply fallback value, log error |
-| Layout constraint failure | Unsolvable layout constraints | Relax constraints, re-compute, log warning |
-| Component instantiation failure | Component constructor throws | Error boundary catches, fallback rendered |
-| Platform rendering failure | Platform view creation fails | Platform error boundary, graceful degradation |
-| Timeout | Rendering exceeds budget | Deferred rendering, progressive enhancement |
-
-### 15.3 Graceful Degradation
-
-When the Rendering Engine encounters resource pressure (low memory, constrained CPU):
-
-1. **Reduce overscan** — Virtualized lists reduce their overscan count.
-2. **Disable animations** — All animations are suspended.
-3. **Degrade image quality** — Images are loaded at lower resolution.
-4. **Suspend deferred rendering** — Components below the fold are not rendered.
-5. **Clear layout cache** — Cache is cleared to free memory.
-6. **Force component unmount** — Non-visible screens are fully destroyed.
+| Cache | Optimization |
+|-------|-------------|
+| Layout cache | Cache computed layout results by screen + breakpoint. Reuse on screen revisit. |
+| Definition cache | Cache parsed screen definitions. Invalidate on Manifest version change. |
+| Theme cache | Cache resolved token sets by theme + mode. |
+| Component cache | Cache component implementations. Release on memory pressure. |
+| Binding cache | Cache resolved binding values. Invalidate on dependency change. |
 
 ---
 
-## 16. Security Model
+## 17. Offline Behaviour
 
-### 16.1 Rendering Security
+### 17.1 Offline Rendering
 
-The Rendering Engine enforces security at every stage:
+The Rendering Engine supports rendering without network connectivity. Offline rendering relies on:
 
-- **Component allow-list** — Only components registered in the Component Registry can be rendered. Ad-hoc rendering is not possible.
-- **Property sanitization** — All component properties are validated against the component's property schema. Unexpected properties are rejected.
-- **Binding path restriction** — State access is restricted to paths declared in the screen's data binding definitions. Arbitrary state traversal is blocked.
-- **Action binding validation** — Action references are validated against the Action Dispatcher's registered action types. Arbitrary action execution is blocked.
-- **Layout depth limit** — Layout trees are limited to a maximum depth to prevent stack overflow attacks.
-- **Component count limit** — Screens have a maximum component count to prevent resource exhaustion.
+1. **Cached definitions** — Screen definitions, component definitions, and theme definitions cached from previous online sessions.
+2. **Cached state** — Persisted state values from the most recent online session.
+3. **Cached assets** — Images, fonts, and media assets cached locally.
+4. **Cached Manifest** — The most recent Manifest version cached locally.
 
-### 16.2 Isolation
+### 17.2 Offline Rendering Mode
 
-The Rendering Engine isolates components and screens from each other:
+When the Rendering Engine detects no network connectivity:
 
-- Component instances cannot access other components' internal state.
-- Component rendering failures do not affect sibling or parent components.
-- Component lifecycle hooks execute in a sandboxed context.
-- Theme token resolution is read-only — components cannot modify theme tokens.
-- Data binding sources are read-only — components cannot write to state through bindings.
+1. **Cache check** — The engine checks whether all required definitions are available in the local cache.
+2. **Cache-hit rendering** — If all definitions are cached, the engine renders from cache with full functionality minus remote data.
+3. **Cache-miss handling** — If a required definition is not cached, the engine renders a degraded view with available cached content.
+4. **Offline indicator** — A visual indicator is rendered to inform the user of offline status.
+5. **Deferred resolution** — Definitions that cannot be resolved offline are marked for deferred resolution when connectivity is restored.
+
+### 17.3 Recovery Render
+
+When connectivity is restored after offline operation:
+
+1. **Resolution retry** — The engine retries resolution of deferred definitions.
+2. **Re-render** — Screens and components that previously rendered with degraded content are re-rendered with full definitions.
+3. **Cache update** — The cache is refreshed with the latest definitions from the Manifest Resolver.
+4. **State synchronization** — The State Manager synchronizes offline mutations with the server.
+
+### 17.4 Deferred Resolution
+
+Definitions that cannot be resolved offline are handled as follows:
+
+| Definition Type | Offline Behavior | Recovery Action |
+|----------------|-----------------|-----------------|
+| Screen definition | Render last cached version or fallback screen | Re-render with current definition |
+| Component definition | Render placeholder component | Replace placeholder with actual component |
+| Theme definition | Use cached theme or platform default | Apply current theme tokens |
+| Capability definition | Disable capability, render without it | Activate capability on recovery |
+| Data binding | Apply fallback value or cached value | Re-bind with current state |
 
 ---
 
-## 17. Observability
+## 18. Observability
 
-### 17.1 Rendering Events
+### 18.1 Render Metrics
 
-The Rendering Engine publishes structured events for observability:
+The Rendering Engine collects the following metrics:
 
-| Event | Payload | Emitted When |
-|-------|---------|-------------|
-| `screen.load.start` | screenId, params | Screen load begins |
-| `screen.load.complete` | screenId, duration | Screen load completes |
-| `screen.load.error` | screenId, error | Screen load fails |
-| `screen.render` | screenId, componentCount, renderTime | Screen render completes |
-| `component.resolve` | componentId, screenId, duration | Component resolved |
-| `component.mount` | componentId, instanceId | Component mounted |
-| `component.unmount` | componentId, instanceId | Component unmounted |
-| `component.error` | componentId, instanceId, error | Component error caught |
-| `binding.resolve` | target, source, path, duration | Data binding resolved |
-| `layout.compute` | screenId, nodeCount, duration | Layout computation complete |
-| `frame.drop` | frameNumber, duration | Frame exceeds render budget |
+| Metric | Type | Granularity | Collection |
+|--------|------|-------------|------------|
+| Screen load time | Duration (ms) | Per screen load | Automatic |
+| Screen render count | Counter | Per screen, per session | Automatic |
+| Component resolve time | Duration (ms) | Per component | Automatic |
+| Component mount count | Counter | Per component type | Automatic |
+| Component error count | Counter | Per component type | Automatic |
+| Layout compute time | Duration (ms) | Per screen | Automatic |
+| Frame render time | Duration (ms) | Per frame | Automatic |
+| Frame drop count | Counter | Per session | Automatic |
+| Render node count | Gauge | Per screen | On render |
+| Cache hit rate | Percentage | Per cache type | Automatic |
 
-### 17.2 Diagnostics
+### 18.2 Resolution Metrics
+
+| Metric | Description |
+|--------|-------------|
+| Screen resolution time | Time to resolve a screen identifier to a Screen Model |
+| Component resolution time | Time to resolve a component identifier to an implementation |
+| Theme resolution time | Time to resolve a theme token to a value |
+| State resolution time | Time to resolve a state path to a value |
+| Binding resolution time | Time to resolve all bindings for a component |
+| Resolution success rate | Percentage of resolutions that succeed on first attempt |
+
+### 18.3 Component Resolution Failures
+
+The Rendering Engine tracks all component resolution failures with:
+
+| Field | Description |
+|-------|-------------|
+| componentId | The component identifier that failed to resolve |
+| screenId | The screen where the failure occurred |
+| failureType | Type of failure (unregistered, version mismatch, schema violation) |
+| fallbackApplied | Whether a fallback component was used |
+| timestamp | When the failure occurred |
+| context | Render context at time of failure |
+
+### 18.4 Runtime Diagnostics
 
 The Rendering Engine exposes diagnostic capabilities:
 
-- **Render tree inspector** — View the current component tree with properties, bindings, and state.
-- **Layout overlay** — Visual overlay showing component bounds, margins, padding, and flex properties.
-- **Performance overlay** — Real-time frame timing, render counts, and budget utilization.
-- **Binding inspector** — View all active bindings with their resolved values and sources.
-- **Component explorer** — Browse the Component Registry and inspect component schemas and implementations.
+| Diagnostic | Description | Access |
+|-----------|-------------|--------|
+| Render tree inspector | View current render tree with all nodes, properties, and state | Developer menu |
+| Binding inspector | View all active bindings with resolved values and sources | Developer menu |
+| Layout overlay | Visual overlay showing component bounds, margins, padding | Developer menu |
+| Performance overlay | Real-time frame timing, render counts, budget utilization | Developer menu |
+| Component explorer | Browse Component Registry and inspect component schemas | Developer menu |
+| Cache inspector | View cache contents, hit rates, and sizes | Developer menu |
+
+### 18.5 Performance Metrics Collection
+
+| Collection Point | Metrics Collected | Aggregation |
+|-----------------|------------------|-------------|
+| Screen load | Load time, definition size, component count | Per-screen average |
+| Component mount | Resolve time, mount time, property count | Per-component-type average |
+| Frame commit | Frame time, node count, mutation count | Per-frame histogram |
+| State change | Propagation time, affected component count | Per-change distribution |
+| Cache operation | Hit/miss, access time | Per-cache-type rate |
 
 ---
 
-## 18. Anti-Patterns
+## 19. Failure Scenarios
 
-| Anti-Pattern | Description | Resolution |
-|-------------|-------------|------------|
-| Deep layout trees | Component trees with excessive nesting depth | Flat layout structure, limit to 10-15 levels of nesting |
-| Massive single screen | All content rendered on one screen with no virtualization | Virtualize scrollable content, split into multiple screens |
-| Expensive render-time computation | Complex data transformations in bindings | Pre-compute data on state update, use computed bindings sparingly |
-| Unnecessary re-renders | Components re-rendering when inputs have not changed | Memoize components, scope bindings to only needed state paths |
-| Synchronous data fetching | Blocking render on data loading | Use skeleton states, deferred rendering, async data patterns |
-| Platform-specific logic in definitions | Screen definitions referencing platform-specific APIs | Abstract behind Platform Adapter, use responsive variants |
-| Direct state mutation | Components modifying state through bindings | All state mutations go through Action Dispatcher |
-| Missing error boundaries | Uncaught rendering errors propagating to parent screens | Error boundaries at every container and screen level |
+### 19.1 Scenario Catalog
+
+| Scenario | Cause | Detection | Response | Recovery |
+|----------|-------|-----------|----------|----------|
+| Invalid Manifest | Malformed JSON, schema violation, missing required fields | Manifest validation stage | Return validation error with details | Resubmit valid Manifest |
+| Missing Screen | Screen identifier references non-existent definition | Screen resolution stage | Show error screen or navigation fallback | Navigate to valid screen |
+| Missing Component | Component identifier not in Component Registry | Component resolution stage | Render placeholder component | Register component or update reference |
+| Invalid Capability | Capability identifier not recognized, incompatible version | Capability resolution stage | Disable capability, render without it | Install or update capability |
+| Circular Resolution | Component A references B which references A | Reference resolution stage | Reject definition with circular reference error | Break circular dependency |
+| Theme Failure | Missing theme, invalid token reference | Theme resolution stage | Apply platform default theme | Fix theme definition |
+| State Failure | State path does not exist in State Manager | State binding stage | Apply fallback value | Update state path |
+| Registry Failure | Component Registry unavailable | Component resolution stage | Fallback to cached registry or render skeletons | Re-establish Registry connection |
+
+### 19.2 Detailed Failure Responses
+
+#### 19.2.1 Invalid Manifest
+
+| Aspect | Response |
+|--------|----------|
+| Detection | Manifest validation stage detects malformed JSON, schema violations, or missing required fields |
+| User experience | Application shows informative error screen with validation details |
+| System behavior | Rendering Engine does not proceed past Manifest resolution. No render tree is constructed. |
+| Logging | Full validation errors logged with schema violations. |
+
+#### 19.2.2 Missing Screen
+
+| Aspect | Response |
+|--------|----------|
+| Detection | Screen resolution stage cannot find definition for requested screen identifier |
+| User experience | Navigation fallback — return to previous screen or show "Screen not found" message |
+| System behavior | Navigation Engine provides fallback route. Rendering Engine renders fallback screen. |
+| Logging | Screen identifier, requested route, and available screens logged. |
+
+#### 19.2.3 Missing Component
+
+| Aspect | Response |
+|--------|----------|
+| Detection | Component resolution stage cannot find component identifier in Registry |
+| User experience | Placeholder component rendered showing component name and "not available" |
+| System behavior | Placeholder occupies same layout space as intended component. Layout integrity preserved. |
+| Logging | Component identifier, screen, and available alternatives logged. |
+
+#### 19.2.4 Invalid Capability
+
+| Aspect | Response |
+|--------|----------|
+| Detection | Capability resolution stage detects unrecognized identifier or incompatible version |
+| User experience | Application renders without capability features. No capability-related errors shown. |
+| System behavior | Capability is disabled. Screens and components that depend on the capability are not rendered. |
+| Logging | Capability identifier, version, and compatibility details logged. |
+
+#### 19.2.5 Circular Resolution
+
+| Aspect | Response |
+|--------|----------|
+| Detection | Reference resolution stage detects circular dependency during graph traversal |
+| User experience | Error message indicating circular dependency in affected references |
+| System behavior | Definition containing circular reference is rejected. Other definitions unaffected. |
+| Logging | Full circular dependency chain logged for debugging. |
+
+#### 19.2.6 Theme Failure
+
+| Aspect | Response |
+|--------|----------|
+| Detection | Theme resolution stage cannot find theme or resolve token reference |
+| User experience | Application renders with platform default theme. Visual appearance differs from design intent. |
+| System behavior | Platform default theme applied as fallback. Token resolution returns default values. |
+| Logging | Theme identifier, missing token path, and fallback action logged. |
+
+#### 19.2.7 State Failure
+
+| Aspect | Response |
+|--------|----------|
+| Detection | State binding stage cannot find state value at declared path |
+| User experience | Component renders with fallback value or default. Visual state may show placeholder content. |
+| System behavior | Binding fallback value applied. If no fallback defined, component default is used. |
+| Logging | State path, screen, component, and fallback value logged. |
+
+#### 19.2.8 Registry Failure
+
+| Aspect | Response |
+|--------|----------|
+| Detection | Component resolution stage cannot connect to Component Registry |
+| User experience | Application renders with previously cached components. New or updated components unavailable. |
+| System behavior | Fallback to cached registry snapshot. Components not in cache are rendered as placeholders. |
+| Logging | Registry connection failure logged with retry status. |
 
 ---
 
-## 19. Relationship to Other Subsystems
+## 20. Anti-Patterns
 
-| Subsystem | Relationship |
-|-----------|-------------|
-| Component Registry (KB-056) | Provides component implementations and schemas. Rendering Engine is the primary consumer. |
-| State Manager (KB-054) | Provides state values for data binding. Receives component state change notifications. |
-| Theme Engine (KB-017/KB-049) | Provides resolved theme tokens. Receives theme binding resolution requests. |
-| Action Dispatcher (KB-057) | Receives action execution requests from component event handlers. Returns execution results. |
-| Navigation Engine (KB-055) | Requests screen rendering. Provides navigation parameters and context. |
-| Event Bus (KB-019) | Receives rendering events for cross-subsystem communication. Publishes component lifecycle events. |
-| Manifest Resolver (KB-009) | Provides screen definitions and component references. |
-| Package Resolver (KB-051) | Registers component implementations from installed packages. |
-| Cache Manager (KB-051) | Caches screen definitions, resolved layouts, and computed bindings. |
-| Permission Engine (KB-051) | Evaluates screen-level and component-level permission rules. |
-| Telemetry (KB-051) | Collects rendering performance metrics and events. |
-| Diagnostics (KB-051) | Provides render tree inspection and performance overlays. |
-| Security Manager (KB-051) | Validates component and property allow-lists. Enforces rendering security policies. |
+### 20.1 Prohibited Patterns
+
+| Anti-Pattern | Description | Consequence | Correct Approach |
+|-------------|-------------|-------------|-----------------|
+| Platform-specific rendering | Writing rendering logic that depends on a specific platform | Breaks cross-platform compatibility, violates platform agnosticism principle | Abstract behind Platform Adapter |
+| Business logic inside renderer | Implementing business logic in rendering code or component definitions | Violates separation of concerns, makes testing impossible | Business logic belongs in capabilities and services |
+| Mutable render tree | Modifying render tree nodes in place after composition | Breaks deterministic rendering, causes unpredictable behavior | Produce new render nodes on update |
+| Direct backend dependency | Components making direct network calls or database queries | Bypasses security model, breaks offline support | All data access through State Manager and Action Dispatcher |
+| Tight coupling | Components depending on other components' internal structure | Creates brittle rendering, breaks encapsulation | All cross-component communication through Event Bus |
+| Duplicate render passes | Rendering the same content multiple times unnecessarily | Wastes performance budget, causes visual flicker | Batch updates, memoize components, diff trees |
+| Synchronous definitions | Blocking the render pipeline on remote definition resolution | Blocks UI, degrades user experience | Lazy resolution, skeleton states, async loading |
+| Runtime reflection | Using reflection or dynamic code evaluation for rendering | Security risk, violates definition-driven model | All rendering driven by declarative definitions |
+| Hard-coded values | Hard-coding platform dimensions, theme values, or layout constants | Breaks responsive adaptation, theme switching | All values from Manifest, theme, or responsive resolution |
+| Global state in components | Components reading or modifying global state directly | Breaks state isolation, makes debugging difficult | All state through bindings, mutations through actions |
+
+### 20.2 Discouraged Patterns
+
+| Anti-Pattern | Description | Better Approach |
+|-------------|-------------|-----------------|
+| Deep layout trees | Layout trees with excessive nesting (15+ levels) | Flatten layout, use fewer containers |
+| Massive single screen | Rendering all application content as one screen | Split into logical screens, use navigation |
+| Over-binding | Binding every property even when values are static | Use static values for invariant properties |
+| Missing fallbacks | Not providing fallback values for data bindings | Always provide fallback values |
+| Eager resolution | Resolving all definitions at startup | Lazy resolve by default |
 
 ---
 
-## 20. Open Questions
+## 21. Future Evolution
 
-1. Should the Rendering Engine support hot reload for development mode (live component replacement without screen reload)?
-2. What is the maximum supported layout tree depth before performance degradation becomes unacceptable?
-3. Should the Rendering Engine support custom layout algorithms defined by capabilities?
-4. What is the caching strategy for screen variants across different breakpoints?
-5. Should component transitions be defined in the screen definition or handled entirely by the platform?
+### 21.1 AI-Assisted Rendering
+
+Future versions of the Rendering Engine may incorporate AI-assisted rendering:
+
+- **Intelligent layout optimization** — AI algorithms adjust layout parameters for optimal user engagement and accessibility compliance.
+- **Personalized rendering** — AI models customize rendering based on user behavior patterns without requiring Manifest changes.
+- **Automated accessibility** — AI detects accessibility issues in rendered output and applies corrections.
+- **Predictive prefetching** — AI predicts which screens the user will navigate to and prefetches their definitions and data.
+
+### 21.2 Edge Rendering
+
+The Rendering Engine may evolve to support edge rendering:
+
+- **Server-side render initiation** — Render tree construction begins on edge servers for reduced client render time.
+- **Definition distribution** — Screen definitions are distributed through CDN edge nodes for low-latency retrieval.
+- **Partial edge rendering** — Static portions of screens are pre-rendered on the edge; dynamic portions are hydrated on the client.
+
+### 21.3 Streaming Rendering
+
+Future rendering may support streaming delivery:
+
+- **Progressive screen rendering** — Screen content is streamed to the client in priority order — critical content first, supporting content streamed as available.
+- **Incremental definition delivery** — Definitions are streamed as the user navigates rather than loaded in batches.
+- **Real-time collaborative rendering** — Multiple users view and interact with the same rendered screen in real time.
+
+### 21.4 Distributed Rendering
+
+The Rendering Engine may support distributed rendering across devices:
+
+- **Multi-device sessions** — A single application session renders across multiple devices (phone, tablet, desktop) simultaneously.
+- **Cross-device state** — Rendering state is synchronized across devices for seamless transitions.
+- **Device-specific adaptation** — Each device renders the appropriate variant for its form factor within a shared session.
+
+### 21.5 Adaptive Rendering
+
+Adaptive rendering capabilities may include:
+
+- **Network-adaptive quality** — Render quality adjusts dynamically based on network conditions — high quality on fast networks, reduced quality on slow networks.
+- **Device-capability adaptation** — Rendering adjusts to device capabilities — GPU-accelerated rendering on capable devices, software rendering on constrained devices.
+- **Battery-aware rendering** — Animation frame rate and visual effects reduce on low battery.
+
+### 21.6 Collaborative Rendering
+
+Collaborative rendering features may include:
+
+- **Shared screen state** — Multiple users view the same screen state simultaneously.
+- **Remote cursor rendering** — User cursor positions are rendered on shared screens.
+- **Conflict visualization** — Rendering highlights conflicting changes in collaborative editing scenarios.
 
 ---
 
-## References
+## 22. Cross-References
 
 | Reference | Description |
 |-----------|-------------|
+| KB-041 | Application Architecture Overview — foundational application architecture context |
+| KB-042 | Application Manifest Specification — Manifest structure the Rendering Engine consumes |
+| KB-043 | Workspace & Tenant Model — workspace and tenant context the Rendering Engine operates within |
+| KB-044 | Navigation Architecture — navigation structures the Rendering Engine receives from the Navigation Engine |
+| KB-045 | Screen Model — declarative screen definitions the Rendering Engine renders |
+| KB-046 | Component Tree Model — component hierarchy structure the Rendering Engine composes |
+| KB-047 | Action & Event Model — action and event model the Rendering Engine wires to components |
+| KB-048 | Application State Model — state model the Rendering Engine binds to components |
+| KB-049 | Theme & Design Token Model — theme model the Rendering Engine resolves for visual properties |
+| KB-050 | Capability Composition Model — capability model the Rendering Engine activates and bounds |
 | KB-051 | Runtime Architecture Overview — foundational Runtime architecture, subsystem definitions, lifecycle |
-| KB-046 | Component Tree Model — structural model for component hierarchies |
-| KB-045 | Screen Model — declarative screen definition structure |
-| KB-049 | Theme & Design Token Model — theme token system and resolution |
-| KB-047 | Action & Event Model — action and event definition patterns |
-| KB-044 | Navigation Architecture — navigation structures and routing |
-| KB-012 | Component Registry — component registration and resolution |
+| KB-012 | Component Registry — component registration and resolution the Rendering Engine depends on |
+| KB-014 | Layout System — layout primitives and computation model the Rendering Engine implements |
 | KB-008 | Runtime Overview — high-level Runtime introduction |
 | KB-009 | Manifest Specification — Manifest document structure and resolution |
-| KB-042 | Application Manifest Specification — application-level Manifest definition |
+| KB-053 | SDUI Architecture — Server-Driven UI protocol (next document in suite) |
+
+---
+
+## 23. Open Questions
+
+1. Should the Rendering Engine support hot-reload of component implementations during development without screen re-render?
+2. What is the empirically determined maximum render tree depth before frame budget is consistently exceeded?
+3. Should capability-provided layout algorithms be supported, or should all layouts derive from the core Layout Engine?
+4. What is the optimal cache eviction policy for theme caches across frequent theme switches?
+5. Should the Rendering Engine support headless rendering for server-side render initiation?
+6. How should cross-tenant component rendering be handled when a component from one tenant is referenced in another tenant's screen definition?
+7. Should rendering mode transitions be animated (e.g., offline-to-online transition) or instantaneous?
