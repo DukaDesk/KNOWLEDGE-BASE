@@ -97,20 +97,35 @@
 
 > **Marketplace Architecture Suite**: Complete ✅
 
+## Application Model Architecture
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Application Architecture Overview | ✅ Complete | KB-041 — Application Architecture Overview defined |
+| Application Manifest Specification | ⏳ Planned | KB-042 — Not yet started |
+| Workspace & Tenant Model | ⏳ Planned | KB-043 — Not yet started |
+| Navigation Model | ⏳ Planned | KB-044 — Not yet started |
+| Screen Model | ⏳ Planned | KB-045 — Not yet started |
+| Component Tree Model | ⏳ Planned | KB-046 — Not yet started |
+| Action & Event Model | ⏳ Planned | KB-047 — Not yet started |
+| State Model | ⏳ Planned | KB-048 — Not yet started |
+| Theme Model | ⏳ Planned | KB-049 — Not yet started |
+| Capability Composition | ⏳ Planned | KB-050 — Not yet started |
+
 ## Runtime & Rendering Architecture
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Runtime Architecture Overview | ✅ Complete | KB-041 — Runtime Architecture Overview defined |
-| Runtime Rendering Engine | ⏳ Planned | KB-042 — Not yet started |
-| SDUI Architecture | ⏳ Planned | KB-043 — Not yet started |
-| Runtime State Management | ⏳ Planned | KB-044 — Not yet started |
-| Runtime Navigation & Routing | ⏳ Planned | KB-045 — Not yet started |
-| Runtime Component Registry | ⏳ Planned | KB-046 — Not yet started |
-| Runtime Event & Action Pipeline | ⏳ Planned | KB-047 — Not yet started |
-| Runtime Caching & Synchronization | ⏳ Planned | KB-048 — Not yet started |
-| Runtime Security & Isolation | ⏳ Planned | KB-049 — Not yet started |
-| Runtime Observability & Diagnostics | ⏳ Planned | KB-050 — Not yet started |
+| Runtime Architecture Overview | ✅ Complete | KB-051 — Runtime Architecture Overview defined |
+| Runtime Rendering Engine | ⏳ Planned | KB-052 — Not yet started |
+| SDUI Architecture | ⏳ Planned | KB-053 — Not yet started |
+| Runtime State Management | ⏳ Planned | KB-054 — Not yet started |
+| Runtime Navigation & Routing | ⏳ Planned | KB-055 — Not yet started |
+| Runtime Component Registry | ⏳ Planned | KB-056 — Not yet started |
+| Runtime Event & Action Pipeline | ⏳ Planned | KB-057 — Not yet started |
+| Runtime Caching & Synchronization | ⏳ Planned | KB-058 — Not yet started |
+| Runtime Security & Isolation | ⏳ Planned | KB-059 — Not yet started |
+| Runtime Observability & Diagnostics | ⏳ Planned | KB-060 — Not yet started |
 
 ## ADR Registry
 

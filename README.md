@@ -63,7 +63,8 @@ KNOWLEDGE-BASE/
 │   ├── template-marketplace.md    ← KB-038 Template Marketplace
 │   ├── marketplace-certification-trust.md ← KB-039 Marketplace Certification & Trust
 │   ├── marketplace-distribution-lifecycle.md ← KB-040 Marketplace Distribution & Lifecycle
-│   └── runtime-architecture-overview.md    ← KB-041 Runtime Architecture Overview
+│   ├── application-architecture-overview.md ← KB-041 Application Architecture Overview
+│   └── runtime-architecture-overview.md    ← KB-051 Runtime Architecture Overview
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
 │   └── ...

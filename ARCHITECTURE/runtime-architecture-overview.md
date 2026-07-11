@@ -1,10 +1,10 @@
 # Runtime Architecture Overview
 
-**KB-041 — Runtime Architecture Overview Specification**
+**KB-051 — Runtime Architecture Overview Specification**
 
 | Metadata | |
 |----------|---|
-| **KB ID** | KB-041 |
+| **KB ID** | KB-051 |
 | **Title** | Runtime Architecture Overview |
 | **Version** | 0.1.0 |
 | **Status** | Drafting |
@@ -1575,4 +1575,4 @@ graph TD
 
 ---
 
-*This is KB-041, the Runtime Architecture Overview specification of the DUKADESK Engineering Knowledge Base. It defines the architectural foundation of the DUKADESK Runtime — the controlled execution environment responsible for transforming server-defined application definitions into secure, interactive, native experiences across supported platforms. This document establishes the Runtime's philosophy, position within the platform, major subsystems, lifecycle, rendering model, security model, and governance principles that subsequent Runtime & Rendering Architecture Suite specifications build upon.*
+*This is KB-051, the Runtime Architecture Overview specification of the DUKADESK Engineering Knowledge Base. It defines the architectural foundation of the DUKADESK Runtime — the controlled execution environment responsible for transforming server-defined application definitions into secure, interactive, native experiences across supported platforms. This document establishes the Runtime's philosophy, position within the platform, major subsystems, lifecycle, rendering model, security model, and governance principles that subsequent Runtime & Rendering Architecture Suite specifications build upon.*
