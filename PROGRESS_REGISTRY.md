@@ -119,7 +119,7 @@
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Runtime Architecture Overview | ✅ Complete | KB-051 — Runtime Architecture Overview defined |
-| Runtime Rendering Engine | ⏳ Planned | KB-052 — Not yet started |
+| Runtime Rendering Engine | 🔧 In Progress | KB-052 — Rendering Engine Architecture defined — Draft |
 | SDUI Architecture | ⏳ Planned | KB-053 — Not yet started |
 | Runtime State Management | ⏳ Planned | KB-054 — Not yet started |
 | Runtime Navigation & Routing | ⏳ Planned | KB-055 — Not yet started |
