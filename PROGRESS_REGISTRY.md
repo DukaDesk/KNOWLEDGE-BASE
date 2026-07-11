@@ -78,7 +78,7 @@
 1. MenuGridSection needs per-item RuntimeNodes for action system add_to_cart
 2. FormEngine (multi-step forms) not yet wired to FormDataContext
 3. No backend exists — all data is mocked
-4. Screen & Layout Builder (KB-024) through Publishing Pipeline (KB-031) not yet started
+4. (Resolved) Screen & Layout Builder (KB-024) through Publishing Pipeline (KB-031) all completed
 5. No persistence layer for form data across app restarts
 
 ## Marketplace
@@ -104,13 +104,15 @@
 | Application Architecture Overview | ✅ Complete | KB-041 — Application Architecture Overview defined |
 | Application Manifest Specification | ✅ Complete | KB-042 — Application Manifest Specification defined |
 | Workspace & Tenant Model | ✅ Complete | KB-043 — Workspace & Tenant Model defined |
-| Navigation Model | ⏳ Planned | KB-044 — Not yet started |
-| Screen Model | ⏳ Planned | KB-045 — Not yet started |
-| Component Tree Model | ⏳ Planned | KB-046 — Not yet started |
-| Action & Event Model | ⏳ Planned | KB-047 — Not yet started |
-| State Model | ⏳ Planned | KB-048 — Not yet started |
-| Theme Model | ⏳ Planned | KB-049 — Not yet started |
-| Capability Composition | ⏳ Planned | KB-050 — Not yet started |
+| Navigation Model | 🔧 In Progress | KB-044 — Navigation Architecture defined — Draft |
+| Screen Model | 🔧 In Progress | KB-045 — Screen Model defined — Draft |
+| Component Tree Model | 🔧 In Progress | KB-046 — Component Tree Model defined — Draft |
+| Action & Event Model | 🔧 In Progress | KB-047 — Action & Event Model defined — Draft |
+| State Model | 🔧 In Progress | KB-048 — Application State Model defined — Draft |
+| Theme Model | 🔧 In Progress | KB-049 — Theme & Design Token Model defined — Draft |
+| Capability Composition | 🔧 In Progress | KB-050 — Capability Composition Model defined — Draft |
+
+> **Application Model Architecture Suite**: Complete ✅
 
 ## Runtime & Rendering Architecture
 
