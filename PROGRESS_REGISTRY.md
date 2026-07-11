@@ -138,7 +138,8 @@
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Identity Platform Architecture | 🔧 In Progress | KB-063 — Identity Platform Architecture defined — Draft |
-| Authentication Architecture | ⏳ Planned | KB-064 — Not yet started |
+| Authentication Architecture | 🔧 In Progress | KB-064 — Authentication Architecture defined — Draft |
+| Authorization & RBAC Architecture | ⏳ Planned | KB-065 — Not yet started |
 
 ## ADR Registry
 
