@@ -119,17 +119,25 @@
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Runtime Architecture Overview | ✅ Complete | KB-051 — Runtime Architecture Overview defined |
-| Runtime Rendering Engine | 🔧 In Progress | KB-052 — Rendering Engine Architecture defined — Draft |
-| SDUI Architecture | 🔧 In Progress | KB-053 — Rendering Pipeline Architecture defined — Draft |
-| Runtime Component Registry | 🔧 In Progress | KB-054 — Runtime Component Registry Architecture defined — Draft |
-| Runtime State Engine | 🔧 In Progress | KB-055 — Runtime State Engine Architecture defined — Draft |
-| Runtime Navigation Engine | 🔧 In Progress | KB-056 — Runtime Navigation Engine Architecture defined — Draft |
-| Runtime Security Architecture | 🔧 In Progress | KB-057 — Runtime Security Architecture defined — Draft |
-| Runtime Observability & Diagnostics | 🔧 In Progress | KB-058 — Runtime Observability & Diagnostics Architecture defined — Draft |
-| Runtime Performance & Optimization | 🔧 In Progress | KB-059 — Runtime Performance & Optimization Architecture defined — Draft |
-| Runtime Lifecycle Management | 🔧 In Progress | KB-060 — Runtime Lifecycle Management Architecture defined — Draft |
-| Runtime Update & Versioning | 🔧 In Progress | KB-061 — Runtime Update & Versioning Architecture defined — Draft |
-| Runtime Deployment & Environment | ⏳ Planned | KB-062 — Not yet started |
+| Runtime Rendering Engine | ✅ Complete | KB-052 — Rendering Engine Architecture defined |
+| SDUI Architecture | ✅ Complete | KB-053 — Rendering Pipeline Architecture defined |
+| Runtime Component Registry | ✅ Complete | KB-054 — Runtime Component Registry Architecture defined |
+| Runtime State Engine | ✅ Complete | KB-055 — Runtime State Engine Architecture defined |
+| Runtime Navigation Engine | ✅ Complete | KB-056 — Runtime Navigation Engine Architecture defined |
+| Runtime Security Architecture | ✅ Complete | KB-057 — Runtime Security Architecture defined |
+| Runtime Observability & Diagnostics | ✅ Complete | KB-058 — Runtime Observability & Diagnostics Architecture defined |
+| Runtime Performance & Optimization | ✅ Complete | KB-059 — Runtime Performance & Optimization Architecture defined |
+| Runtime Lifecycle Management | ✅ Complete | KB-060 — Runtime Lifecycle Management Architecture defined |
+| Runtime Update & Versioning | ✅ Complete | KB-061 — Runtime Update & Versioning Architecture defined |
+| Runtime Deployment & Environment | ✅ Complete | KB-062 — Runtime Deployment & Environment Architecture defined |
+
+> **Runtime & Rendering Architecture Suite**: Complete ✅
+
+## Identity & Access Architecture
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Identity Platform Architecture | ⏳ Planned | KB-063 — Not yet started |
 
 ## ADR Registry
 
