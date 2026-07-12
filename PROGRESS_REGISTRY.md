@@ -229,8 +229,9 @@
 | Experimentation Platform Architecture | ⏳ Planned | KB-133 — Experimentation Platform Architecture |
 | Platform Insights Architecture | ⏳ Planned | KB-134 — Platform Insights Architecture |
 | Health Management Architecture | ⏳ Planned | KB-135 — Health Management Architecture |
-| Platform Diagnostics Architecture | ⏳ Planned | KB-136 — Platform Diagnostics Architecture |
-| Maintenance & Service Operations Architecture | ⏳ Planned | KB-137 — Maintenance & Service Operations Architecture |
+| Enterprise Tenant Management Architecture | 🔧 In Progress | KB-136 — Enterprise Tenant Management Architecture defined — Draft |
+| Enterprise Resource Management Architecture | 🔧 In Progress | KB-137 — Enterprise Resource Management Architecture defined — Draft |
+| Communication Services Architecture | 🔧 In Progress | KB-166 — Communication Services Architecture defined — Draft |
 | Platform Automation Architecture | ⏳ Planned | KB-138 — Platform Automation Architecture |
 | Platform Resilience Coordination Architecture | ⏳ Planned | KB-139 — Platform Resilience Coordination Architecture |
 | Enterprise Platform Services Reference Architecture | ⏳ Planned | KB-140 — Enterprise Platform Services Reference Architecture |

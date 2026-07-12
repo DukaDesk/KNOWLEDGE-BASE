@@ -2,9 +2,9 @@
 
 **Version:** 0.1.0
 **Status:** Drafting
-**Last Updated:** 2026-07-10
+**Last Updated:** 2026-07-11
 
-> **Architecture Progress:** Platform Runtime ✓ | Builder Studio ✓ | Marketplace ✓ | Application Architecture ✓
+> **Architecture Progress:** Platform Runtime ✓ | Builder Studio ✓ | Marketplace ✓ | Application Architecture ✓ | Runtime Architecture ✓ | Identity & Access ✓ | Data Platform (16/16 Draft) | Platform Integration (9/13 Draft) | Enterprise Platform Services (6/34 Draft)
 
 ## What This Is
 
@@ -116,8 +116,12 @@ Every developer and AI agent MUST read the following before starting work:
 | Platform Runtime Architecture (KB-005–020) | Complete |
 | Builder Studio Architecture (KB-022–031) | Complete |
 | Marketplace Architecture (KB-032–040) | Complete |
-| Application Architecture (KB-041–043) | Complete |
-| Runtime Architecture (KB-051) | Complete |
+| Application Architecture (KB-041–050) | Complete |
+| Runtime Architecture (KB-051–062) | Complete |
+| Identity & Access Architecture (KB-063–072) | Complete |
+| Data Platform Architecture (KB-073–093) | 16/16 Draft |
+| Platform Integration Architecture (KB-094–106) | 9/13 Draft |
+| Enterprise Platform Services (KB-107–140) | 7/34 Draft (6 In Progress, 1 Planned, 27 Planned) |
 | Mobile Specification | Implemented |
 | Backend Specification | Planned |
 | Business Dashboard | Planned |
