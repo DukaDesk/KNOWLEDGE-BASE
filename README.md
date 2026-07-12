@@ -24,7 +24,11 @@ This is the **Engineering Knowledge Base** for the DUKADESK platform.
 
 It is the single source of truth for all architectural decisions, engineering standards, platform conventions, and governance processes across the entire DUKADESK ecosystem.
 
-> **The Knowledge Base is the product's memory.** Specifications describe how the platform is built. Implementations produce the software. If a conflict exists, the conflict is resolved through the Knowledge Base — not through code or conversation.
+It operates under the authority of the **[DUKADESK Platform Constitution](./dukadesk-constitution/README.md)**, which defines the immutable laws, decision framework, and governance model that sit above the Knowledge Base.
+
+> **The Knowledge Base is the product's memory.** Specifications describe how the platform is built. Implementations produce the software. If a conflict exists, the conflict is resolved through the Knowledge Base — and ultimately the Constitution — not through code or conversation.
+
+> **Chain of authority:** Constitution → Knowledge Base → ADRs → Engineering Specifications → Engineering Governance → Implementation.
 
 ## Repository Structure
 
