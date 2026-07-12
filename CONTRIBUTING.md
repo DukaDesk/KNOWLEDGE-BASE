@@ -7,9 +7,10 @@ Thank you for contributing to the DUKADESK Engineering Knowledge Base and Operat
 ## Before You Start
 
 1. Read [AGENT_CONTEXT.md](./AGENT_CONTEXT.md) if you are an AI agent.
-2. Read [ARCHITECTURE_ALIGNMENT.md](./ARCHITECTURE_ALIGNMENT.md).
-3. Read [PROGRESS_REGISTRY.md](./PROGRESS_REGISTRY.md) and [PROGRESS.md](./PROGRESS.md).
-4. Identify the relevant Knowledge Base documents and specifications.
+2. Read the [DUKADESK Constitution](./dukadesk-constitution/README.md).
+3. Read [ARCHITECTURE_ALIGNMENT.md](./ARCHITECTURE_ALIGNMENT.md).
+4. Read [PROGRESS_REGISTRY.md](./PROGRESS_REGISTRY.md) and [PROGRESS.md](./PROGRESS.md).
+5. Identify the relevant Knowledge Base documents and specifications.
 
 ## What to Contribute
 

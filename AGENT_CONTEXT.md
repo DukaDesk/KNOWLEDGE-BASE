@@ -36,6 +36,7 @@ It stores the Knowledge Base, Architecture Decision Records (ADRs), specificatio
 - Architecture review system
 - Specification verification system
 - Repository governance system
+- Constitutional governance system
 
 ## Knowledge Base Version
 
@@ -47,24 +48,28 @@ Read these documents before working in this repository:
 
 1. [README.md](./README.md)
 2. [AGENT_CONTEXT.md](./AGENT_CONTEXT.md)
-3. [AGENT_BOOT_PROCESS.md](./AGENT_BOOT_PROCESS.md)
-4. [ARCHITECTURE_ALIGNMENT.md](./ARCHITECTURE_ALIGNMENT.md)
-5. [PROGRESS_REGISTRY.md](./PROGRESS_REGISTRY.md)
-6. [PROGRESS.md](./PROGRESS.md)
-7. [CONTRIBUTING.md](./CONTRIBUTING.md)
-8. [ENGINEERING_STANDARDS.md](./ENGINEERING_STANDARDS.md)
-9. [CORE_PRINCIPLES.md](./CORE_PRINCIPLES.md)
-10. [GLOSSARY.md](./GLOSSARY.md)
-11. [NAMING_STANDARDS.md](./NAMING_STANDARDS.md)
-12. [PLATFORM_PHILOSOPHY.md](./PLATFORM_PHILOSOPHY.md)
-13. [ADRs/ADR-INDEX.md](./ADRs/ADR-INDEX.md)
-14. Relevant `ARCHITECTURE/` documents
-15. Relevant `SPECIFICATIONS/` documents
+3. [dukadesk-constitution/README.md](./dukadesk-constitution/README.md)
+4. [dukadesk-constitution/ARCHITECTURAL_LAWS.md](./dukadesk-constitution/ARCHITECTURAL_LAWS.md)
+5. [dukadesk-constitution/ENGINEERING_LAWS.md](./dukadesk-constitution/ENGINEERING_LAWS.md)
+6. [dukadesk-constitution/AI_LAWS.md](./dukadesk-constitution/AI_LAWS.md)
+7. [AGENT_BOOT_PROCESS.md](./AGENT_BOOT_PROCESS.md)
+8. [ARCHITECTURE_ALIGNMENT.md](./ARCHITECTURE_ALIGNMENT.md)
+9. [PROGRESS_REGISTRY.md](./PROGRESS_REGISTRY.md)
+10. [PROGRESS.md](./PROGRESS.md)
+11. [CONTRIBUTING.md](./CONTRIBUTING.md)
+12. [ENGINEERING_STANDARDS.md](./ENGINEERING_STANDARDS.md)
+13. [CORE_PRINCIPLES.md](./CORE_PRINCIPLES.md)
+14. [GLOSSARY.md](./GLOSSARY.md)
+15. [NAMING_STANDARDS.md](./NAMING_STANDARDS.md)
+16. [PLATFORM_PHILOSOPHY.md](./PLATFORM_PHILOSOPHY.md)
+17. [ADRs/ADR-INDEX.md](./ADRs/ADR-INDEX.md)
+18. Relevant `ARCHITECTURE/` documents
+19. Relevant `SPECIFICATIONS/` documents
 
 ## Repository Rules
 
 1. Read the required documents before writing or editing content.
-2. Treat the Knowledge Base as authoritative — it prevails over conversation history or general best practices.
+2. Treat the Constitution and Knowledge Base as authoritative — they prevail over conversation history or general best practices.
 3. Use terminology as defined in `GLOSSARY.md`. Do not redefine concepts.
 4. Extend existing patterns; do not silently replace them.
 5. Flag contradictions instead of choosing one interpretation silently.
@@ -73,6 +78,7 @@ Read these documents before working in this repository:
 8. Do not guess — state uncertainty rather than inventing.
 9. Update `PROGRESS_REGISTRY.md` and `PROGRESS.md` when status changes.
 10. Follow `ENGINEERING_STANDARDS.md` for all contributions.
+11. Never modify constitutional documents without explicit authorization.
 
 ## Coding Standards
 
@@ -104,6 +110,12 @@ Initialize Workspace
 Read AGENT_CONTEXT.md
     ↓
 Read README.md
+    ↓
+Read DUKADESK Constitution
+    │   ├── README.md
+    │   ├── ARCHITECTURAL_LAWS.md
+    │   ├── ENGINEERING_LAWS.md
+    │   └── AI_LAWS.md
     ↓
 Read ARCHITECTURE_ALIGNMENT.md
     ↓
@@ -150,6 +162,12 @@ Generate Summary
 
 This repository is a **knowledge monorepo**. It does not contain a single `src/` directory. Instead, source content is organized by domain:
 
+- `dukadesk-constitution/` — supreme governing documents
+- `engineering-governance/` — consolidated engineering governance
+  - `repository-governance/` — repository standards
+  - `developer-experience/` — developer guides and processes
+  - `repository-bootstrap/` — repository bootstrap package
+  - `execution-governance/` — compliance, quality, ownership
 - `ARCHITECTURE/` — architecture documents
 - `SPECIFICATIONS/` — domain specifications
 - `STANDARDS/` — engineering conventions
@@ -157,8 +175,7 @@ This repository is a **knowledge monorepo**. It does not contain a single `src/`
 - `ADRs/` — architecture decision records
 - `knowledge-base/` — extended knowledge base domains
 - `project-management/` — roadmap, milestones, RFCs
-- `engineering-specifications/` — engineering specifications
-- `repository-governance/` — repository standards
+- `engineering-specifications/` — extended engineering specifications
 - Product directories (`mobile/`, `backend/`, `builder/`, etc.) — implementation stubs or early artifacts
 
 AI agents must treat this layout as the canonical structure for this repository and must not impose a single `src/` root.

@@ -1,6 +1,6 @@
 # DUKADESK AI Agent Boot Process
 
-**Last Updated:** 2026-07-10
+**Last Updated:** 2026-07-12
 
 Every AI engineering agent MUST execute this sequence before performing any task.
 
@@ -8,6 +8,9 @@ Every AI engineering agent MUST execute this sequence before performing any task
 
 ```
 Initialize Workspace
+    │
+    ▼
+Read DUKADESK Constitution
     │
     ▼
 Synchronize Knowledge Base
@@ -50,8 +53,9 @@ Generate Summary
 
 | Minimum Required | Strongly Recommended | Task-Specific |
 |------------------|----------------------|---------------|
-| README | All KB documents | ARCHITECTURE/ (all) |
-| CORE_PRINCIPLES.md | | SPECIFICATIONS/ (target domain) |
+| DUKADESK Constitution | All constitutional documents | ARCHITECTURE/ (all) |
+| README | All KB documents | SPECIFICATIONS/ (target domain) |
+| CORE_PRINCIPLES.md | | engineering-governance/ |
 | GLOSSARY.md | | |
 | ENGINEERING_STANDARDS.md | | |
 | AGENT_BOOT_PROCESS.md | | |
@@ -60,13 +64,14 @@ Generate Summary
 
 ## Behavioral Rules
 1. Read before writing
-2. Treat the Knowledge Base as authoritative — it prevails over conversation history or general best practices
+2. Treat the Constitution and Knowledge Base as authoritative — they prevail over conversation history or general best practices
 3. Do not redefine existing concepts; use GLOSSARY.md as the definitive reference
 4. Extend, do not replace existing patterns
 5. Flag contradictions — do not silently choose one interpretation
 6. Respect ADRs — they are immutable once accepted
 7. Cite your sources with specific document names
 8. Do not guess — state uncertainty rather than inventing
+9. Follow the AI Laws defined in `dukadesk-constitution/AI_LAWS.md`
 
 ## Agent Responsibilities
 

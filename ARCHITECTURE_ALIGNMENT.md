@@ -1,5 +1,6 @@
 # DUKADESK OS — Architecture Alignment
 
+**Constitution Version:** 0.1.0  
 **Knowledge Base Version:** 0.1.0  
 **Engineering Specification Version:** 0.1.0  
 **Last Updated:** 2026-07-12  
@@ -7,11 +8,29 @@
 
 ---
 
-## 1. Knowledge Base Version
+## 1. Constitution Version
+
+This repository aligns with DUKADESK Platform Constitution version **0.1.0**.
+
+## 2. Knowledge Base Version
 
 This repository aligns with DUKADESK Knowledge Base version **0.1.0**.
 
-## 2. Referenced KB Documents
+## 3. Referenced Constitutional Documents
+
+| Document | Title | Relevance |
+|----------|-------|-----------|
+| KB-C001 | Mission | Why DUKADESK exists |
+| KB-C002 | Vision | What DUKADESK becomes |
+| KB-C003 | Engineering Philosophy | Foundational engineering mindset |
+| KB-C004 | Architectural Laws | Immutable rules of architecture |
+| KB-C005 | Engineering Laws | Immutable rules of engineering |
+| KB-C006 | AI Laws | Immutable rules for AI agents |
+| KB-C007 | Change Control | How artifacts change |
+| KB-C008 | Decision Framework | Decision categories and authority |
+| KB-C009 | Governance Model | Governance hierarchy and ownership |
+
+## 4. Referenced KB Documents
 
 | KB-ID | Title | Relevance |
 |-------|-------|-----------|
@@ -33,7 +52,7 @@ This repository aligns with DUKADESK Knowledge Base version **0.1.0**.
 | KB-107–KB-140 | Enterprise Platform Services | Platform services |
 | KB-141 | Repository Bootstrap | Repository governance standard |
 
-## 3. Referenced ADRs
+## 5. Referenced ADRs
 
 | ADR | Title | Status |
 |-----|-------|--------|
@@ -44,7 +63,7 @@ This repository aligns with DUKADESK Knowledge Base version **0.1.0**.
 | ADR-005 | Branded Splash Screen | Accepted |
 | ADR-006 | Knowledge Base Initialization | Accepted |
 
-## 4. Referenced Engineering Specifications
+## 6. Referenced Engineering Specifications
 
 | Specification | Version | Relevance |
 |---------------|---------|-----------|
@@ -53,22 +72,24 @@ This repository aligns with DUKADESK Knowledge Base version **0.1.0**.
 | action-system.md | 0.1.0 | Action and event handling |
 | component-system.md | 0.1.0 | Component registry and composition |
 
-## 5. Architectural Constraints
+## 7. Architectural Constraints
 
-1. This repository is the authoritative source of architectural truth for DUKADESK.
-2. Implementation repositories must never become the primary source of architecture.
-3. All architecture changes require an ADR or RFC before implementation.
-4. Terminology must remain consistent with `GLOSSARY.md`.
-5. Standards must be traceable to platform principles.
-6. Specifications must be verified against the Knowledge Base before implementation.
+1. This repository operates under the DUKADESK Platform Constitution.
+2. This repository is the authoritative source of architectural truth for DUKADESK.
+3. Implementation repositories must never become the primary source of architecture.
+4. All architecture changes require an ADR or RFC before implementation.
+5. Terminology must remain consistent with `GLOSSARY.md`.
+6. Standards must be traceable to platform principles and constitutional laws.
+7. Specifications must be verified against the Knowledge Base before implementation.
+8. Engineering governance is consolidated under `engineering-governance/`.
 
-## 6. Known Deviations
+## 8. Known Deviations
 
 | Deviation | Rationale | Review Date |
 |-----------|-----------|-------------|
 | No single `src/` root; knowledge domains use top-level directories | This is a knowledge monorepo, not a code monorepo | 2026-07-12 |
 | `PROGRESS_REGISTRY.md` used alongside `PROGRESS.md` | Historical artifact retained for detailed tracking | 2026-07-12 |
 
-## 7. Compliance Notes
+## 9. Compliance Notes
 
-This repository is the root governance repository. Compliance with the Repository Bootstrap standard is self-verified through the `repository-bootstrap/` package and CI validation.
+This repository is the root governance repository. Compliance with the Constitution, Repository Bootstrap standard, and engineering governance is self-verified through the `dukadesk-constitution/`, `engineering-governance/`, and CI validation artifacts.

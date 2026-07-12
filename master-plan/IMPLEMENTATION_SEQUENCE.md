@@ -9,6 +9,11 @@ Knowledge Base Freeze
 Engineering Specifications
 Engineering Governance
 Engineering Work
+Developer Experience
+Platform Operations
+Execution Governance
+Master Plan
+Enterprise Reference Model
 ```
 
 **Status**: Complete

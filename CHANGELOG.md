@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- DUKADESK Platform Constitution (KB-C001–KB-C009) in `dukadesk-constitution/`.
+- Engineering governance consolidation under `engineering-governance/`.
 - Repository Bootstrap standard (KB-141) and templates.
 - `AGENT_CONTEXT.md`, `ARCHITECTURE_ALIGNMENT.md`, `CONTRIBUTING.md`, `CHANGELOG.md`, `PROGRESS.md`, `CODEOWNERS`, and `LICENSE`.
 - Standard directories `docs/`, `tests/`, `scripts/`, and `.github/`.
