@@ -1,8 +1,20 @@
 # DUKADESK Engineering Knowledge Base
 
 **Version:** 0.1.0
-**Status:** Drafting
-**Last Updated:** 2026-07-11
+**Status:** Active
+**Last Updated:** 2026-07-12
+
+| Metadata | Value |
+|----------|-------|
+| Repository Name | DUKADESK OS |
+| Purpose | Single source of truth for DUKADESK architecture, standards, governance, and AI context |
+| Knowledge Base Version | 0.1.0 |
+| Engineering Specification Version | 0.1.0 |
+| Supported Domains | Platform Architecture, Engineering Standards, SDUI, Runtime, Builder, Marketplace, Identity, Data Platform, Integration, Enterprise Services, AI Bootstrapping |
+| Supported Systems | Documentation system, AI agent context system, Architecture review system |
+| Owners | Engineering |
+| Dependencies | Git, Markdown tooling, GitHub Actions |
+| Status | Active |
 
 > **Architecture Progress:** Platform Runtime ✓ | Builder Studio ✓ | Marketplace ✓ | Application Architecture ✓ | Runtime Architecture ✓ | Identity & Access ✓ | Data Platform (16/16 Draft) | Platform Integration (9/13 Draft) | Enterprise Platform Services (6/34 Draft)
 
@@ -100,13 +112,16 @@ KNOWLEDGE-BASE/
 Every developer and AI agent MUST read the following before starting work:
 
 1. **README** — this file
-2. **PROGRESS_REGISTRY** — current platform status
-3. **ADR INDEX** — all decisions made
-4. **CORE_PRINCIPLES** — design philosophy
-5. **GLOSSARY** — terminology
-6. **ENGINEERING STANDARDS** — process rules
-7. **Target specification** — the relevant domain spec
-8. **ARCHITECTURE** — system architecture, component registry, and related documents
+2. **AGENT_CONTEXT** — AI agent context and boot sequence
+3. **ARCHITECTURE_ALIGNMENT** — Knowledge Base and specification alignment
+4. **PROGRESS_REGISTRY** — current platform status
+5. **PROGRESS** — repository bootstrap and high-level status
+6. **ADR INDEX** — all decisions made
+7. **CORE_PRINCIPLES** — design philosophy
+8. **GLOSSARY** — terminology
+9. **ENGINEERING STANDARDS** — process rules
+10. **Target specification** — the relevant domain spec
+11. **ARCHITECTURE** — system architecture, component registry, and related documents
 
 ## Platform Status
 

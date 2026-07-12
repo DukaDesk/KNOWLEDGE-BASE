@@ -1,0 +1,31 @@
+# Global owners — Engineering owns the Knowledge Base
+* @dukadesk/engineering
+
+# Documentation and governance
+*.md @dukadesk/engineering
+ADRs/ @dukadesk/architecture
+ARCHITECTURE/ @dukadesk/architecture
+SPECIFICATIONS/ @dukadesk/architecture
+STANDARDS/ @dukadesk/engineering
+GUIDES/ @dukadesk/engineering
+repository-bootstrap/ @dukadesk/engineering
+repository-governance/ @dukadesk/engineering
+knowledge-base/ @dukadesk/architecture
+
+# Security-sensitive files
+SECURITY* @dukadesk/security
+*secret* @dukadesk/security
+
+# Project management
+project-management/ @dukadesk/program-management
+
+# Product implementation directories
+mobile/ @dukadesk/mobile
+backend/ @dukadesk/backend
+builder/ @dukadesk/builder
+business-dashboard/ @dukadesk/dashboards
+tenant-dashboard/ @dukadesk/dashboards
+website/ @dukadesk/website
+sdk/ @dukadesk/sdk
+cli/ @dukadesk/developer-experience
+developer-experience/ @dukadesk/developer-experience
