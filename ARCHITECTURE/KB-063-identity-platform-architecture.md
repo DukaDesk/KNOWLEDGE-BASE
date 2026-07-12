@@ -1437,8 +1437,8 @@ Future platform evolution may include comprehensive machine-to-machine identity 
 | **KB-064** | Authentication Architecture (planned) | Authentication flows, providers, and token management |
 | **KB-065** | Authorization & RBAC (planned) | Authorization policies built on identity foundation |
 | **KB-066** | Universal Consumer Identity (planned) | Consumer-specific identity relationships and consent |
-| **KB-067** | Consent & Privacy (planned) | Consent architecture for identity data sharing |
-| **KB-068** | Session Management (planned) | Session lifecycle tied to identity authentication |
+| **KB-067** | Consent & Privacy Architecture | Consent architecture for identity data sharing |
+| **KB-068** | Session Management Architecture | Session lifecycle tied to identity authentication |
 
 ---
 

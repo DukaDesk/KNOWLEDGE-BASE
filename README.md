@@ -4,7 +4,7 @@
 **Status:** Drafting
 **Last Updated:** 2026-07-10
 
-> **Current Suite:** Marketplace Architecture — KB-032 (done), KB-033–040 (pending)
+> **Architecture Progress:** Platform Runtime ✓ | Builder Studio ✓ | Marketplace ✓ | Application Architecture ✓
 
 ## What This Is
 
@@ -68,7 +68,19 @@ KNOWLEDGE-BASE/
 │   ├── application-architecture-overview.md ← KB-041 Application Architecture Overview
 │   ├── application-manifest-specification.md ← KB-042 Application Manifest Specification
 │   ├── workspace-tenant-model.md           ← KB-043 Workspace & Tenant Model
-│   └── runtime-architecture-overview.md    ← KB-051 Runtime Architecture Overview
+│   ├── KB-044-navigation-architecture.md   ← KB-044 Navigation Architecture
+│   ├── KB-045-screen-model.md             ← KB-045 Screen Model
+│   ├── KB-046-component-tree-model.md     ← KB-046 Component Tree Model
+│   ├── KB-047-action-event-model.md       ← KB-047 Action & Event Model
+│   ├── KB-048-application-state-model.md  ← KB-048 Application State Model
+│   ├── runtime-architecture-overview.md    ← KB-051 Runtime Architecture Overview
+│   ├── KB-052-rendering-engine-architecture.md ← KB-052 Rendering Engine Architecture
+│   ├── KB-053-rendering-pipeline-architecture.md ← KB-053 Rendering Pipeline Architecture
+│   ├── KB-054-runtime-component-registry-architecture.md ← KB-054 Runtime Component Registry
+│   ├── KB-055-runtime-state-engine-architecture.md  ← KB-055 Runtime State Engine
+│   ├── KB-056-runtime-navigation-engine-architecture.md  ← KB-056 Runtime Navigation Engine
+│   ├── KB-057-runtime-security-architecture.md  ← KB-057 Runtime Security
+│   └── KB-058-runtime-observability-diagnostics-architecture.md  ← KB-058 Runtime Observability & Diagnostics
 ├── STANDARDS/                    ← Engineering conventions
 │   ├── code-style.md
 │   └── ...
@@ -101,9 +113,11 @@ Every developer and AI agent MUST read the following before starting work:
 | Surface | Status |
 |---------|--------|
 | Knowledge Base | Drafting |
-| Platform Runtime Architecture | Complete |
-| Builder Studio Architecture | Complete |
-| Marketplace Architecture | KB-032 done, KB-033–040 pending |
+| Platform Runtime Architecture (KB-005–020) | Complete |
+| Builder Studio Architecture (KB-022–031) | Complete |
+| Marketplace Architecture (KB-032–040) | Complete |
+| Application Architecture (KB-041–043) | Complete |
+| Runtime Architecture (KB-051) | Complete |
 | Mobile Specification | Implemented |
 | Backend Specification | Planned |
 | Business Dashboard | Planned |

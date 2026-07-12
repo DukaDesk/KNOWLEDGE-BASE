@@ -11,7 +11,7 @@
 | **Owner** | Architecture Team |
 | **Suite** | Runtime & Rendering Architecture |
 | **Dependencies** | KB-051 Runtime Architecture Overview, KB-046 Component Tree Model, KB-045 Screen Model, KB-049 Theme & Design Token Model, KB-047 Action & Event Model, KB-044 Navigation Architecture, KB-048 Application State Model, KB-042 Application Manifest Specification, KB-012 Component Registry, KB-014 Layout System |
-| **Related Documents** | KB-041 Application Architecture Overview, KB-043 Workspace & Tenant Model, KB-050 Capability Composition Model, KB-053 SDUI Architecture, KB-054 Runtime State Management, KB-055 Runtime Navigation & Routing, KB-056 Runtime Component Registry, KB-057 Runtime Event & Action Pipeline, KB-008 Runtime Overview, KB-009 Manifest Specification |
+| **Related Documents** | KB-041 Application Architecture Overview, KB-043 Workspace & Tenant Model, KB-050 Capability Composition Model, KB-053 SDUI Architecture, KB-056 Runtime State Management, KB-055 Runtime Navigation & Routing, KB-054 Runtime Component Registry, KB-057 Runtime Event & Action Pipeline, KB-008 Runtime Overview, KB-009 Manifest Specification |
 | **Review Status** | Pending |
 | **Last Updated** | 2026-07-11 |
 
@@ -64,9 +64,9 @@ This document defines the architecture of the Rendering Engine in isolation from
 
 - Implementation details: programming languages, frameworks, libraries, rendering technologies
 - Platform-specific rendering optimizations
-- Component Registry implementation (handled by KB-056)
+- Component Registry implementation (handled by KB-054)
 - Theme Engine implementation (handled by KB-017, KB-049)
-- State Management implementation (handled by KB-054)
+- State Management implementation (handled by KB-056)
 - Action Dispatcher implementation (handled by KB-057)
 - Navigation Engine implementation (handled by KB-055)
 - Specific component implementations (handled by component authors)

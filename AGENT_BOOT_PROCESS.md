@@ -116,6 +116,21 @@ When conflicts are discovered: report the conflict, identify affected documents,
 | Validation Engine | ARCHITECTURE/validation-engine.md | — | — | — |
 | Publishing Pipeline | ARCHITECTURE/publishing-pipeline.md | — | — | — |
 | Marketplace Architecture | ARCHITECTURE/marketplace-architecture.md | — | — | — |
+| Application Architecture | ARCHITECTURE/application-architecture-overview.md | — | — | — |
+| Application Manifest | ARCHITECTURE/application-manifest-specification.md | — | — | — |
+| Workspace & Tenant Model | ARCHITECTURE/workspace-tenant-model.md | — | — | — |
+| Navigation Architecture | ARCHITECTURE/KB-044-navigation-architecture.md | — | — | — |
+| Component Tree Model | ARCHITECTURE/KB-046-component-tree-model.md | — | — | — |
+| Action & Event Model | ARCHITECTURE/KB-047-action-event-model.md | — | — | — |
+| Application State Model | ARCHITECTURE/KB-048-application-state-model.md | — | — | — |
+| Runtime Architecture | ARCHITECTURE/runtime-architecture-overview.md | — | — | — |
+| Rendering Engine | ARCHITECTURE/KB-052-rendering-engine-architecture.md | — | — | — |
+| Rendering Pipeline | ARCHITECTURE/KB-053-rendering-pipeline-architecture.md | — | — | — |
+| Runtime Component Registry | ARCHITECTURE/KB-054-runtime-component-registry-architecture.md | — | — | — |
+| Runtime State Engine | ARCHITECTURE/KB-055-runtime-state-engine-architecture.md | — | — | — |
+| Runtime Navigation Engine | ARCHITECTURE/KB-056-runtime-navigation-engine-architecture.md | — | — | — |
+| Runtime Security | ARCHITECTURE/KB-057-runtime-security-architecture.md | — | — | — |
+| Runtime Observability & Diagnostics | ARCHITECTURE/KB-058-runtime-observability-diagnostics-architecture.md | — | — | — |
 | Event Bus | ARCHITECTURE/overview.md | SPECIFICATIONS/event-bus.md | ADR-004 | Mobile — EventBus |
 | Tenant Model | ARCHITECTURE/overview.md | SPECIFICATIONS/tenant-model.md | — | Mobile — ManifestResolver |
 | Module System | ARCHITECTURE/overview.md | SPECIFICATIONS/tenant-model.md | — | Mobile — ModuleRegistry |

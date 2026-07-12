@@ -11,7 +11,7 @@
 | **Owner** | Architecture Team |
 | **Suite** | Runtime & Rendering Architecture |
 | **Dependencies** | KB-051 Runtime Architecture Overview, KB-052 Rendering Engine Architecture, KB-042 Application Manifest Specification, KB-045 Screen Model, KB-046 Component Tree Model, KB-047 Action & Event Model, KB-048 Application State Model, KB-049 Theme & Design Token Model, KB-050 Capability Composition Model, KB-044 Navigation Architecture |
-| **Related Documents** | KB-041 Application Architecture Overview, KB-043 Workspace & Tenant Model, KB-053 SDUI Architecture, KB-054 Runtime State Management, KB-055 Runtime Navigation & Routing, KB-056 Runtime Component Registry, KB-057 Runtime Event & Action Pipeline, KB-058 Runtime Caching & Synchronization, KB-059 Runtime Security & Isolation, KB-060 Runtime Observability & Diagnostics, KB-008 Runtime Overview, KB-009 Manifest Specification, KB-012 Component Registry |
+| **Related Documents** | KB-041 Application Architecture Overview, KB-043 Workspace & Tenant Model, KB-053 SDUI Architecture, KB-056 Runtime State Management, KB-055 Runtime Navigation & Routing, KB-054 Runtime Component Registry, KB-057 Runtime Event & Action Pipeline, KB-058 Runtime Caching & Synchronization, KB-059 Runtime Security & Isolation, KB-060 Runtime Observability & Diagnostics, KB-008 Runtime Overview, KB-009 Manifest Specification, KB-012 Component Registry |
 | **Review Status** | Pending |
 | **Last Updated** | 2026-07-11 |
 
@@ -61,9 +61,9 @@ The Rendering Pipeline is not a single linear path. It encompasses multiple sub-
 
 - Implementation details: languages, frameworks, libraries
 - Rendering Engine internal architecture (handled by KB-052)
-- Component Registry implementation (handled by KB-056)
+- Component Registry implementation (handled by KB-054)
 - Theme Engine implementation (handled by KB-017, KB-049)
-- State Management implementation (handled by KB-054)
+- State Management implementation (handled by KB-056)
 - Action Dispatcher implementation (handled by KB-057)
 - Navigation Engine implementation (handled by KB-055)
 - Specific platform Runtimes (handled by respective Runtime teams)
@@ -1361,9 +1361,9 @@ The pipeline may execute partially on edge infrastructure:
 | KB-008 | Runtime Overview — high-level Runtime context |
 | KB-041 | Application Architecture Overview — application architecture context |
 | KB-043 | Workspace & Tenant Model — workspace and tenant context for the pipeline |
-| KB-054 | Runtime State Management — state management consumed by State Hydration |
+| KB-056 | Runtime State Management — state management consumed by State Hydration |
 | KB-055 | Runtime Navigation & Routing — navigation consumed by Navigation Resolution |
-| KB-056 | Runtime Component Registry — component registry consumed by Component Tree Resolution |
+| KB-054 | Runtime Component Registry — component registry consumed by Component Tree Resolution |
 | KB-057 | Runtime Event & Action Pipeline — action and event pipeline consumed by Action and Event Registration |
 | KB-058 | Runtime Caching & Synchronization — caching consumed by Offline Pipeline |
 | KB-059 | Runtime Security & Isolation — security consumed by Validation and Security stages |

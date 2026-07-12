@@ -11,7 +11,7 @@
 | **Owner** | Architecture Team |
 | **Suite** | Identity & Access Architecture |
 | **Dependencies** | KB-043 Workspace & Tenant Model, KB-050 Capability Composition Model, KB-057 Runtime Security Architecture, KB-063 Identity Platform Architecture, KB-064 Authentication Architecture |
-| **Related Documents** | KB-066 Universal Consumer Identity (planned), KB-067 Consent & Privacy Architecture (planned), KB-068 Session Management (planned), KB-070 API Security & Token Architecture (planned), KB-051 Runtime Architecture Overview, KB-055 Runtime State Engine Architecture, KB-060 Runtime Lifecycle Management |
+| **Related Documents** | KB-066 Universal Consumer Identity, KB-067 Consent & Privacy Architecture, KB-068 Session Management Architecture, KB-070 API Security & Token Architecture, KB-051 Runtime Architecture Overview, KB-055 Runtime State Engine Architecture, KB-060 Runtime Lifecycle Management |
 | **Review Status** | Pending |
 | **Last Updated** | 2026-07-11 |
 
@@ -1089,9 +1089,9 @@ Future authorization may use graph-based permission models where permissions are
 | **KB-063** | Identity Platform Architecture | Identity that authorization operates on |
 | **KB-064** | Authentication Architecture | Authentication that precedes authorization |
 | **KB-066** | Universal Consumer Identity (planned) | Consumer-specific authorization flows |
-| **KB-067** | Consent & Privacy (planned) | Consent is separate from authorization |
-| **KB-068** | Session Management (planned) | Session attributes used in authorization context |
-| **KB-070** | API Security & Token Architecture (planned) | API-level authorization scopes |
+| **KB-067** | Consent & Privacy Architecture | Consent is separate from authorization |
+| **KB-068** | Session Management Architecture | Session attributes used in authorization context |
+| **KB-070** | API Security & Token Architecture | API-level authorization scopes |
 
 ---
 

@@ -11,7 +11,7 @@
 | **Owner** | Architecture Team |
 | **Suite** | Identity & Access Architecture |
 | **Dependencies** | KB-063 Identity Platform Architecture, KB-057 Runtime Security Architecture |
-| **Related Documents** | KB-051 Runtime Architecture Overview, KB-060 Runtime Lifecycle Management, KB-062 Runtime Deployment & Environment, KB-065 Authorization & RBAC (planned), KB-066 Universal Consumer Identity (planned), KB-067 Consent & Privacy (planned), KB-068 Session Management (planned), KB-070 API Security & Token Architecture (planned) |
+| **Related Documents** | KB-051 Runtime Architecture Overview, KB-060 Runtime Lifecycle Management, KB-062 Runtime Deployment & Environment, KB-065 Authorization & RBAC Architecture, KB-066 Universal Consumer Identity, KB-067 Consent & Privacy Architecture, KB-068 Session Management Architecture, KB-070 API Security & Token Architecture |
 | **Review Status** | Pending |
 | **Last Updated** | 2026-07-11 |
 
@@ -1289,10 +1289,10 @@ Future evolution targets a fully passwordless platform where passwords are elimi
 | **KB-063** | Identity Platform Architecture | Identity resolution and identity context that authentication produces |
 | **KB-065** | Authorization & RBAC (planned) | Authorization operates on authenticated identity from this architecture |
 | **KB-066** | Universal Consumer Identity (planned) | Consumer-specific authentication flows |
-| **KB-067** | Consent & Privacy (planned) | Consent is independent of and follows authentication |
-| **KB-068** | Session Management (planned) | Session lifecycle tied to authentication events |
+| **KB-067** | Consent & Privacy Architecture | Consent is independent of and follows authentication |
+| **KB-068** | Session Management Architecture | Session lifecycle tied to authentication events |
 | **KB-057** | Runtime Security Architecture | Security controls for authentication token handling |
-| **KB-070** | API Security & Token Architecture (planned) | API authentication and token management |
+| **KB-070** | API Security & Token Architecture | API authentication and token management |
 
 ---
 
