@@ -207,7 +207,7 @@
 | Messaging & Communication Platform Architecture | ⏳ Planned | KB-111 — Messaging & Communication Platform Architecture |
 | Scheduling & Job Orchestration Architecture | ⏳ Planned | KB-112 — Scheduling & Job Orchestration Architecture |
 | Workflow Orchestration Architecture | ⏳ Planned | KB-113 — Workflow Orchestration Architecture |
-| Business Rules Engine Architecture | ⏳ Planned | KB-114 — Business Rules Engine Architecture |
+| Business Rules Engine Architecture | 🔧 In Progress | KB-114 — Business Rules Engine Architecture defined — Draft |
 | Template Management Architecture | ⏳ Planned | KB-115 — Template Management Architecture |
 | AI Platform Architecture | ⏳ Planned | KB-116 — AI Platform Architecture |
 | AI Agent Framework Architecture | ⏳ Planned | KB-117 — AI Agent Framework Architecture |
@@ -217,7 +217,7 @@
 | AI Safety & Governance Architecture | ⏳ Planned | KB-121 — AI Safety & Governance Architecture |
 | AI Decision Intelligence Architecture | ⏳ Planned | KB-122 — AI Decision Intelligence Architecture |
 | Audit Platform Architecture | ⏳ Planned | KB-123 — Audit Platform Architecture |
-| Policy Management Architecture | ⏳ Planned | KB-124 — Policy Management Architecture |
+| Policy Management Architecture | 🔧 In Progress | KB-124 — Policy Management Architecture defined — Draft |
 | Licensing & Subscription Platform Architecture | ⏳ Planned | KB-125 — Licensing & Subscription Platform Architecture |
 | Billing & Usage Metering Architecture | ⏳ Planned | KB-126 — Billing & Usage Metering Architecture |
 | Digital Asset Management Architecture | ⏳ Planned | KB-127 — Digital Asset Management Architecture |
