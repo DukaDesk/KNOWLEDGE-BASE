@@ -35,6 +35,7 @@
 | Master Plan | ✅ Complete | `master-plan/` with waves, dependencies, teams, releases |
 | Enterprise Reference Model | ✅ Complete | `enterprise-reference/` with domain/service/component/API/event/database catalogs |
 | Product Definition | ✅ Complete | `product-definition/` with platform, products, applications, modules, features, users, permissions, editions, marketplace, roadmap, and usage guides |
+| UI Specifications | ✅ Complete | `ui-specifications/` with principles, design tokens, standards, shared components/patterns/layouts/flows, application directories, and templates |
 
 ## Platform Definition
 
