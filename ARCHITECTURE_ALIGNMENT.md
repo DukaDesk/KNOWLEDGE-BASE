@@ -72,7 +72,25 @@ This repository aligns with DUKADESK Knowledge Base version **0.1.0**.
 | action-system.md | 0.1.0 | Action and event handling |
 | component-system.md | 0.1.0 | Component registry and composition |
 
-## 7. Architectural Constraints
+## 7. Referenced Platform Definition Documents
+
+| PD-ID | Title | Relevance |
+|-------|-------|-----------|
+| PD-001 | Platform Overview | What DUKADESK is |
+| PD-002 | Product Model | Product packaging |
+| PD-003 | Capability Model | Platform capabilities |
+| PD-004 | Application Model | Platform applications |
+| PD-005 | Module Model | Module decomposition |
+| PD-006 | Service Model | Service mapping |
+| PD-007 | Feature Model | Feature decomposition |
+| PD-008 | Edition Model | Product editions |
+| PD-009 | Licensing Model | Licensing terms |
+| PD-010 | Monetization Model | Revenue model |
+| PD-011 | Marketplace Model | Marketplace structure |
+| PD-012 | Tenant Model | Tenant segmentation |
+| PD-013 | Extensibility Model | Extension points |
+
+## 8. Architectural Constraints
 
 1. This repository operates under the DUKADESK Platform Constitution.
 2. This repository is the authoritative source of architectural truth for DUKADESK.

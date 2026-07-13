@@ -24,9 +24,11 @@ This is the **Engineering Knowledge Base** for the DUKADESK platform.
 
 It is the single source of truth for all architectural decisions, engineering standards, platform conventions, and governance processes across the entire DUKADESK ecosystem.
 
+It operates alongside the **[DUKADESK Platform Definition](./platform-definition/README.md)**, which defines **what DUKADESK actually is** — its capabilities, applications, editions, marketplace, tenants, and extensibility model.
+
 It operates under the authority of the **[DUKADESK Platform Constitution](./dukadesk-constitution/README.md)**, which defines the immutable laws, decision framework, and governance model that sit above the Knowledge Base.
 
-> **The Knowledge Base is the product's memory.** Specifications describe how the platform is built. Implementations produce the software. If a conflict exists, the conflict is resolved through the Knowledge Base — and ultimately the Constitution — not through code or conversation.
+> **The Knowledge Base is the product's memory.** Specifications describe how the platform is built. Implementations produce the software. The Platform Definition describes what the platform provides. If a conflict exists, the conflict is resolved through the Knowledge Base — and ultimately the Constitution — not through code or conversation.
 
 > **Chain of authority:** Constitution → Knowledge Base → ADRs → Engineering Specifications → Engineering Governance → Implementation.
 
@@ -55,6 +57,22 @@ DUKADESK-OS/
 │   ├── CHANGE_CONTROL.md
 │   ├── DECISION_FRAMEWORK.md
 │   └── GOVERNANCE_MODEL.md
+│
+├── platform-definition/              ← What DUKADESK is
+│   ├── README.md
+│   ├── PLATFORM_OVERVIEW.md
+│   ├── PRODUCT_MODEL.md
+│   ├── CAPABILITY_MODEL.md
+│   ├── APPLICATION_MODEL.md
+│   ├── MODULE_MODEL.md
+│   ├── SERVICE_MODEL.md
+│   ├── FEATURE_MODEL.md
+│   ├── EDITION_MODEL.md
+│   ├── LICENSING_MODEL.md
+│   ├── MONETIZATION_MODEL.md
+│   ├── MARKETPLACE_MODEL.md
+│   ├── TENANT_MODEL.md
+│   └── EXTENSIBILITY_MODEL.md
 │
 ├── engineering-governance/           ← Engineering governance
 │   ├── README.md
@@ -126,16 +144,17 @@ Every developer and AI agent MUST read the following before starting work:
 
 1. **README** — this file
 2. **DUKADESK CONSTITUTION** — supreme governing documents
-3. **AGENT_CONTEXT** — AI agent context and boot sequence
-4. **ARCHITECTURE_ALIGNMENT** — Knowledge Base and specification alignment
-5. **PROGRESS_REGISTRY** — current platform status
-6. **PROGRESS** — repository bootstrap and high-level status
-7. **ADR INDEX** — all decisions made
-8. **CORE_PRINCIPLES** — design philosophy
-9. **GLOSSARY** — terminology
-10. **ENGINEERING STANDARDS** — process rules
-11. **Target specification** — the relevant domain spec
-12. **ARCHITECTURE** — system architecture, component registry, and related documents
+3. **PLATFORM DEFINITION** — what DUKADESK is
+4. **AGENT_CONTEXT** — AI agent context and boot sequence
+5. **ARCHITECTURE_ALIGNMENT** — Knowledge Base and specification alignment
+6. **PROGRESS_REGISTRY** — current platform status
+7. **PROGRESS** — repository bootstrap and high-level status
+8. **ADR INDEX** — all decisions made
+9. **CORE PRINCIPLES** — design philosophy
+10. **GLOSSARY** — terminology
+11. **ENGINEERING STANDARDS** — process rules
+12. **Target specification** — the relevant domain spec
+13. **ARCHITECTURE** — system architecture, component registry, and related documents
 
 ## Platform Status
 

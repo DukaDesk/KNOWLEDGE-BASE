@@ -54,8 +54,9 @@ Generate Summary
 | Minimum Required | Strongly Recommended | Task-Specific |
 |------------------|----------------------|---------------|
 | DUKADESK Constitution | All constitutional documents | ARCHITECTURE/ (all) |
-| README | All KB documents | SPECIFICATIONS/ (target domain) |
-| CORE_PRINCIPLES.md | | engineering-governance/ |
+| Platform Definition | All PD documents | SPECIFICATIONS/ (target domain) |
+| README | All KB documents | engineering-governance/ |
+| CORE_PRINCIPLES.md | | platform-definition/ |
 | GLOSSARY.md | | |
 | ENGINEERING_STANDARDS.md | | |
 | AGENT_BOOT_PROCESS.md | | |

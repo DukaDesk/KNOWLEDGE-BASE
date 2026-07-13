@@ -19,6 +19,7 @@ This repository welcomes contributions to:
 - Architecture Decision Records (ADRs)
 - Knowledge Base documents
 - Engineering specifications
+- Platform Definition documents
 - Standards and conventions
 - Guides and runbooks
 - Repository governance artifacts

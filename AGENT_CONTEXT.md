@@ -10,9 +10,9 @@
 
 ## Repository Purpose
 
-This repository is the **single source of truth** for the DUKADESK platform's architecture, engineering standards, governance processes, and AI context.
+This repository is the **single source of truth** for the DUKADESK platform's architecture, engineering standards, governance processes, AI context, and platform definition.
 
-It stores the Knowledge Base, Architecture Decision Records (ADRs), specifications, standards, guides, and repository governance artifacts that direct how the DUKADESK platform is designed, built, and maintained.
+It stores the Knowledge Base, Architecture Decision Records (ADRs), specifications, standards, guides, repository governance artifacts, and platform definition documents that direct how the DUKADESK platform is designed, built, maintained, and what it provides.
 
 ## Supported Domains
 
@@ -52,19 +52,22 @@ Read these documents before working in this repository:
 4. [dukadesk-constitution/ARCHITECTURAL_LAWS.md](./dukadesk-constitution/ARCHITECTURAL_LAWS.md)
 5. [dukadesk-constitution/ENGINEERING_LAWS.md](./dukadesk-constitution/ENGINEERING_LAWS.md)
 6. [dukadesk-constitution/AI_LAWS.md](./dukadesk-constitution/AI_LAWS.md)
-7. [AGENT_BOOT_PROCESS.md](./AGENT_BOOT_PROCESS.md)
-8. [ARCHITECTURE_ALIGNMENT.md](./ARCHITECTURE_ALIGNMENT.md)
-9. [PROGRESS_REGISTRY.md](./PROGRESS_REGISTRY.md)
-10. [PROGRESS.md](./PROGRESS.md)
-11. [CONTRIBUTING.md](./CONTRIBUTING.md)
-12. [ENGINEERING_STANDARDS.md](./ENGINEERING_STANDARDS.md)
-13. [CORE_PRINCIPLES.md](./CORE_PRINCIPLES.md)
-14. [GLOSSARY.md](./GLOSSARY.md)
-15. [NAMING_STANDARDS.md](./NAMING_STANDARDS.md)
-16. [PLATFORM_PHILOSOPHY.md](./PLATFORM_PHILOSOPHY.md)
-17. [ADRs/ADR-INDEX.md](./ADRs/ADR-INDEX.md)
-18. Relevant `ARCHITECTURE/` documents
-19. Relevant `SPECIFICATIONS/` documents
+7. [platform-definition/README.md](./platform-definition/README.md)
+8. [platform-definition/PLATFORM_OVERVIEW.md](./platform-definition/PLATFORM_OVERVIEW.md)
+9. [platform-definition/CAPABILITY_MODEL.md](./platform-definition/CAPABILITY_MODEL.md)
+10. [AGENT_BOOT_PROCESS.md](./AGENT_BOOT_PROCESS.md)
+11. [ARCHITECTURE_ALIGNMENT.md](./ARCHITECTURE_ALIGNMENT.md)
+12. [PROGRESS_REGISTRY.md](./PROGRESS_REGISTRY.md)
+13. [PROGRESS.md](./PROGRESS.md)
+14. [CONTRIBUTING.md](./CONTRIBUTING.md)
+15. [ENGINEERING_STANDARDS.md](./ENGINEERING_STANDARDS.md)
+16. [CORE_PRINCIPLES.md](./CORE_PRINCIPLES.md)
+17. [GLOSSARY.md](./GLOSSARY.md)
+18. [NAMING_STANDARDS.md](./NAMING_STANDARDS.md)
+19. [PLATFORM_PHILOSOPHY.md](./PLATFORM_PHILOSOPHY.md)
+20. [ADRs/ADR-INDEX.md](./ADRs/ADR-INDEX.md)
+21. Relevant `ARCHITECTURE/` documents
+22. Relevant `SPECIFICATIONS/` documents
 
 ## Repository Rules
 
@@ -163,6 +166,7 @@ Generate Summary
 This repository is a **knowledge monorepo**. It does not contain a single `src/` directory. Instead, source content is organized by domain:
 
 - `dukadesk-constitution/` — supreme governing documents
+- `platform-definition/` — what DUKADESK is
 - `engineering-governance/` — consolidated engineering governance
   - `repository-governance/` — repository standards
   - `developer-experience/` — developer guides and processes

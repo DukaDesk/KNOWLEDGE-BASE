@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- DUKADESK Platform Definition (PD-001–PD-013) in `platform-definition/`.
 - DUKADESK Platform Constitution (KB-C001–KB-C009) in `dukadesk-constitution/`.
 - Engineering governance consolidation under `engineering-governance/`.
 - Repository Bootstrap standard (KB-141) and templates.
