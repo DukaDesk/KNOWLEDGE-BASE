@@ -1,6 +1,6 @@
-# Contributing to Business Dashboard
+# Contributing to Infrastructure
 
-Thank you for contributing to the DUKADESK OS business dashboard.
+Thank you for contributing to the DUKADESK OS infrastructure.
 
 ## Getting Started
 

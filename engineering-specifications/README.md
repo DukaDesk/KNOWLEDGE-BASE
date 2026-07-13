@@ -87,4 +87,4 @@ See [SPECIFICATION_LIFECYCLE.md](SPECIFICATION_LIFECYCLE.md) for full details.
 
 ## Status
 
-This repository is governed by [Repository Governance](../repository-governance/) standards and is the authoritative input for all implementation work.
+This repository is governed by [Repository Governance](../engineering-governance/repository-governance/) standards and is the authoritative input for all implementation work.

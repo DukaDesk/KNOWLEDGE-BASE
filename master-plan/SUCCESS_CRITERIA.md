@@ -59,7 +59,7 @@ DUKADESK OS is successful when the platform is deployed to production, serves us
 
 ## KPIs
 
-Detailed KPIs are in [SUCCESS_METRICS.md](../execution-governance/SUCCESS_METRICS.md).
+Detailed KPIs are in [SUCCESS_METRICS.md](../engineering-governance/execution-governance/SUCCESS_METRICS.md).
 
 ## Exit Criteria
 

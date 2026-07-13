@@ -18,7 +18,7 @@ Specifications rarely exist in isolation. This document defines how to declare r
 Relationships are declared in the `Related Specifications` section using the format:
 
 ```text
-- <Type>: [<ID> <Title>](path/to/file.md)
+- <Type>: `[<ID> <Title>](path/to/file.md)`
 ```
 
 Example:

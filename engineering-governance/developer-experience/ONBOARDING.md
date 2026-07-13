@@ -23,8 +23,8 @@ Implementation Repositories
 ## Read First
 
 1. [Repository Governance](../repository-governance/README.md)
-2. [Engineering Specifications](../engineering-specifications/README.md)
-3. [Engineering Work Management](../engineering-work/README.md)
+2. [Engineering Specifications](../../engineering-specifications/README.md)
+3. [Engineering Work Management](../../engineering-work/README.md)
 4. [Developer Experience](README.md)
 
 ## Repository Setup Standard
@@ -52,7 +52,7 @@ CHANGELOG.md
 
 ### Day 2–3
 
-1. Pick a starter task from [engineering-work](../engineering-work/).
+1. Pick a starter task from [engineering-work](../../engineering-work/).
 2. Read the linked Engineering Specification.
 3. Follow the human workflow in [ENGINEERING_LIFECYCLE.md](ENGINEERING_LIFECYCLE.md).
 
@@ -67,7 +67,7 @@ CHANGELOG.md
 
 ### First Task
 
-1. Select a Task from [engineering-work](../engineering-work/).
+1. Select a Task from [engineering-work](../../engineering-work/).
 2. Read the linked Engineering Specification.
 3. Follow the AI workflow in [ENGINEERING_LIFECYCLE.md](ENGINEERING_LIFECYCLE.md).
 

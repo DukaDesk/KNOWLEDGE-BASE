@@ -50,7 +50,7 @@ Business Dashboard
 
 ## Specification IDs
 
-Specification IDs follow the scheme defined in [engineering-specifications](../engineering-specifications/SPECIFICATION_NUMBERING.md).
+Specification IDs follow the scheme defined in [engineering-specifications](../../engineering-specifications/SPECIFICATION_NUMBERING.md).
 
 ## Maintaining the Mapping
 

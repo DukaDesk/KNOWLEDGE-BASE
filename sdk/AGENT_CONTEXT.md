@@ -49,14 +49,14 @@ scripts/lint
 
 ## Engineering Standards
 
-- [Repository Standard](../repository-governance/REPOSITORY_STANDARD.md)
-- [Branching Standard](../repository-governance/BRANCHING_STANDARD.md)
-- [Versioning Standard](../repository-governance/VERSIONING_STANDARD.md)
-- [Pull Request Standard](../repository-governance/PR_STANDARD.md)
-- [Review Standard](../repository-governance/REVIEW_STANDARD.md)
-- [Release Standard](../repository-governance/RELEASE_STANDARD.md)
-- [AI Context Standard](../repository-governance/AI_CONTEXT_STANDARD.md)
-- [Boot Process Standard](../repository-governance/BOOT_PROCESS_STANDARD.md)
+- [Repository Standard](../engineering-governance/repository-governance/REPOSITORY_STANDARD.md)
+- [Branching Standard](../engineering-governance/repository-governance/BRANCHING_STANDARD.md)
+- [Versioning Standard](../engineering-governance/repository-governance/VERSIONING_STANDARD.md)
+- [Pull Request Standard](../engineering-governance/repository-governance/PR_STANDARD.md)
+- [Review Standard](../engineering-governance/repository-governance/REVIEW_STANDARD.md)
+- [Release Standard](../engineering-governance/repository-governance/RELEASE_STANDARD.md)
+- [AI Context Standard](../engineering-governance/repository-governance/AI_CONTEXT_STANDARD.md)
+- [Boot Process Standard](../engineering-governance/repository-governance/BOOT_PROCESS_STANDARD.md)
 
 ## Specification Traceability
 
@@ -78,7 +78,7 @@ Specifications that target this repository:
 
 - Add a client method: follow API-XXXX and add unit tests.
 - Update authentication helpers: follow SEC-XXXX.
-- Publish a release: follow [VERSIONING_STANDARD](../repository-governance/VERSIONING_STANDARD.md).
+- Publish a release: follow [VERSIONING_STANDARD](../engineering-governance/repository-governance/VERSIONING_STANDARD.md).
 
 ## Escalation
 

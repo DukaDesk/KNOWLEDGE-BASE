@@ -29,5 +29,5 @@ This document defines the major milestones for DUKADESK OS.
 ## Milestone Governance
 
 - Milestones are reviewed weekly.
-- Slippage is escalated per [ESCALATION_MODEL.md](../execution-governance/ESCALATION_MODEL.md).
+- Slippage is escalated per [ESCALATION_MODEL.md](../engineering-governance/execution-governance/ESCALATION_MODEL.md).
 - Milestone completion triggers release planning.

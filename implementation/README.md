@@ -33,7 +33,7 @@ This repository does not replace existing planning repositories. It references t
 - [product-definition](../product-definition/) for product scope
 - [ui-specifications](../ui-specifications/) for UI standards and screen specs
 - [platform-operations](../platform-operations/) for operational readiness
-- [execution-governance](../execution-governance/) for decision authority and compliance
+- [execution-governance](../engineering-governance/execution-governance/) for decision authority and compliance
 
 ## Repository Startup Order
 

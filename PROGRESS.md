@@ -1,6 +1,6 @@
 # DUKADESK OS — Progress
 
-**Last Updated:** 2026-07-12
+**Last Updated:** 2026-07-13
 
 ## Status Key
 
@@ -27,11 +27,11 @@
 | Change Control | ✅ Complete | `dukadesk-constitution/CHANGE_CONTROL.md` |
 | Decision Framework | ✅ Complete | `dukadesk-constitution/DECISION_FRAMEWORK.md` |
 | Governance Model | ✅ Complete | `dukadesk-constitution/GOVERNANCE_MODEL.md` |
-| Engineering Governance Consolidation | ✅ Complete | `repository-governance/`, `developer-experience/`, `repository-bootstrap/`, `execution-governance/` merged into `engineering-governance/` |
+| Engineering Governance Consolidation | ✅ Complete | `engineering-governance/repository-governance/`, `engineering-governance/developer-experience/`, `engineering-governance/repository-bootstrap/`, `engineering-governance/execution-governance/` merged into `engineering-governance/` |
 | Engineering Specifications | ✅ Complete | `engineering-specifications/` with templates, lifecycle, traceability |
 | Engineering Work Management | ✅ Complete | `engineering-work/` with epic/feature/task/bug/spike model |
 | Platform Operations | ✅ Complete | `platform-operations/` with service catalog, incident, DR, SLOs |
-| Execution Governance | ✅ Complete | `execution-governance/` with RACI, authority, compliance, metrics |
+| Execution Governance | ✅ Complete | `engineering-governance/execution-governance/` with RACI, authority, compliance, metrics |
 | Master Plan | ✅ Complete | `master-plan/` with waves, dependencies, teams, releases |
 | Enterprise Reference Model | ✅ Complete | `enterprise-reference/` with domain/service/component/API/event/database catalogs |
 | Product Definition | ✅ Complete | `product-definition/` with platform, products, applications, modules, features, users, permissions, editions, marketplace, roadmap, and usage guides |

@@ -105,8 +105,8 @@ User signs in with new password
 
 ## Related Specifications
 
-- [FEAT-0001 User Registration and Login](../../engineering-specifications/specifications/features/FEAT-0001.md)
-- [API-0001 Authentication API](../../engineering-specifications/specifications/api/API-0001.md)
+- [FEAT-0001 User Registration and Login](../../../engineering-specifications/specifications/features/FEAT-0001.md)
+- [API-0001 Authentication API](../../../engineering-specifications/specifications/api/API-0001.md)
 
 ## Change History
 

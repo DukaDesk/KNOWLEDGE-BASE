@@ -20,4 +20,4 @@ Risks are reviewed weekly during implementation. New risks are added as they are
 
 ## Escalation
 
-Risks that threaten milestones are escalated per [ESCALATION_MODEL.md](../../execution-governance/ESCALATION_MODEL.md).
+Risks that threaten milestones are escalated per [ESCALATION_MODEL.md](../../engineering-governance/execution-governance/ESCALATION_MODEL.md).

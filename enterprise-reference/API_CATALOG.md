@@ -21,7 +21,7 @@ This document catalogs all API contracts in DUKADESK OS.
 
 ## Versioning
 
-APIs follow [VERSIONING_STANDARD.md](../repository-governance/VERSIONING_STANDARD.md).
+APIs follow [VERSIONING_STANDARD.md](../engineering-governance/repository-governance/VERSIONING_STANDARD.md).
 
 ## Maintenance
 

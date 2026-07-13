@@ -56,5 +56,5 @@ Team A (Platform Team)
 
 ## Links
 
-- [AGENT_CONTEXT.md](../../infrastructure/AGENT_CONTEXT.md) (to be created)
-- [ARCHITECTURE_ALIGNMENT.md](../../infrastructure/ARCHITECTURE_ALIGNMENT.md) (to be created)
+- [AGENT_CONTEXT.md](../../infrastructure/AGENT_CONTEXT.md)
+- [ARCHITECTURE_ALIGNMENT.md](../../infrastructure/ARCHITECTURE_ALIGNMENT.md)

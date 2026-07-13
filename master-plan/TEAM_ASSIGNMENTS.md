@@ -42,4 +42,4 @@ As the organization grows, teams may split or new teams may form. Team assignmen
 
 ## RACI
 
-See [RESPONSIBILITY_MATRIX.md](../execution-governance/RESPONSIBILITY_MATRIX.md) for detailed RACI definitions.
+See [RESPONSIBILITY_MATRIX.md](../engineering-governance/execution-governance/RESPONSIBILITY_MATRIX.md) for detailed RACI definitions.

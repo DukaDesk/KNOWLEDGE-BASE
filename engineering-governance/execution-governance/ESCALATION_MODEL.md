@@ -39,7 +39,7 @@ Leadership
 
 ## Incident Escalation
 
-Incident escalation follows [INCIDENT_MANAGEMENT.md](../platform-operations/INCIDENT_MANAGEMENT.md).
+Incident escalation follows [INCIDENT_MANAGEMENT.md](../../platform-operations/INCIDENT_MANAGEMENT.md).
 
 ## Escalation Format
 

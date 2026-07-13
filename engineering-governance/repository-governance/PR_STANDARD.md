@@ -23,7 +23,7 @@ If multiple specifications apply, list the primary one or use a summary prefix.
 
 ## Related Specifications
 
-- [FEAT-0001 Title](../engineering-specifications/specifications/features/FEAT-0001.md)
+- [FEAT-0001 Title](../../engineering-specifications/specifications/features/FEAT-0001.md)
 
 ## Related Work Items
 

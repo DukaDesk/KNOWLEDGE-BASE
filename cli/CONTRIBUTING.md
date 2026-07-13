@@ -7,7 +7,7 @@ Thank you for contributing to the DUKADESK OS CLI.
 1. Read [AGENT_CONTEXT.md](AGENT_CONTEXT.md).
 2. Read [ARCHITECTURE_ALIGNMENT.md](ARCHITECTURE_ALIGNMENT.md).
 3. Pick a Task from [engineering-work](../engineering-work/).
-4. Follow the [Developer Experience](../developer-experience/) guides.
+4. Follow the [Developer Experience](../engineering-governance/developer-experience/) guides.
 
 ## Workflow
 
@@ -26,7 +26,7 @@ Thank you for contributing to the DUKADESK OS CLI.
 
 ## Review
 
-All changes require review. See [CODE_REVIEW_GUIDE.md](../developer-experience/CODE_REVIEW_GUIDE.md).
+All changes require review. See [CODE_REVIEW_GUIDE.md](../engineering-governance/developer-experience/CODE_REVIEW_GUIDE.md).
 
 ## Questions?
 

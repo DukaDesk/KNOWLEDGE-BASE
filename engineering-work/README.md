@@ -93,4 +93,4 @@ Implementation
 
 ## Governance
 
-This repository is governed by [Repository Governance](../repository-governance/) and informed by [Engineering Specifications](../engineering-specifications/).
+This repository is governed by [Repository Governance](../engineering-governance/repository-governance/) and informed by [Engineering Specifications](../engineering-specifications/).

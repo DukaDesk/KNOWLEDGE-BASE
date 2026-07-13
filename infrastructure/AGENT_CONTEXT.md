@@ -1,35 +1,38 @@
-# Business Dashboard Agent Context
+# Infrastructure Agent Context
 
 ## Overview
 
-The `business-dashboard/` repository contains the administrative dashboard used by business administrators to manage tenants, users, billing, and platform configuration.
+The `infrastructure/` repository contains the cloud infrastructure, CI/CD, observability, and developer platform for DUKADESK OS. It is the first repository to bootstrap because all other repositories depend on the environments and pipelines it provides.
 
 ## Responsibilities
 
-- Business admin user interface
-- Tenant and user management
-- Billing and subscription views
-- Platform configuration screens
-- Reports and analytics presentation
+- Cloud infrastructure provisioning (IaC)
+- CI/CD pipelines for all repositories
+- Observability stack (logging, metrics, tracing, alerting)
+- Developer platform and tooling
+- Environment management and isolation
+- Security baseline and networking
 
 ## Non-Responsibilities
 
-- End-customer-facing features
-- Core business logic execution
-- Infrastructure provisioning
+- Application business logic
+- Frontend rendering
+- Mobile-specific logic
+- Database schema design
 
 ## Technology Stack
 
-- Framework: TBD (e.g., React, Vue, Angular)
-- State Management: TBD
-- API Client: TBD
-- Testing: TBD
+- IaC: TBD (e.g., Terraform, Pulumi, AWS CDK)
+- Cloud Provider: TBD
+- CI/CD: TBD (e.g., GitHub Actions, GitLab CI, Azure DevOps)
+- Observability: TBD (e.g., Datadog, Grafana, Prometheus)
+- Scripting: TBD
 
 ## Repository Structure
 
 ```text
-business-dashboard/
-  src/           # Source code
+infrastructure/
+  src/           # Infrastructure as code modules
   tests/         # Test suites
   docs/          # Repository documentation
   scripts/       # Automation scripts
@@ -68,21 +71,21 @@ Specifications that target this repository:
 ## Agent Conventions
 
 - Reference engineering specifications by ID in commits and pull requests.
-- Implement role-based access control for all admin actions.
-- Keep dashboards responsive and data-heavy views performant.
-- Reuse UI components across dashboards where possible.
+- Keep infrastructure modular and environment-agnostic where possible.
+- Store secrets in approved secret managers; never commit them.
+- Add tests for infrastructure changes.
 - Update this context when responsibilities or structure change.
 
 ## Common Tasks
 
-- Add an admin screen: follow UI-XXXX and API-XXXX.
-- Implement a report: follow FEAT-XXXX and data contract.
-- Update billing views: follow INT-XXXX and security guidance.
+- Provision a new environment: follow the environment provisioning runbook.
+- Add a CI/CD pipeline: update the shared pipeline templates.
+- Add observability: follow the observability standards.
 
 ## Escalation
 
 Stop and ask for human input when:
 
-- A change affects billing, pricing, or legal compliance.
-- A privileged operation lacks proper authorization.
-- A decision impacts tenant isolation or data access.
+- A change affects production infrastructure.
+- A security-critical decision is required.
+- A change conflicts with an approved ADR.

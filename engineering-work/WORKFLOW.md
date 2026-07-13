@@ -54,7 +54,7 @@ Release
 - PR references the Task and Specification.
 
 ### 8. Review
-- Reviewers evaluate the change per [REVIEW_STANDARD.md](../repository-governance/REVIEW_STANDARD.md).
+- Reviewers evaluate the change per [REVIEW_STANDARD.md](../engineering-governance/repository-governance/REVIEW_STANDARD.md).
 - Task status moves to `Review`.
 
 ### 9. Verification

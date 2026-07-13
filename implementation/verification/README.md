@@ -28,7 +28,7 @@ Each phase has its own verification criteria documented in [phases/](../phases/)
 
 ## Release Verification
 
-Before release, see [RELEASE_STANDARD.md](../../repository-governance/RELEASE_STANDARD.md) and [RELEASE_PROCESS.md](../../developer-experience/RELEASE_PROCESS.md).
+Before release, see [RELEASE_STANDARD.md](../../engineering-governance/repository-governance/RELEASE_STANDARD.md) and [RELEASE_PROCESS.md](../../engineering-governance/developer-experience/RELEASE_PROCESS.md).
 
 ## Tools
 
