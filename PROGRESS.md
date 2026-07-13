@@ -112,11 +112,34 @@ High-level summary:
 
 ### Next: Wave 1 Implementation
 
-1. Infrastructure (Team A)
-2. Identity (Team B)
-3. Backend Foundation (Team E)
+1. Infrastructure (Team A) — pending `infrastructure/` repository
+2. Identity (Team B) — specifications and tasks created
+3. Backend Foundation (Team E) — specifications and tasks created
 4. CI/CD (Team A / DevEx)
 5. Developer Platform (DevEx)
+
+### Wave 1 Foundation Specifications Created
+
+- SEC-0001 Authentication Architecture and User Identity
+- SEC-0002 Authorization and RBAC
+- FEAT-0001 User Registration and Login
+- FEAT-0002 Tenant Lifecycle and Isolation
+- API-0001 Authentication API
+- API-0002 Tenant Management API
+- DB-0001 User and Identity Schema
+- DB-0002 Tenant Schema
+- EVT-0001 User Authentication Events
+- EVT-0002 Tenant Lifecycle Events
+- UI-0001 Public Website Foundation and Authentication Flows
+- UI-0002 Mobile App Foundation and Authentication Flows
+- UI-0003 Business Dashboard Foundation and Shell
+- UI-0004 Tenant Dashboard Foundation and Shell
+
+### Wave 1 Work Items Created
+
+- EPIC-0001 Wave 1 — Platform Foundation
+- FEAT-0001..FEAT-0007 Foundation Features
+- TASK-0001..TASK-0023 Implementation Tasks
 
 ### Future Waves
 

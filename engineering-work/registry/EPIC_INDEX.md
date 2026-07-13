@@ -20,10 +20,10 @@ Central register of all Epics.
 
 | ID | Title | Status | Priority | Specification | Owner |
 |----|-------|--------|----------|---------------|-------|
-| | | | | | |
+| EPIC-0001 | Wave 1 — Platform Foundation | Ready | P0 | SEC-0001 | @engineering-lead |
 
 ## Allocation
 
 | Next Available |
 |----------------|
-| EPIC-0001 |
+| EPIC-0002 |
