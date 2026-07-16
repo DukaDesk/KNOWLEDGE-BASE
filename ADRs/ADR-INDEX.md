@@ -2,6 +2,8 @@
 
 **Last Updated:** 2026-07-13
 
+Template: `ADR-000-template.md`
+
 | ID | Title | Status | Date |
 |----|-------|--------|------|
 | ADR-001 | Runtime Engine Architecture | ✅ Accepted | 2026-06-01 |
