@@ -1,6 +1,6 @@
 # Architecture Decision Records — Index
 
-**Last Updated:** 2026-07-13
+**Last Updated:** 2026-07-17
 
 Template: `ADR-000-template.md`
 
@@ -18,3 +18,4 @@ Template: `ADR-000-template.md`
 | ADR-010 | SDUI Publishing Pipeline | ✅ Accepted | 2026-07-01 |
 | ADR-011 | Tenant Resolution Strategy | ✅ Accepted | 2026-07-01 |
 | ADR-012 | Provider Adapter Pattern | ✅ Accepted | 2026-07-01 |
+| ADR-013 | Builder Template Gallery and Section Editor Redesign | ✅ Accepted | 2026-07-17 |
