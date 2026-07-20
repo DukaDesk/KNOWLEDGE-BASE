@@ -1,6 +1,6 @@
 # DUKADESK Progress Registry
 
-**Last Updated:** 2026-07-11
+**Last Updated:** 2026-07-17
 
 ## Status Key
 - ✅ Complete — Production ready
@@ -60,7 +60,7 @@
 | Preview Runtime | ✅ Complete | KB-029 — Preview Runtime defined |
 | Validation Engine | ✅ Complete | KB-030 — Validation Engine defined |
 | Publishing Pipeline | ✅ Complete | KB-031 — Publishing Pipeline defined |
-| SDUI Authoring | ⏳ Planned | Not yet started |
+| SDUI Authoring | ✅ Complete | Template gallery (21 templates, search, category filter chips, color-block cards), drag-drop component palette, screen management, phone preview, PageFly-inspired section editor with inline editing, floating toolbars, editor theme design system |
 | Business Dashboard | ⏳ Planned | Not yet started |
 | Tenant Dashboard | ⏳ Planned | Not yet started |
 

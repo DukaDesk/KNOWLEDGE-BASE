@@ -12,7 +12,8 @@ This file tracks the current state of the builder repository.
 
 | Date | Milestone | Notes |
 |------|-----------|-------|
-| | | |
+| 2026-07-17 | Template Gallery | 21 templates, search, filter chips, color-block cards, "Create your own" |
+| 2026-07-17 | Section Editor Redesign | PageFly-inspired inline editing, floating toolbars, editorTheme design system, 6 files rewritten |
 
 ## Blockers
 
@@ -27,4 +28,4 @@ This file tracks the current state of the builder repository.
 
 ## Last Updated
 
-YYYY-MM-DD
+2026-07-17
