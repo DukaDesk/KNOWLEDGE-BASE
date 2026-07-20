@@ -20,19 +20,32 @@ The `mobile/` repository contains the DUKADESK OS mobile applications for iOS an
 
 ## Technology Stack
 
-- Framework: TBD (e.g., React Native, Flutter, Swift, Kotlin)
-- State Management: TBD
-- Networking: TBD
+- Framework: React Native via Expo SDK 52 (v56.0.0 docs)
+- Language: TypeScript (strict mode)
+- State Management: Zustand (session, action loading, settings) + React Context/useReducer for local state
+- Persistence: MMKV (4 separate instances via factory pattern: tenant, session, booking, platform)
+- Routing: expo-router (file-based routing, `app/(tabs)/` structure, deep links)
+- Networking: axios with unwrap() helper for { success, message, data } envelope
+- Google Auth: expo-auth-session (lazy-imported to avoid native module crash)
 - Testing: TBD
 
-## Repository Structure
+## Repository Structure (DUKA-MOBILE)
 
 ```text
 mobile/
-  src/           # Source code
-  tests/         # Test suites
-  docs/          # Repository documentation
-  scripts/       # Automation scripts
+  app/                     # expo-router file-based routes
+    (tabs)/                # Tab navigator screens
+    _layout.tsx            # Root layout
+  src/
+    components/            # Reusable UI components (HeroBanner, PrimaryButton, DynamicCard, ValidationModal, etc.)
+    data/                  # Static data, runtime tenant data
+      runtime/tenants/bella-italia/  # All 12 runtime packages
+    network/               # API client, constants
+    screens/               # Screen-level components
+    services/              # API endpoints, auth service
+    store/                 # Zustand stores (session, actionLoading, settings, storage)
+    utils/                 # Permissions helpers, event bus
+  scripts/                 # EAS build scripts
   AGENT_CONTEXT.md
   README.md
 ```
@@ -40,10 +53,12 @@ mobile/
 ## Build and Test
 
 ```bash
-scripts/bootstrap
-scripts/build
-scripts/test
-scripts/lint
+npm install
+npm run lint
+npm run typecheck
+npx expo start
+npx eas build --platform android --profile production
+scripts/run-eas.mjs          # Android EAS auto-submit
 ```
 
 ## Engineering Standards
@@ -63,7 +78,21 @@ Specifications that target this repository:
 
 | Specification | Title | State |
 |---------------|-------|-------|
-| | | |
+| FEAT-0001 | Email/password authentication | Complete |
+| FEAT-0002 | Google OAuth integration | Complete |
+| FEAT-0003 | Guest mode ("Explore App") | Complete |
+| PKG-01 | Application runtime package (Bella Italia) | Complete |
+| PKG-02 | Authentication runtime package | Complete |
+| PKG-03 | Home runtime package | Complete |
+| PKG-04 | Menu runtime package | Complete |
+| PKG-05 | Cart & Checkout runtime package | Complete |
+| PKG-06 | Orders runtime package | Complete |
+| PKG-07 | Reservations runtime package | Complete |
+| PKG-08 | Profile, Wallet & Loyalty runtime package | Complete |
+| PKG-09 | Notifications, Settings & Support runtime package | Complete |
+| PKG-10 | Master Data & Content runtime package | Complete |
+| PKG-11 | Published Tenant Application package | Complete |
+| PKG-12 | Runtime Validation & Test Data package | Complete |
 
 ## Agent Conventions
 
@@ -75,9 +104,12 @@ Specifications that target this repository:
 
 ## Common Tasks
 
-- Implement a UI specification: build screens, components, and navigation.
-- Integrate an API: add service client and state updates.
-- Handle push notifications: follow EVT-XXXX and platform docs.
+- Implement a UI specification: build screens, components, and navigation (expo-router).
+- Integrate an API: add endpoint in `src/services/api/endpoints/`, use unwrap() helper.
+- Generate runtime tenant data: run node scripts from `C:\Users\Prime\AppData\Local\Temp\opencode\pkg*.js`.
+- Handle push notifications: use expo-notifications with lazy permission request.
+- Add persisted store: use createMMKVStorage(id) factory from `src/store/storage.ts`.
+- Gate guest actions: fire `auth:required` EventBus event, caught by AuthPromptModal.
 
 ## Escalation
 
