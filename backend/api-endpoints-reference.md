@@ -108,7 +108,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants` | Create a new tenant |
+| POST | `/api/v1/merchants` | Create a new tenant |
 | GET | `/api/v1/merchants/my` | Get my tenants |
 | GET | `/api/v1/merchants/:id` | Get tenant by ID |
 | PUT | `/api/v1/merchants/:id` | Update tenant |
@@ -296,8 +296,13 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/admin/tenants/:id/approve` | Approve a tenant |
-| POST | `/api/v1/admin/tenants/:id/suspend` | Suspend a tenant |
+| POST | `/api/v1/admin/merchants/:id/approve` | Approve a tenant |
+| POST | `/api/v1/admin/merchants/:id/suspend` | Suspend a tenant |
+| POST | `/api/v1/admin/merchants` | Create a new tenant |
+| GET | `/api/v1/admin/merchants/:id` | Get tenant detail |
+| PUT | `/api/v1/admin/merchants/:id` | Update tenant |
+| GET | `/api/v1/admin/merchants/:tenantId/settings` | Get tenant settings |
+| PUT | `/api/v1/admin/merchants/:tenantId/settings/:key` | Update tenant setting |
 | GET | `/api/v1/admin/tenants` | Get all tenants (admin) |
 | GET | `/api/v1/admin/stats` | Get platform stats |
 | POST | `/api/v1/admin/cleanup-deactivated` | Purge expired deactivated users |
@@ -854,6 +859,9 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | GET | `/api/v1/bff/admin/overview` | Get platform overview stats |
 | GET | `/api/v1/bff/admin/tenants` | Get paginated tenant list |
 | GET | `/api/v1/bff/admin/audit` | Get recent audit logs |
+| GET | `/api/v1/bff/admin/analytics` | Dashboard analytics: revenue trend, user growth, order volume, GMV, active tenants |
+| GET | `/api/v1/bff/admin/revenue` | Revenue report with filters: dateFrom, dateTo, tenantId, groupBy (day/week/month) |
+| GET | `/api/v1/bff/admin/tenants/:tenantId/analytics` | Per-tenant analytics (for drill-down) |
 
 ---
 
@@ -879,7 +887,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | 8 | Media / DAM | 10 |
 | 9 | QR Codes | 2 |
 | 10 | Discovery | 4 |
-| 11 | Admin | 5 |
+| 11 | Admin | 10 |
 | 12 | Notifications | 19 |
 | 13 | Merchants || Publishing | 6 |
 | 14 | Booking & Scheduling | 35 |
@@ -901,4 +909,4 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | 30 | BFF - Mobile | 9 |
 | 31 | BFF - Business Dashboard | 3 | Merchants ||
 | 32 | Health | 1 |
-| | **TOTAL** | **~390** |
+| | **TOTAL** | **~395** |
