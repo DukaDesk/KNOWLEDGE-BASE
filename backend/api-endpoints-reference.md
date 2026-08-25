@@ -21,7 +21,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 1. [Auth & IAM](#1-auth--iam)
 2. [Profile & Users](#2-profile--users)
-3. [Tenants](#3-tenants)
+3. [Merchants](#3-merchants)
 4. [Templates](#4-templates)
 5. [Builder (SDUI)](#5-builder-sdui)
 6. [Renderer](#6-renderer)
@@ -104,21 +104,21 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ---
 
-## 3. Tenants
+## 3. Merchants
 
 | Method | Path | Description |
 |--------|------|-------------|
 | POST | `/api/v1/tenants` | Create a new tenant |
-| GET | `/api/v1/tenants/my` | Get my tenants |
-| GET | `/api/v1/tenants/:id` | Get tenant by ID |
-| PUT | `/api/v1/tenants/:id` | Update tenant |
-| POST | `/api/v1/tenants/:id/publish` | Publish tenant |
-| GET | `/api/v1/tenants/:id/config` | Get tenant runtime configuration |
-| PUT | `/api/v1/tenants/:id/config` | Update tenant runtime configuration |
-| GET | `/api/v1/tenants/:id/features` | Get enabled capabilities |
-| GET | `/api/v1/tenants/:id/subscription` | Get tenant subscription |
-| POST | `/api/v1/tenants/:id/subscribe` | Subscribe to a plan |
-| POST | `/api/v1/tenants/:id/subscription/cancel` | Cancel subscription |
+| GET | `/api/v1/merchants/my` | Get my tenants |
+| GET | `/api/v1/merchants/:id` | Get tenant by ID |
+| PUT | `/api/v1/merchants/:id` | Update tenant |
+| POST | `/api/v1/merchants/:id/publish` | Publish tenant |
+| GET | `/api/v1/merchants/:id/config` | Get tenant runtime configuration |
+| PUT | `/api/v1/merchants/:id/config` | Update tenant runtime configuration |
+| GET | `/api/v1/merchants/:id/features` | Get enabled capabilities |
+| GET | `/api/v1/merchants/:id/subscription` | Get tenant subscription |
+| POST | `/api/v1/merchants/:id/subscribe` | Subscribe to a plan |
+| POST | `/api/v1/merchants/:id/subscription/cancel` | Cancel subscription |
 
 ---
 
@@ -136,25 +136,25 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/tenants/:tenantId/pages` | Get all pages for a tenant |
-| PUT | `/api/v1/tenants/:tenantId/pages/:pageId` | Update a page |
-| POST | `/api/v1/tenants/:tenantId/pages/:pageId/sections` | Add a section to a page |
-| PUT | `/api/v1/tenants/:tenantId/sections/:sectionId` | Update a section |
-| POST | `/api/v1/tenants/:tenantId/sections/:sectionId/components` | Add a component to a section |
-| PUT | `/api/v1/tenants/:tenantId/components/:componentId` | Update a component |
-| GET | `/api/v1/tenants/:tenantId/navigation` | Get navigation for a tenant |
-| PUT | `/api/v1/tenants/:tenantId/navigation` | Update navigation |
-| GET | `/api/v1/tenants/:tenantId/component-types` | Get all registered component definitions |
-| GET | `/api/v1/tenants/:tenantId/component-types/:type` | Get a specific component type definition |
-| GET | `/api/v1/tenants/:tenantId/action-types` | Get all registered action definitions |
-| POST | `/api/v1/tenants/:tenantId/actions/execute` | Execute an action with given context |
-| POST | `/api/v1/tenants/:tenantId/conditions/evaluate` | Evaluate conditional visibility |
-| POST | `/api/v1/tenants/:tenantId/data-binding/resolve` | Resolve a data binding against context |
-| POST | `/api/v1/tenants/:tenantId/preview` | Preview full tenant rendering |
-| POST | `/api/v1/tenants/:tenantId/pages/:pageId/preview` | Preview a single page |
-| POST | `/api/v1/tenants/:tenantId/component-preview` | Validate and preview a component |
-| GET | `/api/v1/tenants/:tenantId/theme` | Get theme for a tenant |
-| PUT | `/api/v1/tenants/:tenantId/theme` | Update theme for a tenant |
+| GET | `/api/v1/merchants/:tenantId/pages` | Get all pages for a tenant |
+| PUT | `/api/v1/merchants/:tenantId/pages/:pageId` | Update a page |
+| POST | `/api/v1/merchants/:tenantId/pages/:pageId/sections` | Add a section to a page |
+| PUT | `/api/v1/merchants/:tenantId/sections/:sectionId` | Update a section |
+| POST | `/api/v1/merchants/:tenantId/sections/:sectionId/components` | Add a component to a section |
+| PUT | `/api/v1/merchants/:tenantId/components/:componentId` | Update a component |
+| GET | `/api/v1/merchants/:tenantId/navigation` | Get navigation for a tenant |
+| PUT | `/api/v1/merchants/:tenantId/navigation` | Update navigation |
+| GET | `/api/v1/merchants/:tenantId/component-types` | Get all registered component definitions |
+| GET | `/api/v1/merchants/:tenantId/component-types/:type` | Get a specific component type definition |
+| GET | `/api/v1/merchants/:tenantId/action-types` | Get all registered action definitions |
+| POST | `/api/v1/merchants/:tenantId/actions/execute` | Execute an action with given context |
+| POST | `/api/v1/merchants/:tenantId/conditions/evaluate` | Evaluate conditional visibility |
+| POST | `/api/v1/merchants/:tenantId/data-binding/resolve` | Resolve a data binding against context |
+| POST | `/api/v1/merchants/:tenantId/preview` | Preview full tenant rendering |
+| POST | `/api/v1/merchants/:tenantId/pages/:pageId/preview` | Preview a single page |
+| POST | `/api/v1/merchants/:tenantId/component-preview` | Validate and preview a component |
+| GET | `/api/v1/merchants/:tenantId/theme` | Get theme for a tenant |
+| PUT | `/api/v1/merchants/:tenantId/theme` | Update theme for a tenant |
 
 ---
 
@@ -162,7 +162,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/tenants/:id/definition` | Get application definition for a tenant |
+| GET | `/api/v1/merchants/:id/definition` | Get application definition for a tenant |
 | GET | `/api/v1/resolve/:slug` | Resolve tenant by slug |
 
 ---
@@ -173,8 +173,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/categories` | Create category |
-| GET | `/api/v1/tenants/:tenantId/categories` | List categories |
+| POST | `/api/v1/merchants/:tenantId/categories` | Create category |
+| GET | `/api/v1/merchants/:tenantId/categories` | List categories |
 | PUT | `/api/v1/categories/:id` | Update category |
 | DELETE | `/api/v1/categories/:id` | Delete category |
 
@@ -182,13 +182,13 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/products` | Create product with variants |
-| GET | `/api/v1/tenants/:tenantId/products` | List products with filter, sort, pagination |
+| POST | `/api/v1/merchants/:tenantId/products` | Create product with variants |
+| GET | `/api/v1/merchants/:tenantId/products` | List products with filter, sort, pagination |
 | GET | `/api/v1/products/:id` | Get product with variants |
 | PUT | `/api/v1/products/:id` | Update product |
 | DELETE | `/api/v1/products/:id` | Delete product |
 | GET | `/api/v1/product-types` | List valid product types |
-| GET | `/api/v1/tenants/:tenantId/products/type/:type` | List products by type |
+| GET | `/api/v1/merchants/:tenantId/products/type/:type` | List products by type |
 | PUT | `/api/v1/products/:id/extended-pricing` | Set multi-currency pricing |
 | GET | `/api/v1/products/:id/price` | Get product price in specific currency |
 | POST | `/api/v1/products/:id/variants` | Add variant to product |
@@ -209,7 +209,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/cart` | Get or create cart |
+| POST | `/api/v1/merchants/:tenantId/cart` | Get or create cart |
 | GET | `/api/v1/cart/:id` | Get cart with items |
 | POST | `/api/v1/cart/:id/items` | Add item to cart |
 | PATCH | `/api/v1/cart/items/:itemId` | Update cart item quantity |
@@ -222,7 +222,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/tenants/:tenantId/orders` | List orders |
+| GET | `/api/v1/merchants/:tenantId/orders` | List orders |
 | GET | `/api/v1/orders/:id` | Get order detail |
 | POST | `/api/v1/orders/:id/status` | Update order status with transition validation |
 
@@ -230,8 +230,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/coupons` | Create coupon |
-| GET | `/api/v1/tenants/:tenantId/coupons` | List coupons |
+| POST | `/api/v1/merchants/:tenantId/coupons` | Create coupon |
+| GET | `/api/v1/merchants/:tenantId/coupons` | List coupons |
 | PUT | `/api/v1/coupons/:id` | Update coupon |
 | DELETE | `/api/v1/coupons/:id` | Delete coupon |
 
@@ -247,11 +247,11 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/tax-rules` | Create tax rule |
-| GET | `/api/v1/tenants/:tenantId/tax-rules` | List tax rules |
+| POST | `/api/v1/merchants/:tenantId/tax-rules` | Create tax rule |
+| GET | `/api/v1/merchants/:tenantId/tax-rules` | List tax rules |
 | PUT | `/api/v1/tax-rules/:id` | Update tax rule |
 | DELETE | `/api/v1/tax-rules/:id` | Delete tax rule |
-| GET | `/api/v1/tenants/:tenantId/tax-calc` | Calculate tax for subtotal |
+| GET | `/api/v1/merchants/:tenantId/tax-calc` | Calculate tax for subtotal |
 
 ---
 
@@ -259,16 +259,16 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/media/upload` | Upload file with optimization & variant generation |
-| GET | `/api/v1/tenants/:tenantId/media` | List media files (optionally filtered by folder) |
-| GET | `/api/v1/tenants/:tenantId/media/:id` | Get media details with versions |
-| PATCH | `/api/v1/tenants/:tenantId/media/:id` | Update media metadata |
-| DELETE | `/api/v1/tenants/:tenantId/media/:id` | Delete media file and all variants |
-| GET | `/api/v1/tenants/:tenantId/media/:id/cdn-url` | Get CDN delivery URL |
-| POST | `/api/v1/tenants/:tenantId/media/folders` | Create asset folder |
-| GET | `/api/v1/tenants/:tenantId/media/folders` | List asset folders |
-| PATCH | `/api/v1/tenants/:tenantId/media/folders/:id` | Update folder |
-| DELETE | `/api/v1/tenants/:tenantId/media/folders/:id` | Delete empty folder |
+| POST | `/api/v1/merchants/:tenantId/media/upload` | Upload file with optimization & variant generation |
+| GET | `/api/v1/merchants/:tenantId/media` | List media files (optionally filtered by folder) |
+| GET | `/api/v1/merchants/:tenantId/media/:id` | Get media details with versions |
+| PATCH | `/api/v1/merchants/:tenantId/media/:id` | Update media metadata |
+| DELETE | `/api/v1/merchants/:tenantId/media/:id` | Delete media file and all variants |
+| GET | `/api/v1/merchants/:tenantId/media/:id/cdn-url` | Get CDN delivery URL |
+| POST | `/api/v1/merchants/:tenantId/media/folders` | Create asset folder |
+| GET | `/api/v1/merchants/:tenantId/media/folders` | List asset folders |
+| PATCH | `/api/v1/merchants/:tenantId/media/folders/:id` | Update folder |
+| DELETE | `/api/v1/merchants/:tenantId/media/folders/:id` | Delete empty folder |
 
 ---
 
@@ -334,12 +334,12 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:id/publishing/validate` | Validate current draft |
-| POST | `/api/v1/tenants/:id/publishing/publish` | Validate, compile, and publish |
-| GET | `/api/v1/tenants/:id/publishing/releases` | Get release history |
-| GET | `/api/v1/tenants/:id/publishing/releases/:version` | Get specific release |
-| POST | `/api/v1/tenants/:id/publishing/rollback/:version` | Rollback to a previous version |
-| GET | `/api/v1/tenants/:id/publishing/draft` | Get current draft state |
+| POST | `/api/v1/merchants/:id/publishing/validate` | Validate current draft |
+| POST | `/api/v1/merchants/:id/publishing/publish` | Validate, compile, and publish |
+| GET | `/api/v1/merchants/:id/publishing/releases` | Get release history |
+| GET | `/api/v1/merchants/:id/publishing/releases/:version` | Get specific release |
+| POST | `/api/v1/merchants/:id/publishing/rollback/:version` | Rollback to a previous version |
+| GET | `/api/v1/merchants/:id/publishing/draft` | Get current draft state |
 
 ---
 
@@ -349,8 +349,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/booking/services` | Create booking service |
-| GET | `/api/v1/tenants/:tenantId/booking/services` | List booking services |
+| POST | `/api/v1/merchants/:tenantId/booking/services` | Create booking service |
+| GET | `/api/v1/merchants/:tenantId/booking/services` | List booking services |
 | GET | `/api/v1/booking/services/:id` | Get booking service with assigned staff |
 | PUT | `/api/v1/booking/services/:id` | Update booking service |
 | DELETE | `/api/v1/booking/services/:id` | Delete booking service |
@@ -359,8 +359,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/booking/locations` | Create booking location |
-| GET | `/api/v1/tenants/:tenantId/booking/locations` | List booking locations |
+| POST | `/api/v1/merchants/:tenantId/booking/locations` | Create booking location |
+| GET | `/api/v1/merchants/:tenantId/booking/locations` | List booking locations |
 | PUT | `/api/v1/booking/locations/:id` | Update booking location |
 | DELETE | `/api/v1/booking/locations/:id` | Delete booking location |
 
@@ -368,8 +368,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/booking/cancellation-policies` | Create cancellation policy with refund tiers |
-| GET | `/api/v1/tenants/:tenantId/booking/cancellation-policies` | List cancellation policies |
+| POST | `/api/v1/merchants/:tenantId/booking/cancellation-policies` | Create cancellation policy with refund tiers |
+| GET | `/api/v1/merchants/:tenantId/booking/cancellation-policies` | List cancellation policies |
 | GET | `/api/v1/booking/:id/cancellation-refund` | Calculate refund amount |
 
 ### Reminders
@@ -383,8 +383,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/booking/staff` | Create staff member with service assignments |
-| GET | `/api/v1/tenants/:tenantId/booking/staff` | List staff members |
+| POST | `/api/v1/merchants/:tenantId/booking/staff` | Create staff member with service assignments |
+| GET | `/api/v1/merchants/:tenantId/booking/staff` | List staff members |
 | GET | `/api/v1/booking/staff/:id` | Get staff member |
 | PUT | `/api/v1/booking/staff/:id` | Update staff member |
 | DELETE | `/api/v1/booking/staff/:id` | Delete staff member |
@@ -393,8 +393,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/booking/resources` | Create booking resource |
-| GET | `/api/v1/tenants/:tenantId/booking/resources` | List resources |
+| POST | `/api/v1/merchants/:tenantId/booking/resources` | Create booking resource |
+| GET | `/api/v1/merchants/:tenantId/booking/resources` | List resources |
 | PUT | `/api/v1/booking/resources/:id` | Update resource |
 | DELETE | `/api/v1/booking/resources/:id` | Delete resource |
 
@@ -402,28 +402,28 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/booking/schedules` | Create schedule |
-| GET | `/api/v1/tenants/:tenantId/booking/schedules` | List schedules |
+| POST | `/api/v1/merchants/:tenantId/booking/schedules` | Create schedule |
+| GET | `/api/v1/merchants/:tenantId/booking/schedules` | List schedules |
 | PUT | `/api/v1/booking/schedules/:id` | Update schedule |
 | DELETE | `/api/v1/booking/schedules/:id` | Delete schedule |
-| GET | `/api/v1/tenants/:tenantId/booking/availability` | Get available time slots |
+| GET | `/api/v1/merchants/:tenantId/booking/availability` | Get available time slots |
 
 ### Bookings
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/booking` | Create booking (public) |
-| GET | `/api/v1/tenants/:tenantId/booking` | List bookings |
+| POST | `/api/v1/merchants/:tenantId/booking` | Create booking (public) |
+| GET | `/api/v1/merchants/:tenantId/booking` | List bookings |
 | GET | `/api/v1/booking/:id` | Get booking detail with history |
 | POST | `/api/v1/booking/:id/status` | Update booking status |
-| GET | `/api/v1/tenants/:tenantId/booking/calendar` | Get booking timeline for a date range |
+| GET | `/api/v1/merchants/:tenantId/booking/calendar` | Get booking timeline for a date range |
 
 ### Waiting List
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/booking/waiting-list` | Add to waiting list |
-| GET | `/api/v1/tenants/:tenantId/booking/waiting-list` | Get waiting list |
+| POST | `/api/v1/merchants/:tenantId/booking/waiting-list` | Add to waiting list |
+| GET | `/api/v1/merchants/:tenantId/booking/waiting-list` | Get waiting list |
 | POST | `/api/v1/booking/waiting-list/:id/notify` | Mark waiting list entry as notified |
 
 ---
@@ -432,8 +432,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/forms` | Create form with fields |
-| GET | `/api/v1/tenants/:tenantId/forms` | List forms |
+| POST | `/api/v1/merchants/:tenantId/forms` | Create form with fields |
+| GET | `/api/v1/merchants/:tenantId/forms` | List forms |
 | GET | `/api/v1/forms/:id` | Get form with fields and workflow |
 | PUT | `/api/v1/forms/:id` | Update form (auto-increments version) |
 | DELETE | `/api/v1/forms/:id` | Delete form |
@@ -449,17 +449,17 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/tenants/:tenantId/payments/initialize` | Initialize a payment with provider |
+| POST | `/api/v1/merchants/:tenantId/payments/initialize` | Initialize a payment with provider |
 | POST | `/api/v1/payments/:intentId/verify` | Verify payment intent with provider |
-| GET | `/api/v1/tenants/:tenantId/payments` | List payment intents |
+| GET | `/api/v1/merchants/:tenantId/payments` | List payment intents |
 | POST | `/api/v1/payments/:intentId/refund` | Process a refund (partial or full) |
-| POST | `/api/v1/tenants/:tenantId/payments/settlements` | Record a settlement entry |
+| POST | `/api/v1/merchants/:tenantId/payments/settlements` | Record a settlement entry |
 | POST | `/api/v1/payments/settlements/:id/confirm` | Confirm a settlement as received |
-| GET | `/api/v1/tenants/:tenantId/payments/settlements` | List settlements |
-| GET | `/api/v1/tenants/:tenantId/payments/transactions` | List payment transactions |
+| GET | `/api/v1/merchants/:tenantId/payments/settlements` | List settlements |
+| GET | `/api/v1/merchants/:tenantId/payments/transactions` | List payment transactions |
 | GET | `/api/v1/payments/health/:provider` | Check health of a payment provider |
 | GET | `/api/v1/payments/health` | Check health of all payment providers |
-| GET | `/api/v1/tenants/:tenantId/payments/accounts` | Get payment accounts for tenant |
+| GET | `/api/v1/merchants/:tenantId/payments/accounts` | Get payment accounts for tenant |
 | POST | `/api/v1/payments/webhook/:provider` | Provider webhook endpoint (public) |
 
 ---
@@ -468,14 +468,14 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/tenants/:tenantId/theme` | Get current theme configuration |
-| PUT | `/api/v1/tenants/:tenantId/theme` | Update theme configuration with versioning |
-| GET | `/api/v1/tenants/:tenantId/theme/versions` | Get theme version history |
-| GET | `/api/v1/tenants/:tenantId/theme/versions/:version` | Get a specific theme version snapshot |
-| POST | `/api/v1/tenants/:tenantId/theme/versions/:version/restore` | Restore a previous theme version |
-| GET | `/api/v1/tenants/:tenantId/theme/compiled` | Get compiled theme token bundle (light + dark) |
-| GET | `/api/v1/tenants/:tenantId/theme/preview` | Get theme tokens for live preview |
-| POST | `/api/v1/tenants/:tenantId/theme/reset` | Reset theme to factory defaults |
+| GET | `/api/v1/merchants/:tenantId/theme` | Get current theme configuration |
+| PUT | `/api/v1/merchants/:tenantId/theme` | Update theme configuration with versioning |
+| GET | `/api/v1/merchants/:tenantId/theme/versions` | Get theme version history |
+| GET | `/api/v1/merchants/:tenantId/theme/versions/:version` | Get a specific theme version snapshot |
+| POST | `/api/v1/merchants/:tenantId/theme/versions/:version/restore` | Restore a previous theme version |
+| GET | `/api/v1/merchants/:tenantId/theme/compiled` | Get compiled theme token bundle (light + dark) |
+| GET | `/api/v1/merchants/:tenantId/theme/preview` | Get theme tokens for live preview |
+| POST | `/api/v1/merchants/:tenantId/theme/reset` | Reset theme to factory defaults |
 
 ---
 
@@ -484,14 +484,14 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/api/v1/integrations/available` | List available integration connectors |
-| POST | `/api/v1/tenants/:tenantId/integrations/connect` | Connect an integration provider |
-| POST | `/api/v1/tenants/:tenantId/integrations/:provider/disconnect` | Disconnect an integration |
-| GET | `/api/v1/tenants/:tenantId/integrations` | List connected integrations |
-| GET | `/api/v1/tenants/:tenantId/integrations/:provider` | Get integration details |
-| POST | `/api/v1/tenants/:tenantId/integrations/:provider/test` | Test integration connection |
-| POST | `/api/v1/tenants/:tenantId/integrations/:provider/sync` | Trigger a data sync |
-| GET | `/api/v1/tenants/:tenantId/integrations/:provider/sync-history` | Get sync job history |
-| POST | `/api/v1/tenants/:tenantId/integrations/webhook` | Queue an outgoing webhook |
+| POST | `/api/v1/merchants/:tenantId/integrations/connect` | Connect an integration provider |
+| POST | `/api/v1/merchants/:tenantId/integrations/:provider/disconnect` | Disconnect an integration |
+| GET | `/api/v1/merchants/:tenantId/integrations` | List connected integrations |
+| GET | `/api/v1/merchants/:tenantId/integrations/:provider` | Get integration details |
+| POST | `/api/v1/merchants/:tenantId/integrations/:provider/test` | Test integration connection |
+| POST | `/api/v1/merchants/:tenantId/integrations/:provider/sync` | Trigger a data sync |
+| GET | `/api/v1/merchants/:tenantId/integrations/:provider/sync-history` | Get sync job history |
+| POST | `/api/v1/merchants/:tenantId/integrations/webhook` | Queue an outgoing webhook |
 | POST | `/api/v1/integrations/webhooks/process` | Process pending outgoing webhooks |
 
 ---
@@ -871,8 +871,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 |---|--------|-----------|
 | 1 | Auth & IAM | 14 |
 | 2 | Profile & Users | 10 |
-| 3 | Tenants | 11 |
-| 4 | Templates | 3 |
+| 3 | Merchants ||3 | Merchants | 11 |
+| 4 | Templates | 3 | Merchants ||
 | 5 | Builder (SDUI) | 19 |
 | 6 | Renderer | 2 |
 | 7 | Commerce | 42 |
@@ -881,24 +881,24 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | 10 | Discovery | 4 |
 | 11 | Admin | 5 |
 | 12 | Notifications | 19 |
-| 13 | Publishing | 6 |
+| 13 | Merchants || Publishing | 6 |
 | 14 | Booking & Scheduling | 35 |
 | 15 | Forms & Workflow | 10 |
 | 16 | Payments | 12 |
 | 17 | Theme | 8 |
 | 18 | Integrations | 10 |
-| 19 | Analytics & BI | 23 |
+| 19 | Analytics & BI | 23 | Merchants ||
 | 20 | Search & Discovery | 11 |
-| 21 | AI Platform | 13 |
+| 21 | AI Platform | 13 | Merchants ||
 | 22 | Platform Administration | 27 |
-| 23 | Infrastructure & DevOps | 18 |
+| 23 | Merchants || Infrastructure & DevOps | 18 |
 | 24 | Security & Compliance | 11 |
 | 25 | Developer Platform | 16 |
-| 26 | Marketplace & Plugins | 13 |
+| 26 | Marketplace & Plugins | 13 | Merchants ||
 | 27 | Asset Platform Enhanced | 17 |
-| 28 | BFF - Website | 3 |
-| 29 | BFF - Tenant Dashboard | 3 |
+| 28 | BFF - Website | 3 | Merchants ||
+| 29 | BFF - Tenant Dashboard | 3 | Merchants ||
 | 30 | BFF - Mobile | 9 |
-| 31 | BFF - Business Dashboard | 3 |
+| 31 | BFF - Business Dashboard | 3 | Merchants ||
 | 32 | Health | 1 |
 | | **TOTAL** | **~390** |
