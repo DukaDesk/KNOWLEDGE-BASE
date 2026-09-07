@@ -11,6 +11,7 @@ This file tracks the current state of the backend implementation repository.
 |------|---------------|--------|-------|
 | API endpoint implementation (390 endpoints) | KB v0.1.0 | In Progress | Engineering |
 | Phase 3 gap-filling (Theme, Commerce, Booking, Notifications, Payments) | KB v0.1.0 | Complete | Engineering |
+| Fix publish permission (TASK-0024) — allow owner/admin, return NOT_OWNER code, keep 413 handling for large payloads | KB-061 | Ready | backend @agent-alpha |
 
 ## Completed Milestones
 
@@ -65,7 +66,7 @@ This file tracks the current state of the backend implementation repository.
 
 | Issue | Impact | Owner |
 |-------|--------|-------|
-| None currently | — | — |
+| Publish `403 only tenant owner can publish` blocks canvas publish for non-owner members (observed on Railway prod, `POST /merchants/:id/publishing/publish`); one successful push as owner, subsequent failures as member. Frontend has demo fallback but backend RBAC needs fix. Tracked as TASK-0024. | Merchant cannot publish app | backend @agent-alpha |
 
 ## Next Up
 

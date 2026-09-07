@@ -43,9 +43,10 @@ Central register of all Tasks.
 | TASK-0021 | Implement Tenant Dashboard Shell | Ready | P1 | FEAT-0007 | tenant-dashboard | M | @agent-iota |
 | TASK-0022 | Implement Profile Screen | Ready | P1 | FEAT-0007 | tenant-dashboard | S | @agent-iota |
 | TASK-0023 | Implement Settings Screen | Ready | P1 | FEAT-0007 | tenant-dashboard | S | @agent-iota |
+| TASK-0024 | Fix publish permission — only tenant owner can publish (403/413 fallback) | Ready | P1 | Publishing | backend | S | @agent-alpha |
 
 ## Allocation
 
 | Next Available |
 |----------------|
-| TASK-0024 |
+| TASK-0025 |
