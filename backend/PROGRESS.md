@@ -12,6 +12,7 @@ This file tracks the current state of the backend implementation repository.
 | API endpoint implementation (390 endpoints) | KB v0.1.0 | In Progress | Engineering |
 | Phase 3 gap-filling (Theme, Commerce, Booking, Notifications, Payments) | KB v0.1.0 | Complete | Engineering |
 | Fix publish permission (TASK-0024) — allow owner/admin, return NOT_OWNER code, keep 413 handling for large payloads | KB-061 | Ready | backend @agent-alpha |
+| Customizable merchant dashboard (TASK-0025) — GET /merchants/:id/dashboard integration-aware layout (FEAT-0008) | UI-0004 | Ready | backend @agent-alpha |
 
 ## Completed Milestones
 
