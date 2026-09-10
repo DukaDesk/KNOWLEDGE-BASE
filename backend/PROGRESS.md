@@ -2,8 +2,8 @@
 
 This file tracks the current state of the backend implementation repository.
 
-**KB Version:** 0.2.0
-**Last Updated:** 2026-09-10
+**KB Version:** 0.2.1
+**Last Updated:** 2026-09-11
 
 ## Active Work
 
@@ -11,6 +11,9 @@ This file tracks the current state of the backend implementation repository.
 |------|---------------|--------|-------|
 | Three-tier API architecture migration | KB v0.2.0 | Complete | Engineering |
 | Tenant terminology eradication (tenant → merchant) | KB v0.2.0 | Complete | Engineering |
+| App/Public split for all 13 modules | KB v0.2.1 | Complete | Engineering |
+| TASK-0024: Fix publish permission (owner/manager) | KB-061 | Complete | Engineering |
+| TASK-0025: Customizable dashboard endpoint | UI-0004 | Deferred | Engineering |
 | E2E integration tests for all modules | KB v0.2.0 | Pending | Engineering |
 | Rate limiting and throttling configuration | KB v0.2.0 | Pending | Engineering |
 
@@ -25,6 +28,8 @@ This file tracks the current state of the backend implementation repository.
 | 2026-07 | Deployment Readiness | Dockerfile, CI/CD pipeline, health checks, Railway config |
 | 2026-07 | Profile Deactivation & Deletion | 30-day soft deactivation flow, hard delete for GDPR/Apple/Google, admin cleanup endpoint, BFF mobile endpoints |
 | 2026-09 | Three-tier API Architecture | Website (Platform) / App (Tenant Self-Service) / Mobile (Consumer) split; "tenant" → "merchant" terminology |
+| 2026-09 | App/Public Controller Split | All 13 tenant modules split into App + Public controllers |
+| 2026-09 | Publish Permission Fix | Allow owner + manager roles (was owner only); NOT_OWNER error code |
 
 ## Modules Implemented
 
@@ -34,22 +39,22 @@ This file tracks the current state of the backend implementation repository.
 | 2 | Profile & Users | Complete | 10 |
 | 3 | Merchants | Complete | 11 (split: App + Public) |
 | 4 | Templates | Complete | 3 |
-| 5 | Builder (SDUI) | Complete | 19 (migrated to `/app/*`) |
+| 5 | Builder (SDUI) | Complete | 25 (split: App + Public) |
 | 6 | Renderer | Complete | 2 |
-| 7 | Commerce | Complete | 42 (split: App + Public) |
+| 7 | Commerce | Complete | 46 (split: App + Public) |
 | 8 | Media / DAM | Complete | 10 (App) |
 | 9 | QR Codes | Complete | 2 |
 | 10 | Discovery | Complete | 4 |
-| 11 | Admin | Complete | 5 |
-| 12 | Notifications | Complete | 19 (split: App + Public pending) |
+| 11 | Admin | Complete | 10 |
+| 12 | Notifications | Complete | 21 (split: App + Public) |
 | 13 | Publishing | Complete | 6 |
-| 14 | Booking & Scheduling | Complete | 35 (split: App + Public) |
-| 15 | Forms & Workflow | Complete | 10 (split: App + Public pending) |
-| 16 | Payments | Complete | 12 (split: App + Public pending) |
+| 14 | Booking & Scheduling | Complete | 40 (split: App + Public) |
+| 15 | Forms & Workflow | Complete | 13 (split: App + Public) |
+| 16 | Payments | Complete | 12 (split: App + Public) |
 | 17 | Theme | Complete | 8 (split: App + Public) |
-| 18 | Integrations | Complete | 10 (split: App + Public pending) |
-| 19 | Analytics & BI | Complete | 23 (split: App + Public pending) |
-| 20 | Search & Discovery | Complete | 11 (split: App + Public pending) |
+| 18 | Integrations | Complete | 10 (split: App + Public) |
+| 19 | Analytics & BI | Complete | 20 (split: App + Public) |
+| 20 | Search & Discovery | Complete | 11 (split: App + Public) |
 | 21 | AI Platform | Complete | 13 |
 | 22 | Platform Administration | Complete | 27 |
 | 23 | Infrastructure & DevOps | Complete | 18 |
@@ -60,9 +65,9 @@ This file tracks the current state of the backend implementation repository.
 | 28 | BFF - Website | Complete | 3 |
 | 29 | BFF - Tenant Dashboard | Complete | 3 |
 | 30 | BFF - Mobile | Complete | 9 |
-| 31 | BFF - Business Dashboard | Complete | 3 |
+| 31 | BFF - Business Dashboard | Complete | 6 |
 | 32 | Health | Complete | 1 |
-| | **TOTAL** | | **~395** |
+| | **TOTAL** | | **~423** |
 
 ## Architecture: Three-Tier Endpoint Model
 
@@ -78,15 +83,8 @@ This file tracks the current state of the backend implementation repository.
 - `*AppController` — JWT + `@CurrentUser`, auto-resolves tenantId
 - `*PublicController` — `@Public()` with explicit `:merchantId` param
 
-## Blockers
-
-| Issue | Impact | Owner |
-|-------|--------|-------|
-| Remaining modules (Notifications, Forms, Payments, Integrations, Analytics, Search) need App/Public split | Incomplete three-tier migration | backend @agent-alpha |
-
 ## Next Up
 
-- Complete App/Public split for remaining modules
 - E2E integration tests for all modules
 - Rate limiting and throttling configuration
 - API versioning strategy (v2 planning)
