@@ -2,17 +2,17 @@
 
 This file tracks the current state of the backend implementation repository.
 
-**KB Version:** 0.1.0
-**Last Updated:** 2026-07-20
+**KB Version:** 0.2.0
+**Last Updated:** 2026-09-10
 
 ## Active Work
 
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
-| API endpoint implementation (390 endpoints) | KB v0.1.0 | In Progress | Engineering |
-| Phase 3 gap-filling (Theme, Commerce, Booking, Notifications, Payments) | KB v0.1.0 | Complete | Engineering |
-| Fix publish permission (TASK-0024) — allow owner/admin, return NOT_OWNER code, keep 413 handling for large payloads | KB-061 | Ready | backend @agent-alpha |
-| Customizable merchant dashboard (TASK-0025) — GET /merchants/:id/dashboard integration-aware layout (FEAT-0008) | UI-0004 | Ready | backend @agent-alpha |
+| Three-tier API architecture migration | KB v0.2.0 | Complete | Engineering |
+| Tenant terminology eradication (tenant → merchant) | KB v0.2.0 | Complete | Engineering |
+| E2E integration tests for all modules | KB v0.2.0 | Pending | Engineering |
+| Rate limiting and throttling configuration | KB v0.2.0 | Pending | Engineering |
 
 ## Completed Milestones
 
@@ -24,6 +24,7 @@ This file tracks the current state of the backend implementation repository.
 | 2026-07 | Phase 3b — Adapters & Connectors | Email/Push/Stripe adapters, Anthropic provider, SendGrid & Google Calendar connectors |
 | 2026-07 | Deployment Readiness | Dockerfile, CI/CD pipeline, health checks, Railway config |
 | 2026-07 | Profile Deactivation & Deletion | 30-day soft deactivation flow, hard delete for GDPR/Apple/Google, admin cleanup endpoint, BFF mobile endpoints |
+| 2026-09 | Three-tier API Architecture | Website (Platform) / App (Tenant Self-Service) / Mobile (Consumer) split; "tenant" → "merchant" terminology |
 
 ## Modules Implemented
 
@@ -31,28 +32,28 @@ This file tracks the current state of the backend implementation repository.
 |---|--------|--------|-----------|
 | 1 | Auth & IAM | Complete | 14 |
 | 2 | Profile & Users | Complete | 10 |
-| 3 | Tenants | Complete | 11 |
+| 3 | Merchants | Complete | 11 (split: App + Public) |
 | 4 | Templates | Complete | 3 |
-| 5 | Builder (SDUI) | Complete | 19 |
+| 5 | Builder (SDUI) | Complete | 19 (migrated to `/app/*`) |
 | 6 | Renderer | Complete | 2 |
-| 7 | Commerce | Complete | 42 |
-| 8 | Media / DAM | Complete | 10 |
+| 7 | Commerce | Complete | 42 (split: App + Public) |
+| 8 | Media / DAM | Complete | 10 (App) |
 | 9 | QR Codes | Complete | 2 |
 | 10 | Discovery | Complete | 4 |
 | 11 | Admin | Complete | 5 |
-| 12 | Notifications | Complete | 19 |
+| 12 | Notifications | Complete | 19 (split: App + Public pending) |
 | 13 | Publishing | Complete | 6 |
-| 14 | Booking & Scheduling | Complete | 35 |
-| 15 | Forms & Workflow | Complete | 10 |
-| 16 | Payments | Complete | 12 |
-| 17 | Theme | Complete | 8 |
-| 18 | Integrations | Complete | 10 |
-| 19 | Analytics & BI | Complete | 23 |
-| 20 | Search & Discovery | Complete | 11 |
+| 14 | Booking & Scheduling | Complete | 35 (split: App + Public) |
+| 15 | Forms & Workflow | Complete | 10 (split: App + Public pending) |
+| 16 | Payments | Complete | 12 (split: App + Public pending) |
+| 17 | Theme | Complete | 8 (split: App + Public) |
+| 18 | Integrations | Complete | 10 (split: App + Public pending) |
+| 19 | Analytics & BI | Complete | 23 (split: App + Public pending) |
+| 20 | Search & Discovery | Complete | 11 (split: App + Public pending) |
 | 21 | AI Platform | Complete | 13 |
 | 22 | Platform Administration | Complete | 27 |
 | 23 | Infrastructure & DevOps | Complete | 18 |
-| 24 | Security & Compliance | Complete | 11 |
+| 24 | Security & Compliance | Complete | 11 (split: App + Public) |
 | 25 | Developer Platform | Complete | 16 |
 | 26 | Marketplace & Plugins | Complete | 13 |
 | 27 | Asset Platform Enhanced | Complete | 17 |
@@ -61,16 +62,31 @@ This file tracks the current state of the backend implementation repository.
 | 30 | BFF - Mobile | Complete | 9 |
 | 31 | BFF - Business Dashboard | Complete | 3 |
 | 32 | Health | Complete | 1 |
-| | **TOTAL** | | **390** |
+| | **TOTAL** | | **~395** |
+
+## Architecture: Three-Tier Endpoint Model
+
+| Tier | Path Prefix | Audience | Auth | Purpose |
+|------|-------------|----------|------|---------|
+| **Website (Platform)** | `/admin/*`, `/auth/*`, `/discovery/*`, `/templates/*`, `/bff/website/*` | Platform operators | JWT / Public | Registration, tenant creation, admin ops |
+| **App (Tenant Self-Service)** | `/app/*` | Tenant owners/managers | JWT + `@CurrentUser` | Write + config for own tenant (auto-resolved via `TenantResolverService`) |
+| **Mobile/Consumer** | `/merchants/:merchantId/*` | End users (public) | `@Public()` | Read-only catalog, booking, checkout |
+
+**Tenant Resolution:** `TenantResolverService` finds `TenantUser` where `role IN ['owner','manager']` and `status='active'`, picks first with `owner` priority.
+
+**Controller Pattern:**
+- `*AppController` — JWT + `@CurrentUser`, auto-resolves tenantId
+- `*PublicController` — `@Public()` with explicit `:merchantId` param
 
 ## Blockers
 
 | Issue | Impact | Owner |
 |-------|--------|-------|
-| Publish `403 only tenant owner can publish` blocks canvas publish for non-owner members (observed on Railway prod, `POST /merchants/:id/publishing/publish`); one successful push as owner, subsequent failures as member. Frontend has demo fallback but backend RBAC needs fix. Tracked as TASK-0024. | Merchant cannot publish app | backend @agent-alpha |
+| Remaining modules (Notifications, Forms, Payments, Integrations, Analytics, Search) need App/Public split | Incomplete three-tier migration | backend @agent-alpha |
 
 ## Next Up
 
+- Complete App/Public split for remaining modules
 - E2E integration tests for all modules
 - Rate limiting and throttling configuration
 - API versioning strategy (v2 planning)

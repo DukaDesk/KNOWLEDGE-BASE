@@ -1,8 +1,8 @@
 # DUKA-BACKEND API Endpoints Reference
 
-**Version:** 0.1.0
-**Knowledge Base Version:** KB v0.1.0
-**Last Updated:** 2026-07-20
+**Version:** 0.2.0
+**Knowledge Base Version:** KB v0.2.0
+**Last Updated:** 2026-09-11
 **Repository:** [DUKA-BACKEND](https://github.com/DukaDesk/DUKA-BACKEND)
 
 ## Overview
@@ -14,6 +14,20 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 - **Full Path Pattern:** `/api/v1/{resource}`
 - **Swagger Docs:** `/api/docs`
 - **Framework:** NestJS (TypeScript/Node.js)
+
+### Three-Tier Endpoint Architecture
+
+| Tier | Path Prefix | Audience | Auth | Purpose |
+|------|-------------|----------|------|---------|
+| **Website (Platform)** | `/admin/*`, `/auth/*`, `/discovery/*`, `/templates/*`, `/bff/website/*` | Platform operators | JWT / Public | Registration, tenant creation, admin |
+| **App (Tenant Self-Service)** | `/app/*` | Tenant owners/managers | JWT + `@CurrentUser` | Write + config for own tenant |
+| **Mobile/Consumer** | `/merchants/:merchantId/*` | End users (public) | `@Public()` or JWT | Read-only catalog, booking, checkout |
+
+**Tenant Resolution:** `TenantResolverService` resolves `tenantId` from authenticated user's `TenantUser` membership (`owner` or `manager` role, `active` status).
+
+**Controller Pattern:**
+- `*AppController` — `@Controller({ path: 'app/<module>' })` + `JwtAuthGuard` + `TenantResolverService`
+- `*PublicController` — `@Controller({ path: 'merchants/:merchantId/<module>' })` + `@Public()` or JWT
 
 ---
 
@@ -106,19 +120,26 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 3. Merchants
 
+### Platform (Website)
+
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/merchants` | Create a new tenant |
-| GET | `/api/v1/merchants/my` | Get my tenants |
-| GET | `/api/v1/merchants/:id` | Get tenant by ID |
-| PUT | `/api/v1/merchants/:id` | Update tenant |
-| POST | `/api/v1/merchants/:id/publish` | Publish tenant |
-| GET | `/api/v1/merchants/:id/config` | Get tenant runtime configuration |
-| PUT | `/api/v1/merchants/:id/config` | Update tenant runtime configuration |
-| GET | `/api/v1/merchants/:id/features` | Get enabled capabilities |
-| GET | `/api/v1/merchants/:id/subscription` | Get tenant subscription |
-| POST | `/api/v1/merchants/:id/subscribe` | Subscribe to a plan |
-| POST | `/api/v1/merchants/:id/subscription/cancel` | Cancel subscription |
+| POST | `/api/v1/merchants` | Create a new merchant (JWT) |
+| GET | `/api/v1/merchants/:id` | Get merchant by ID (public) |
+| GET | `/api/v1/merchants/:id/features` | Get enabled capabilities (public) |
+
+### Tenant Self-Service (App)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/app/merchants` | Get my merchants |
+| PUT | `/api/v1/app/merchants` | Update current merchant |
+| POST | `/api/v1/app/merchants/publish` | Publish current merchant |
+| GET | `/api/v1/app/merchants/config` | Get current merchant runtime configuration |
+| PUT | `/api/v1/app/merchants/config` | Update current merchant runtime configuration |
+| GET | `/api/v1/app/merchants/subscription` | Get current merchant subscription |
+| POST | `/api/v1/app/merchants/subscribe` | Subscribe to a plan |
+| POST | `/api/v1/app/merchants/subscription/cancel` | Cancel subscription |
 
 ---
 
@@ -128,33 +149,46 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 |--------|------|-------------|
 | GET | `/api/v1/templates` | List all templates (optional category filter) |
 | GET | `/api/v1/templates/:id` | Get template by ID |
-| POST | `/api/v1/templates/:id/use` | Apply template to a tenant |
+| POST | `/api/v1/templates/:id/use` | Apply template to a merchant |
 
 ---
 
 ## 5. Builder (SDUI)
 
+### Tenant Self-Service (App)
+
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/merchants/:tenantId/pages` | Get all pages for a tenant |
-| PUT | `/api/v1/merchants/:tenantId/pages/:pageId` | Update a page |
-| POST | `/api/v1/merchants/:tenantId/pages/:pageId/sections` | Add a section to a page |
-| PUT | `/api/v1/merchants/:tenantId/sections/:sectionId` | Update a section |
-| POST | `/api/v1/merchants/:tenantId/sections/:sectionId/components` | Add a component to a section |
-| PUT | `/api/v1/merchants/:tenantId/components/:componentId` | Update a component |
-| GET | `/api/v1/merchants/:tenantId/navigation` | Get navigation for a tenant |
-| PUT | `/api/v1/merchants/:tenantId/navigation` | Update navigation |
-| GET | `/api/v1/merchants/:tenantId/component-types` | Get all registered component definitions |
-| GET | `/api/v1/merchants/:tenantId/component-types/:type` | Get a specific component type definition |
-| GET | `/api/v1/merchants/:tenantId/action-types` | Get all registered action definitions |
-| POST | `/api/v1/merchants/:tenantId/actions/execute` | Execute an action with given context |
-| POST | `/api/v1/merchants/:tenantId/conditions/evaluate` | Evaluate conditional visibility |
-| POST | `/api/v1/merchants/:tenantId/data-binding/resolve` | Resolve a data binding against context |
-| POST | `/api/v1/merchants/:tenantId/preview` | Preview full tenant rendering |
-| POST | `/api/v1/merchants/:tenantId/pages/:pageId/preview` | Preview a single page |
-| POST | `/api/v1/merchants/:tenantId/component-preview` | Validate and preview a component |
-| GET | `/api/v1/merchants/:tenantId/theme` | Get theme for a tenant |
-| PUT | `/api/v1/merchants/:tenantId/theme` | Update theme for a tenant |
+| GET | `/api/v1/app/builder/pages` | Get all pages for current merchant |
+| PUT | `/api/v1/app/builder/pages/:pageId` | Update a page |
+| POST | `/api/v1/app/builder/pages/:pageId/sections` | Add a section to a page |
+| PUT | `/api/v1/app/builder/sections/:sectionId` | Update a section |
+| POST | `/api/v1/app/builder/sections/:sectionId/components` | Add a component to a section |
+| PUT | `/api/v1/app/builder/components/:componentId` | Update a component |
+| GET | `/api/v1/app/builder/navigation` | Get navigation for current merchant |
+| PUT | `/api/v1/app/builder/navigation` | Update navigation |
+| GET | `/api/v1/app/builder/component-types` | Get all registered component definitions |
+| GET | `/api/v1/app/builder/component-types/:type` | Get a specific component type definition |
+| GET | `/api/v1/app/builder/action-types` | Get all registered action definitions |
+| POST | `/api/v1/app/builder/actions/execute` | Execute an action with given context |
+| POST | `/api/v1/app/builder/conditions/evaluate` | Evaluate conditional visibility |
+| POST | `/api/v1/app/builder/data-binding/resolve` | Resolve a data binding against context |
+| POST | `/api/v1/app/builder/preview` | Preview full merchant rendering |
+| POST | `/api/v1/app/builder/pages/:pageId/preview` | Preview a single page |
+| POST | `/api/v1/app/builder/component-preview` | Validate and preview a component |
+
+### Public (Mobile/Consumer)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/merchants/:merchantId/pages` | Get all pages for a merchant |
+| PUT | `/api/v1/merchants/:merchantId/pages/:pageId` | Update a page |
+| POST | `/api/v1/merchants/:merchantId/pages/:pageId/sections` | Add a section to a page |
+| PUT | `/api/v1/merchants/:merchantId/sections/:sectionId` | Update a section |
+| POST | `/api/v1/merchants/:merchantId/sections/:sectionId/components` | Add a component to a section |
+| PUT | `/api/v1/merchants/:merchantId/components/:componentId` | Update a component |
+| GET | `/api/v1/merchants/:merchantId/navigation` | Get navigation for a merchant |
+| PUT | `/api/v1/merchants/:merchantId/navigation` | Update navigation |
 
 ---
 
@@ -162,54 +196,58 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/merchants/:id/definition` | Get application definition for a tenant |
-| GET | `/api/v1/resolve/:slug` | Resolve tenant by slug |
+| GET | `/api/v1/merchants/:id/definition` | Get application definition for a merchant |
+| GET | `/api/v1/resolve/:slug` | Resolve merchant by slug |
 
 ---
 
 ## 7. Commerce
 
-### Categories
+### Tenant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/categories` | Create category |
-| GET | `/api/v1/merchants/:tenantId/categories` | List categories |
-| PUT | `/api/v1/categories/:id` | Update category |
-| DELETE | `/api/v1/categories/:id` | Delete category |
+| POST | `/api/v1/app/commerce/categories` | Create category |
+| GET | `/api/v1/app/commerce/categories` | List categories |
+| PUT | `/api/v1/app/commerce/categories/:id` | Update category |
+| DELETE | `/api/v1/app/commerce/categories/:id` | Delete category |
+| POST | `/api/v1/app/commerce/products` | Create product with variants |
+| GET | `/api/v1/app/commerce/products` | List products with filter, sort, pagination |
+| PUT | `/api/v1/app/commerce/products/:id` | Update product |
+| DELETE | `/api/v1/app/commerce/products/:id` | Delete product |
+| PUT | `/api/v1/app/commerce/products/:id/extended-pricing` | Set multi-currency pricing |
+| POST | `/api/v1/app/commerce/products/:id/variants` | Add variant to product |
+| PUT | `/api/v1/app/commerce/variants/:id` | Update variant |
+| DELETE | `/api/v1/app/commerce/variants/:id` | Delete variant |
+| POST | `/api/v1/app/commerce/products/:id/reserve` | Reserve inventory |
+| POST | `/api/v1/app/commerce/reservations/:id/release` | Release inventory reservation |
+| POST | `/api/v1/app/commerce/reservations/:id/confirm` | Confirm reservation and deduct inventory |
+| POST | `/api/v1/app/commerce/products/:id/adjust-stock` | Adjust stock level |
+| POST | `/api/v1/app/commerce/coupons` | Create coupon |
+| GET | `/api/v1/app/commerce/coupons` | List coupons |
+| PUT | `/api/v1/app/commerce/coupons/:id` | Update coupon |
+| DELETE | `/api/v1/app/commerce/coupons/:id` | Delete coupon |
+| POST | `/api/v1/app/commerce/tax-rules` | Create tax rule |
+| GET | `/api/v1/app/commerce/tax-rules` | List tax rules |
+| PUT | `/api/v1/app/commerce/tax-rules/:id` | Update tax rule |
+| DELETE | `/api/v1/app/commerce/tax-rules/:id` | Delete tax rule |
+| GET | `/api/v1/app/commerce/orders` | List orders |
+| POST | `/api/v1/app/commerce/orders/:id/status` | Update order status |
+| POST | `/api/v1/app/commerce/orders/:orderId/fulfillments` | Create fulfillment |
+| PATCH | `/api/v1/app/commerce/fulfillments/:id` | Update fulfillment status |
 
-### Products & Variants
+### Public (Mobile/Consumer)
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/products` | Create product with variants |
-| GET | `/api/v1/merchants/:tenantId/products` | List products with filter, sort, pagination |
+| GET | `/api/v1/merchants/:merchantId/categories` | List categories |
+| GET | `/api/v1/merchants/:merchantId/products` | List products |
 | GET | `/api/v1/products/:id` | Get product with variants |
-| PUT | `/api/v1/products/:id` | Update product |
-| DELETE | `/api/v1/products/:id` | Delete product |
 | GET | `/api/v1/product-types` | List valid product types |
-| GET | `/api/v1/merchants/:tenantId/products/type/:type` | List products by type |
-| PUT | `/api/v1/products/:id/extended-pricing` | Set multi-currency pricing |
+| GET | `/api/v1/merchants/:merchantId/products/type/:type` | List products by type |
 | GET | `/api/v1/products/:id/price` | Get product price in specific currency |
-| POST | `/api/v1/products/:id/variants` | Add variant to product |
-| PUT | `/api/v1/variants/:id` | Update variant |
-| DELETE | `/api/v1/variants/:id` | Delete variant |
-
-### Inventory
-
-| Method | Path | Description |
-|--------|------|-------------|
 | GET | `/api/v1/products/:id/stock` | Get available stock for product/variant |
-| POST | `/api/v1/products/:id/reserve` | Reserve inventory |
-| POST | `/api/v1/reservations/:id/release` | Release inventory reservation |
-| POST | `/api/v1/reservations/:id/confirm` | Confirm reservation and deduct inventory |
-| POST | `/api/v1/products/:id/adjust-stock` | Adjust stock level |
-
-### Cart
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/cart` | Get or create cart |
+| POST | `/api/v1/merchants/:merchantId/cart` | Get or create cart |
 | GET | `/api/v1/cart/:id` | Get cart with items |
 | POST | `/api/v1/cart/:id/items` | Add item to cart |
 | PATCH | `/api/v1/cart/items/:itemId` | Update cart item quantity |
@@ -217,58 +255,29 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | POST | `/api/v1/cart/:id/coupon` | Apply coupon to cart |
 | DELETE | `/api/v1/cart/:id/coupon` | Remove coupon from cart |
 | POST | `/api/v1/cart/:id/checkout` | Convert cart to order |
-
-### Orders
-
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/api/v1/merchants/:tenantId/orders` | List orders |
+| GET | `/api/v1/merchants/:merchantId/orders` | List orders |
 | GET | `/api/v1/orders/:id` | Get order detail |
-| POST | `/api/v1/orders/:id/status` | Update order status with transition validation |
-
-### Coupons
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/coupons` | Create coupon |
-| GET | `/api/v1/merchants/:tenantId/coupons` | List coupons |
-| PUT | `/api/v1/coupons/:id` | Update coupon |
-| DELETE | `/api/v1/coupons/:id` | Delete coupon |
-
-### Fulfillments
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/orders/:orderId/fulfillments` | Create fulfillment |
+| POST | `/api/v1/merchants/:merchantId/tax-calc` | Calculate tax for subtotal |
 | GET | `/api/v1/orders/:orderId/fulfillments` | List fulfillments for order |
-| PATCH | `/api/v1/fulfillments/:id` | Update fulfillment status |
-
-### Tax Rules
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/tax-rules` | Create tax rule |
-| GET | `/api/v1/merchants/:tenantId/tax-rules` | List tax rules |
-| PUT | `/api/v1/tax-rules/:id` | Update tax rule |
-| DELETE | `/api/v1/tax-rules/:id` | Delete tax rule |
-| GET | `/api/v1/merchants/:tenantId/tax-calc` | Calculate tax for subtotal |
 
 ---
 
 ## 8. Media / DAM
 
+### Tenant Self-Service (App)
+
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/media/upload` | Upload file with optimization & variant generation |
-| GET | `/api/v1/merchants/:tenantId/media` | List media files (optionally filtered by folder) |
-| GET | `/api/v1/merchants/:tenantId/media/:id` | Get media details with versions |
-| PATCH | `/api/v1/merchants/:tenantId/media/:id` | Update media metadata |
-| DELETE | `/api/v1/merchants/:tenantId/media/:id` | Delete media file and all variants |
-| GET | `/api/v1/merchants/:tenantId/media/:id/cdn-url` | Get CDN delivery URL |
-| POST | `/api/v1/merchants/:tenantId/media/folders` | Create asset folder |
-| GET | `/api/v1/merchants/:tenantId/media/folders` | List asset folders |
-| PATCH | `/api/v1/merchants/:tenantId/media/folders/:id` | Update folder |
-| DELETE | `/api/v1/merchants/:tenantId/media/folders/:id` | Delete empty folder |
+| POST | `/api/v1/app/media/upload` | Upload file with optimization & variant generation |
+| GET | `/api/v1/app/media` | List media files (optionally filtered by folder) |
+| GET | `/api/v1/app/media/:id` | Get media details with versions |
+| PATCH | `/api/v1/app/media/:id` | Update media metadata |
+| DELETE | `/api/v1/app/media/:id` | Delete media file and all variants |
+| GET | `/api/v1/app/media/:id/cdn-url` | Get CDN delivery URL |
+| POST | `/api/v1/app/media/folders` | Create asset folder |
+| GET | `/api/v1/app/media/folders` | List asset folders |
+| PATCH | `/api/v1/app/media/folders/:id` | Update folder |
+| DELETE | `/api/v1/app/media/folders/:id` | Delete empty folder |
 
 ---
 
@@ -276,8 +285,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/qr/generate/:tenantId` | Generate QR code data for a tenant |
-| GET | `/api/v1/qr/resolve/:slug` | Resolve QR code slug to tenant |
+| POST | `/api/v1/qr/generate/:merchantId` | Generate QR code data for a merchant (JWT) |
+| GET | `/api/v1/qr/resolve/:slug` | Resolve QR code slug to merchant (public) |
 
 ---
 
@@ -285,10 +294,10 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/discovery/featured` | Get featured / popular tenants |
-| GET | `/api/v1/discovery/search` | Search tenants |
+| GET | `/api/v1/discovery/featured` | Get featured / popular merchants |
+| GET | `/api/v1/discovery/search` | Search merchants |
 | GET | `/api/v1/discovery/categories` | Get discover categories |
-| GET | `/api/v1/discovery/nearby` | Get nearby tenants |
+| GET | `/api/v1/discovery/nearby` | Get nearby merchants |
 
 ---
 
@@ -296,14 +305,14 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/admin/merchants/:id/approve` | Approve a tenant |
-| POST | `/api/v1/admin/merchants/:id/suspend` | Suspend a tenant |
-| POST | `/api/v1/admin/merchants` | Create a new tenant |
-| GET | `/api/v1/admin/merchants/:id` | Get tenant detail |
-| PUT | `/api/v1/admin/merchants/:id` | Update tenant |
-| GET | `/api/v1/admin/merchants/:tenantId/settings` | Get tenant settings |
-| PUT | `/api/v1/admin/merchants/:tenantId/settings/:key` | Update tenant setting |
-| GET | `/api/v1/admin/tenants` | Get all tenants (admin) |
+| POST | `/api/v1/admin/merchants` | Create a new merchant |
+| POST | `/api/v1/admin/merchants/:id/approve` | Approve a merchant |
+| POST | `/api/v1/admin/merchants/:id/suspend` | Suspend a merchant |
+| GET | `/api/v1/admin/merchants` | Get all merchants |
+| GET | `/api/v1/admin/merchants/:id` | Get merchant detail |
+| PUT | `/api/v1/admin/merchants/:id` | Update merchant |
+| GET | `/api/v1/admin/merchants/:merchantId/settings` | Get merchant settings |
+| PUT | `/api/v1/admin/merchants/:merchantId/settings/:key` | Update merchant setting |
 | GET | `/api/v1/admin/stats` | Get platform stats |
 | POST | `/api/v1/admin/cleanup-deactivated` | Purge expired deactivated users |
 
@@ -311,27 +320,36 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 12. Notifications
 
+### Tenant Self-Service (App)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/v1/app/notifications/templates` | Create notification template |
+| GET | `/api/v1/app/notifications/templates` | List templates for current merchant |
+| PUT | `/api/v1/app/notifications/templates/:id` | Update template |
+| DELETE | `/api/v1/app/notifications/templates/:id` | Delete template |
+| POST | `/api/v1/app/notifications/send-from-template` | Send notification from template |
+| POST | `/api/v1/app/notifications/preferences` | Set notification preference |
+| POST | `/api/v1/app/notifications/sms` | Send SMS notification |
+| POST | `/api/v1/app/notifications/campaigns` | Send push/email campaign |
+| POST | `/api/v1/app/notifications/campaigns/sms` | Send SMS campaign |
+| POST | `/api/v1/app/notifications/:id/click` | Track notification click |
+| GET | `/api/v1/app/notifications/analytics` | Notification click analytics |
+| POST | `/api/v1/app/notifications/send` | Send notification directly |
+
+### Public (User-Facing)
+
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/api/v1/notifications` | List user notifications |
 | GET | `/api/v1/notifications/unread-count` | Get unread notification count |
 | PUT | `/api/v1/notifications/:id/read` | Mark notification as read |
 | POST | `/api/v1/notifications/mark-all-read` | Mark all notifications as read |
-| POST | `/api/v1/notifications/templates` | Create notification template |
-| GET | `/api/v1/notifications/templates` | List templates |
-| PUT | `/api/v1/notifications/templates/:id` | Update template |
-| DELETE | `/api/v1/notifications/templates/:id` | Delete template |
-| POST | `/api/v1/notifications/send-from-template` | Send notification from template |
+| GET | `/api/v1/notifications/templates` | List templates (optional tenant filter) |
 | GET | `/api/v1/notifications/preferences` | Get notification preferences |
-| POST | `/api/v1/notifications/preferences` | Set notification preference |
 | POST | `/api/v1/notifications/devices` | Register device for push notifications |
 | DELETE | `/api/v1/notifications/devices/:token` | Unregister device |
-| POST | `/api/v1/notifications/sms` | Send SMS notification |
-| POST | `/api/v1/notifications/campaigns` | Send push/email campaign |
-| POST | `/api/v1/notifications/campaigns/sms` | Send SMS campaign |
-| POST | `/api/v1/notifications/:id/click` | Track notification click |
 | GET | `/api/v1/notifications/analytics` | Notification click analytics |
-| POST | `/api/v1/notifications/send` | Send notification directly |
 
 ---
 
@@ -340,7 +358,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | Method | Path | Description |
 |--------|------|-------------|
 | POST | `/api/v1/merchants/:id/publishing/validate` | Validate current draft |
-| POST | `/api/v1/merchants/:id/publishing/publish` | Validate, compile, and publish |
+| POST | `/api/v1/merchants/:id/publishing/publish` | Validate, compile, and publish (owner/manager only) |
 | GET | `/api/v1/merchants/:id/publishing/releases` | Get release history |
 | GET | `/api/v1/merchants/:id/publishing/releases/:version` | Get specific release |
 | POST | `/api/v1/merchants/:id/publishing/rollback/:version` | Rollback to a previous version |
@@ -350,211 +368,213 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 14. Booking & Scheduling
 
-### Services
+### Tenant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/booking/services` | Create booking service |
-| GET | `/api/v1/merchants/:tenantId/booking/services` | List booking services |
+| POST | `/api/v1/app/booking/services` | Create booking service |
+| GET | `/api/v1/app/booking/services` | List booking services |
+| PUT | `/api/v1/app/booking/services/:id` | Update booking service |
+| DELETE | `/api/v1/app/booking/services/:id` | Delete booking service |
+| POST | `/api/v1/app/booking/locations` | Create booking location |
+| GET | `/api/v1/app/booking/locations` | List booking locations |
+| PUT | `/api/v1/app/booking/locations/:id` | Update booking location |
+| DELETE | `/api/v1/app/booking/locations/:id` | Delete booking location |
+| POST | `/api/v1/app/booking/cancellation-policies` | Create cancellation policy with refund tiers |
+| GET | `/api/v1/app/booking/cancellation-policies` | List cancellation policies |
+| POST | `/api/v1/app/booking/staff` | Create staff member with service assignments |
+| GET | `/api/v1/app/booking/staff` | List staff members |
+| PUT | `/api/v1/app/booking/staff/:id` | Update staff member |
+| DELETE | `/api/v1/app/booking/staff/:id` | Delete staff member |
+| POST | `/api/v1/app/booking/resources` | Create booking resource |
+| GET | `/api/v1/app/booking/resources` | List resources |
+| PUT | `/api/v1/app/booking/resources/:id` | Update resource |
+| DELETE | `/api/v1/app/booking/resources/:id` | Delete resource |
+| POST | `/api/v1/app/booking/schedules` | Create schedule |
+| GET | `/api/v1/app/booking/schedules` | List schedules |
+| PUT | `/api/v1/app/booking/schedules/:id` | Update schedule |
+| DELETE | `/api/v1/app/booking/schedules/:id` | Delete schedule |
+| GET | `/api/v1/app/booking/availability` | Get available time slots |
+| GET | `/api/v1/app/booking` | List bookings |
+| POST | `/api/v1/app/booking/:id/status` | Update booking status |
+| GET | `/api/v1/app/booking/calendar` | Get booking timeline for a date range |
+| GET | `/api/v1/app/booking/waiting-list` | Get waiting list |
+| POST | `/api/v1/app/booking/waiting-list/:id/notify` | Mark waiting list entry as notified |
+
+### Public (Mobile/Consumer)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/merchants/:merchantId/booking/services` | List booking services |
 | GET | `/api/v1/booking/services/:id` | Get booking service with assigned staff |
-| PUT | `/api/v1/booking/services/:id` | Update booking service |
-| DELETE | `/api/v1/booking/services/:id` | Delete booking service |
-
-### Locations
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/booking/locations` | Create booking location |
-| GET | `/api/v1/merchants/:tenantId/booking/locations` | List booking locations |
-| PUT | `/api/v1/booking/locations/:id` | Update booking location |
-| DELETE | `/api/v1/booking/locations/:id` | Delete booking location |
-
-### Cancellation Policies
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/booking/cancellation-policies` | Create cancellation policy with refund tiers |
-| GET | `/api/v1/merchants/:tenantId/booking/cancellation-policies` | List cancellation policies |
+| GET | `/api/v1/merchants/:merchantId/booking/locations` | List booking locations |
+| GET | `/api/v1/merchants/:merchantId/booking/cancellation-policies` | List cancellation policies |
 | GET | `/api/v1/booking/:id/cancellation-refund` | Calculate refund amount |
-
-### Reminders
-
-| Method | Path | Description |
-|--------|------|-------------|
 | POST | `/api/v1/booking/:id/reminders` | Schedule reminders for a booking |
 | POST | `/api/v1/booking/reminders/process` | Process pending reminders |
-
-### Staff
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/booking/staff` | Create staff member with service assignments |
-| GET | `/api/v1/merchants/:tenantId/booking/staff` | List staff members |
-| GET | `/api/v1/booking/staff/:id` | Get staff member |
-| PUT | `/api/v1/booking/staff/:id` | Update staff member |
-| DELETE | `/api/v1/booking/staff/:id` | Delete staff member |
-
-### Resources
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/booking/resources` | Create booking resource |
-| GET | `/api/v1/merchants/:tenantId/booking/resources` | List resources |
-| PUT | `/api/v1/booking/resources/:id` | Update resource |
-| DELETE | `/api/v1/booking/resources/:id` | Delete resource |
-
-### Schedules & Availability
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/booking/schedules` | Create schedule |
-| GET | `/api/v1/merchants/:tenantId/booking/schedules` | List schedules |
-| PUT | `/api/v1/booking/schedules/:id` | Update schedule |
-| DELETE | `/api/v1/booking/schedules/:id` | Delete schedule |
-| GET | `/api/v1/merchants/:tenantId/booking/availability` | Get available time slots |
-
-### Bookings
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/booking` | Create booking (public) |
-| GET | `/api/v1/merchants/:tenantId/booking` | List bookings |
+| POST | `/api/v1/merchants/:merchantId/booking` | Create booking (public) |
 | GET | `/api/v1/booking/:id` | Get booking detail with history |
-| POST | `/api/v1/booking/:id/status` | Update booking status |
-| GET | `/api/v1/merchants/:tenantId/booking/calendar` | Get booking timeline for a date range |
-
-### Waiting List
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/booking/waiting-list` | Add to waiting list |
-| GET | `/api/v1/merchants/:tenantId/booking/waiting-list` | Get waiting list |
-| POST | `/api/v1/booking/waiting-list/:id/notify` | Mark waiting list entry as notified |
+| GET | `/api/v1/merchants/:merchantId/booking/availability` | Get available time slots |
+| POST | `/api/v1/merchants/:merchantId/booking/waiting-list` | Add to waiting list |
+| GET | `/api/v1/booking/staff/:id` | Get staff member |
 
 ---
 
 ## 15. Forms & Workflow
 
+### Tenant Self-Service (App)
+
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/forms` | Create form with fields |
-| GET | `/api/v1/merchants/:tenantId/forms` | List forms |
-| GET | `/api/v1/forms/:id` | Get form with fields and workflow |
-| PUT | `/api/v1/forms/:id` | Update form (auto-increments version) |
-| DELETE | `/api/v1/forms/:id` | Delete form |
-| POST | `/api/v1/forms/:id/submit` | Submit form answers (public) |
+| POST | `/api/v1/app/forms` | Create form with fields |
+| GET | `/api/v1/app/forms` | List forms for current merchant |
+| PUT | `/api/v1/app/forms/:id` | Update form (auto-increments version) |
+| DELETE | `/api/v1/app/forms/:id` | Delete form |
+| GET | `/api/v1/app/forms/:id/submissions` | List submissions for a form |
+| GET | `/api/v1/app/forms/submissions/:id` | Get submission detail |
+| POST | `/api/v1/app/forms/:id/workflow` | Set approval workflow steps |
+| POST | `/api/v1/app/forms/submissions/:id/approve` | Approve or reject a submission |
+
+### Public (Mobile/Consumer)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/merchants/:merchantId/forms` | List forms for a merchant |
+| GET | `/api/v1/forms/:id` | Get form with fields and workflow (public) |
+| POST | `/api/v1/merchants/:merchantId/forms/:id/submit` | Submit form answers (public) |
 | GET | `/api/v1/forms/:id/submissions` | List submissions for a form |
 | GET | `/api/v1/submissions/:id` | Get submission detail |
-| POST | `/api/v1/forms/:id/workflow` | Set approval workflow steps |
-| POST | `/api/v1/submissions/:id/approve` | Approve or reject a submission |
 
 ---
 
 ## 16. Payments
 
+### Tenant Self-Service (App)
+
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/merchants/:tenantId/payments/initialize` | Initialize a payment with provider |
-| POST | `/api/v1/payments/:intentId/verify` | Verify payment intent with provider |
-| GET | `/api/v1/merchants/:tenantId/payments` | List payment intents |
-| POST | `/api/v1/payments/:intentId/refund` | Process a refund (partial or full) |
-| POST | `/api/v1/merchants/:tenantId/payments/settlements` | Record a settlement entry |
-| POST | `/api/v1/payments/settlements/:id/confirm` | Confirm a settlement as received |
-| GET | `/api/v1/merchants/:tenantId/payments/settlements` | List settlements |
-| GET | `/api/v1/merchants/:tenantId/payments/transactions` | List payment transactions |
-| GET | `/api/v1/payments/health/:provider` | Check health of a payment provider |
-| GET | `/api/v1/payments/health` | Check health of all payment providers |
-| GET | `/api/v1/merchants/:tenantId/payments/accounts` | Get payment accounts for tenant |
-| POST | `/api/v1/payments/webhook/:provider` | Provider webhook endpoint (public) |
+| POST | `/api/v1/app/payments/initialize` | Initialize a payment with provider |
+| POST | `/api/v1/app/payments/:intentId/verify` | Verify payment intent with provider |
+| POST | `/api/v1/app/payments/:intentId/refund` | Process a refund (partial or full) |
+| POST | `/api/v1/app/payments/settlements` | Record a settlement entry |
+| POST | `/api/v1/app/payments/settlements/:id/confirm` | Confirm a settlement as received |
+
+### Public (Mobile/Consumer)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/merchants/:merchantId/payments` | List payment intents |
+| GET | `/api/v1/merchants/:merchantId/payments/settlements` | List settlements |
+| GET | `/api/v1/merchants/:merchantId/payments/transactions` | List payment transactions |
+| GET | `/api/v1/merchants/:merchantId/payments/accounts` | Get payment accounts for merchant |
+| GET | `/api/v1/merchants/:merchantId/payments/health/:provider` | Check health of a payment provider |
+| GET | `/api/v1/merchants/:merchantId/payments/health` | Check health of all payment providers |
+| POST | `/api/v1/merchants/:merchantId/payments/webhook/:provider` | Provider webhook endpoint (public) |
 
 ---
 
 ## 17. Theme
 
+### Tenant Self-Service (App)
+
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/merchants/:tenantId/theme` | Get current theme configuration |
-| PUT | `/api/v1/merchants/:tenantId/theme` | Update theme configuration with versioning |
-| GET | `/api/v1/merchants/:tenantId/theme/versions` | Get theme version history |
-| GET | `/api/v1/merchants/:tenantId/theme/versions/:version` | Get a specific theme version snapshot |
-| POST | `/api/v1/merchants/:tenantId/theme/versions/:version/restore` | Restore a previous theme version |
-| GET | `/api/v1/merchants/:tenantId/theme/compiled` | Get compiled theme token bundle (light + dark) |
-| GET | `/api/v1/merchants/:tenantId/theme/preview` | Get theme tokens for live preview |
-| POST | `/api/v1/merchants/:tenantId/theme/reset` | Reset theme to factory defaults |
+| GET | `/api/v1/app/theme` | Get current theme configuration |
+| PUT | `/api/v1/app/theme` | Update theme configuration with versioning |
+| GET | `/api/v1/app/theme/versions` | Get theme version history |
+| GET | `/api/v1/app/theme/versions/:version` | Get a specific theme version snapshot |
+| POST | `/api/v1/app/theme/versions/:version/restore` | Restore a previous theme version |
+| POST | `/api/v1/app/theme/reset` | Reset theme to factory defaults |
+
+### Public (Mobile/Consumer)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/merchants/:merchantId/theme/compiled` | Get compiled theme token bundle (light + dark) |
+| GET | `/api/v1/merchants/:merchantId/theme/preview` | Get theme tokens for live preview |
 
 ---
 
 ## 18. Integrations
 
+### Tenant Self-Service (App)
+
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/integrations/available` | List available integration connectors |
-| POST | `/api/v1/merchants/:tenantId/integrations/connect` | Connect an integration provider |
-| POST | `/api/v1/merchants/:tenantId/integrations/:provider/disconnect` | Disconnect an integration |
-| GET | `/api/v1/merchants/:tenantId/integrations` | List connected integrations |
-| GET | `/api/v1/merchants/:tenantId/integrations/:provider` | Get integration details |
-| POST | `/api/v1/merchants/:tenantId/integrations/:provider/test` | Test integration connection |
-| POST | `/api/v1/merchants/:tenantId/integrations/:provider/sync` | Trigger a data sync |
-| GET | `/api/v1/merchants/:tenantId/integrations/:provider/sync-history` | Get sync job history |
-| POST | `/api/v1/merchants/:tenantId/integrations/webhook` | Queue an outgoing webhook |
-| POST | `/api/v1/integrations/webhooks/process` | Process pending outgoing webhooks |
+| POST | `/api/v1/app/integrations/connect` | Connect an integration provider |
+| POST | `/api/v1/app/integrations/:provider/disconnect` | Disconnect an integration |
+| POST | `/api/v1/app/integrations/:provider/test` | Test integration connection |
+| POST | `/api/v1/app/integrations/:provider/sync` | Trigger a data sync |
+| POST | `/api/v1/app/integrations/webhook` | Queue an outgoing webhook |
+| POST | `/api/v1/app/integrations/webhooks/process` | Process pending outgoing webhooks |
+
+### Public (Mobile/Consumer)
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/merchants/:merchantId/integrations/available` | List available integration connectors |
+| GET | `/api/v1/merchants/:merchantId/integrations` | List connected integrations |
+| GET | `/api/v1/merchants/:merchantId/integrations/:provider` | Get integration details |
+| GET | `/api/v1/merchants/:merchantId/integrations/:provider/sync-history` | Get sync job history |
 
 ---
 
 ## 19. Analytics & BI
 
-### Event Tracking
+### Tenant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/analytics/events` | Track an analytics event |
+| POST | `/api/v1/app/analytics/events` | Track an analytics event |
+| POST | `/api/v1/app/analytics/reports` | Create a saved report |
+| POST | `/api/v1/app/analytics/reports/:id` | Update saved report |
+| DELETE | `/api/v1/app/analytics/reports/:id` | Delete saved report |
+| POST | `/api/v1/app/analytics/dashboards` | Create a dashboard |
+| POST | `/api/v1/app/analytics/dashboards/:id` | Update dashboard |
+| DELETE | `/api/v1/app/analytics/dashboards/:id` | Delete dashboard |
+| POST | `/api/v1/app/analytics/dashboards/:dashboardId/widgets` | Add widget to dashboard |
+| POST | `/api/v1/app/analytics/dashboards/:dashboardId/widgets/:widgetId` | Update widget |
+| DELETE | `/api/v1/app/analytics/dashboards/:dashboardId/widgets/:widgetId` | Remove widget |
+
+### Public (Read-Only)
+
+| Method | Path | Description |
+|--------|------|-------------|
 | GET | `/api/v1/analytics/events` | Get analytics events with filters |
 | GET | `/api/v1/analytics/events/aggregate` | Aggregate events by period |
-
-### Reports
-
-| Method | Path | Description |
-|--------|------|-------------|
 | GET | `/api/v1/analytics/reports/revenue` | Revenue report |
 | GET | `/api/v1/analytics/reports/users` | User analytics |
 | GET | `/api/v1/analytics/reports/bookings` | Booking analytics |
 | GET | `/api/v1/analytics/summary` | Dashboard summary |
-| POST | `/api/v1/analytics/reports` | Create a saved report |
 | GET | `/api/v1/analytics/reports/saved` | List saved reports |
 | GET | `/api/v1/analytics/reports/:id` | Get saved report |
-| POST | `/api/v1/analytics/reports/:id` | Update saved report |
-| DELETE | `/api/v1/analytics/reports/:id` | Delete saved report |
-
-### Dashboards
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/analytics/dashboards` | Create a dashboard |
 | GET | `/api/v1/analytics/dashboards` | List dashboards |
 | GET | `/api/v1/analytics/dashboards/:id` | Get dashboard with widgets |
-| POST | `/api/v1/analytics/dashboards/:id` | Update dashboard |
-| DELETE | `/api/v1/analytics/dashboards/:id` | Delete dashboard |
-| POST | `/api/v1/analytics/dashboards/:dashboardId/widgets` | Add widget to dashboard |
-| POST | `/api/v1/analytics/dashboards/:dashboardId/widgets/:widgetId` | Update widget |
-| DELETE | `/api/v1/analytics/dashboards/:dashboardId/widgets/:widgetId` | Remove widget |
 
 ---
 
 ## 20. Search & Discovery
 
+### Tenant Self-Service (App)
+
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/search/index` | Index a document |
-| DELETE | `/api/v1/search/index/:entityType/:entityId` | Remove from index |
-| POST | `/api/v1/search/index/bulk` | Bulk index documents |
+| POST | `/api/v1/app/search/index` | Index a document |
+| DELETE | `/api/v1/app/search/index/:entityType/:entityId` | Remove from index |
+| POST | `/api/v1/app/search/index/bulk` | Bulk index documents |
+| POST | `/api/v1/app/search/synonyms` | Create search synonym |
+| DELETE | `/api/v1/app/search/synonyms/:id` | Delete search synonym |
+
+### Public (Read-Only)
+
+| Method | Path | Description |
+|--------|------|-------------|
 | GET | `/api/v1/search` | Full-text search |
 | GET | `/api/v1/search/autocomplete` | Autocomplete suggestions |
 | GET | `/api/v1/search/facets` | Get search facets |
 | GET | `/api/v1/search/analytics/popular` | Popular search terms |
 | GET | `/api/v1/search/analytics/no-results` | Queries with no results |
-| POST | `/api/v1/search/synonyms` | Create search synonym |
 | GET | `/api/v1/search/synonyms` | List search synonyms |
-| DELETE | `/api/v1/search/synonyms/:id` | Delete search synonym |
 
 ---
 
@@ -618,8 +638,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | GET | `/api/v1/admin/plans/:id` | Get plan |
 | PUT | `/api/v1/admin/plans/:id` | Update plan |
 | DELETE | `/api/v1/admin/plans/:id` | Delete plan |
-| GET | `/api/v1/admin/quotas/:tenantId` | Get tenant API quota |
-| PUT | `/api/v1/admin/quotas/:tenantId` | Update tenant API quota |
+| GET | `/api/v1/admin/quotas/:merchantId` | Get merchant API quota |
+| PUT | `/api/v1/admin/quotas/:merchantId` | Update merchant API quota |
 | GET | `/api/v1/admin/subscriptions` | List all subscriptions |
 | PUT | `/api/v1/admin/subscriptions/:id` | Update subscription |
 
@@ -685,31 +705,26 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 24. Security & Compliance
 
-### Policy
+### Tenant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/security/policy/:tenantId` | Get security policy |
-| PUT | `/api/v1/security/policy/:tenantId` | Update security policy |
+| GET | `/api/v1/app/security/policy` | Get security policy for current merchant |
+| PUT | `/api/v1/app/security/policy` | Update security policy |
+| POST | `/api/v1/app/security/api-keys` | Create API key |
+| GET | `/api/v1/app/security/api-keys` | List API keys |
+| DELETE | `/api/v1/app/security/api-keys/:id` | Revoke API key |
+| POST | `/api/v1/app/security/events` | Record security event |
+| GET | `/api/v1/app/security/events` | Get security events |
+| GET | `/api/v1/app/security/summary` | Security summary |
+| POST | `/api/v1/app/security/consent` | Record consent action |
+| GET | `/api/v1/app/security/consent/:userId` | Get consent history |
+
+### Public
+
+| Method | Path | Description |
+|--------|------|-------------|
 | POST | `/api/v1/security/validate-password` | Validate password against policy |
-
-### API Keys
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/security/api-keys` | Create API key |
-| GET | `/api/v1/security/api-keys` | List API keys |
-| DELETE | `/api/v1/security/api-keys/:id` | Revoke API key |
-
-### Events & Consent
-
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/v1/security/events` | Record security event |
-| GET | `/api/v1/security/events` | Get security events |
-| GET | `/api/v1/security/summary` | Security summary |
-| POST | `/api/v1/security/consent` | Record consent action |
-| GET | `/api/v1/security/consent/:userId` | Get consent history |
 
 ---
 
@@ -821,7 +836,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/api/v1/bff/website/categories` | Get public categories for website |
-| GET | `/api/v1/bff/website/featured` | Get featured tenants for landing page |
+| GET | `/api/v1/bff/website/featured` | Get featured merchants for landing page |
 | GET | `/api/v1/bff/website/pricing` | Get pricing plans |
 
 ---
@@ -830,8 +845,8 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/bff/tenant/:id/summary` | Get tenant dashboard summary |
-| GET | `/api/v1/bff/tenant/:id/analytics` | Get tenant analytics (30d) |
+| GET | `/api/v1/bff/tenant/:id/summary` | Get merchant dashboard summary |
+| GET | `/api/v1/bff/tenant/:id/analytics` | Get merchant analytics (30d) |
 | GET | `/api/v1/bff/tenant/:id/integrations` | Get connected integration status |
 
 ---
@@ -842,7 +857,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 |--------|------|-------------|
 | GET | `/api/v1/bff/mobile/tenant/:slug/manifest` | Get aggregated app manifest for mobile runtime |
 | GET | `/api/v1/bff/mobile/discovery` | Get discovery feed (featured + categories) |
-| GET | `/api/v1/bff/mobile/tenants/:tenantId/catalog` | Get tenant catalog with products |
+| GET | `/api/v1/bff/mobile/tenants/:merchantId/catalog` | Get merchant catalog with products |
 | GET | `/api/v1/bff/mobile/profile` | Get aggregated user profile |
 | GET | `/api/v1/bff/mobile/notifications` | Get notifications with unread count |
 | POST | `/api/v1/bff/mobile/profile/deactivate` | Deactivate profile via BFF |
@@ -857,11 +872,11 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/api/v1/bff/admin/overview` | Get platform overview stats |
-| GET | `/api/v1/bff/admin/tenants` | Get paginated tenant list |
+| GET | `/api/v1/bff/admin/tenants` | Get paginated merchant list |
 | GET | `/api/v1/bff/admin/audit` | Get recent audit logs |
-| GET | `/api/v1/bff/admin/analytics` | Dashboard analytics: revenue trend, user growth, order volume, GMV, active tenants |
-| GET | `/api/v1/bff/admin/revenue` | Revenue report with filters: dateFrom, dateTo, tenantId, groupBy (day/week/month) |
-| GET | `/api/v1/bff/admin/tenants/:tenantId/analytics` | Per-tenant analytics (for drill-down) |
+| GET | `/api/v1/bff/admin/analytics` | Dashboard analytics: revenue trend, user growth, order volume, GMV, active merchants |
+| GET | `/api/v1/bff/admin/revenue` | Revenue report with filters: dateFrom, dateTo, merchantId, groupBy (day/week/month) |
+| GET | `/api/v1/bff/admin/tenants/:merchantId/analytics` | Per-merchant analytics (for drill-down) |
 
 ---
 
@@ -879,34 +894,34 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 |---|--------|-----------|
 | 1 | Auth & IAM | 14 |
 | 2 | Profile & Users | 10 |
-| 3 | Merchants ||3 | Merchants | 11 |
-| 4 | Templates | 3 | Merchants ||
-| 5 | Builder (SDUI) | 19 |
+| 3 | Merchants | 11 |
+| 4 | Templates | 3 |
+| 5 | Builder (SDUI) | 25 |
 | 6 | Renderer | 2 |
-| 7 | Commerce | 42 |
+| 7 | Commerce | 46 |
 | 8 | Media / DAM | 10 |
 | 9 | QR Codes | 2 |
 | 10 | Discovery | 4 |
 | 11 | Admin | 10 |
-| 12 | Notifications | 19 |
-| 13 | Merchants || Publishing | 6 |
-| 14 | Booking & Scheduling | 35 |
-| 15 | Forms & Workflow | 10 |
+| 12 | Notifications | 21 |
+| 13 | Publishing | 6 |
+| 14 | Booking & Scheduling | 40 |
+| 15 | Forms & Workflow | 13 |
 | 16 | Payments | 12 |
 | 17 | Theme | 8 |
 | 18 | Integrations | 10 |
-| 19 | Analytics & BI | 23 | Merchants ||
+| 19 | Analytics & BI | 20 |
 | 20 | Search & Discovery | 11 |
-| 21 | AI Platform | 13 | Merchants ||
+| 21 | AI Platform | 13 |
 | 22 | Platform Administration | 27 |
-| 23 | Merchants || Infrastructure & DevOps | 18 |
+| 23 | Infrastructure & DevOps | 18 |
 | 24 | Security & Compliance | 11 |
 | 25 | Developer Platform | 16 |
-| 26 | Marketplace & Plugins | 13 | Merchants ||
+| 26 | Marketplace & Plugins | 13 |
 | 27 | Asset Platform Enhanced | 17 |
-| 28 | BFF - Website | 3 | Merchants ||
-| 29 | BFF - Tenant Dashboard | 3 | Merchants ||
+| 28 | BFF - Website | 3 |
+| 29 | BFF - Tenant Dashboard | 3 |
 | 30 | BFF - Mobile | 9 |
-| 31 | BFF - Business Dashboard | 3 | Merchants ||
+| 31 | BFF - Business Dashboard | 6 |
 | 32 | Health | 1 |
-| | **TOTAL** | **~395** |
+| | **TOTAL** | **~423** |
