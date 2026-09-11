@@ -1,7 +1,7 @@
 # DUKA-BACKEND API Endpoints Reference
 
-**Version:** 0.2.0
-**Knowledge Base Version:** KB v0.2.0
+**Version:** 0.2.1
+**Knowledge Base Version:** KB v0.2.1
 **Last Updated:** 2026-09-11
 **Repository:** [DUKA-BACKEND](https://github.com/DukaDesk/DUKA-BACKEND)
 
@@ -532,6 +532,9 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | POST | `/api/v1/app/analytics/dashboards` | Create a dashboard |
 | POST | `/api/v1/app/analytics/dashboards/:id` | Update dashboard |
 | DELETE | `/api/v1/app/analytics/dashboards/:id` | Delete dashboard |
+| GET | `/api/v1/app/analytics/widget-types` | Get available widget types and metrics |
+| GET | `/api/v1/app/analytics/dashboards/:id/data` | Resolve all widget data for a dashboard |
+| GET | `/api/v1/app/analytics/dashboards/:dashboardId/widgets/:widgetId/data` | Resolve data for a single widget |
 | POST | `/api/v1/app/analytics/dashboards/:dashboardId/widgets` | Add widget to dashboard |
 | POST | `/api/v1/app/analytics/dashboards/:dashboardId/widgets/:widgetId` | Update widget |
 | DELETE | `/api/v1/app/analytics/dashboards/:dashboardId/widgets/:widgetId` | Remove widget |
@@ -550,6 +553,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | GET | `/api/v1/analytics/reports/:id` | Get saved report |
 | GET | `/api/v1/analytics/dashboards` | List dashboards |
 | GET | `/api/v1/analytics/dashboards/:id` | Get dashboard with widgets |
+| GET | `/api/v1/analytics/dashboards/:id/data` | Resolve all widget data for a dashboard (public, requires tenantId) |
 
 ---
 
@@ -910,7 +914,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | 16 | Payments | 12 |
 | 17 | Theme | 8 |
 | 18 | Integrations | 10 |
-| 19 | Analytics & BI | 20 |
+| 19 | Analytics & BI | 24 |
 | 20 | Search & Discovery | 11 |
 | 21 | AI Platform | 13 |
 | 22 | Platform Administration | 27 |
@@ -924,4 +928,4 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | 30 | BFF - Mobile | 9 |
 | 31 | BFF - Business Dashboard | 6 |
 | 32 | Health | 1 |
-| | **TOTAL** | **~423** |
+| | **TOTAL** | **~428** |

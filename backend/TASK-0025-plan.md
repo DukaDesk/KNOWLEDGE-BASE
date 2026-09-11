@@ -1,5 +1,8 @@
 # TASK-0025: Customizable Dashboard Endpoint — Implementation Plan
 
+**Status:** Complete (2026-09-11)
+**Commit:** `9b9c623`
+
 ## Context
 
 The backend has a dashboard system (`DashboardsService`, `AnalyticsAppController`, Prisma models) with full CRUD, but it's a **data shell** — dashboards and widgets can be stored, but widget data is never resolved. Additionally, the BFF Business Dashboard controller returns hardcoded zeros instead of calling its real service methods.

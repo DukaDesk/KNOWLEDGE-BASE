@@ -5,12 +5,13 @@
 The `backend/` repository contains the core server-side platform for DUKADESK OS. It exposes REST APIs, manages business logic, handles events, and coordinates data persistence.
 
 **Implementation Repository:** [DUKA-BACKEND](https://github.com/DukaDesk/DUKA-BACKEND)
-**KB Version:** 0.1.0
+**KB Version:** 0.2.1
 
 ## Responsibilities
 
 - Core business logic and domain services
-- REST API endpoints (381+ endpoints across 34 modules)
+- REST API endpoints (~428 endpoints across 32 modules)
+- Three-tier architecture: Website (Platform), App (Tenant Self-Service), Mobile (Consumer)
 - Authentication and authorization (JWT, OAuth 2.0)
 - Event publishing and consumption (Bull/Redis queues)
 - Database access and migrations (Prisma + PostgreSQL)
@@ -94,7 +95,9 @@ Specifications that target this repository:
 
 | Specification | Title | State |
 |--------------|-------|-------|
-| KB v0.1.0 | Knowledge Base v0.1.0 | Active |
+| KB v0.1.0 | Knowledge Base v0.1.0 | Superseded |
+| KB v0.2.0 | Three-tier API Architecture | Active |
+| KB v0.2.1 | App/Public Split + Dashboard | Active |
 
 ## Agent Conventions
 

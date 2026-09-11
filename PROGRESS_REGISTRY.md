@@ -1,6 +1,6 @@
 # DUKADESK Progress Registry
 
-**Last Updated:** 2026-07-17
+**Last Updated:** 2026-09-11
 
 ## Status Key
 - ✅ Complete — Production ready
@@ -42,9 +42,31 @@
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| API Design | ⏳ Planned | Not yet implemented |
-| Data Model | ⏳ Planned | Not yet implemented |
-| Tenant System | ⏳ Planned | Not yet implemented |
+| API Design | ✅ Complete | ~428 endpoints across 32 modules, three-tier architecture |
+| Data Model | ✅ Complete | 85+ Prisma models, 2073 lines, PostgreSQL 16 |
+| Tenant System | ✅ Complete | Tenant lifecycle, config, subscriptions, feature flags |
+| Auth & IAM | ✅ Complete | JWT, Google/Apple OAuth, OTP, password recovery, devices |
+| Commerce | ✅ Complete | Products, cart, orders, coupons, tax, fulfillment, inventory |
+| Booking & Scheduling | ✅ Complete | Services, staff, resources, availability, 7-state workflow |
+| Forms & Workflow | ✅ Complete | Versioned forms, validation engine, approval workflows |
+| Payments | ✅ Complete | Paystack/Flutterwave/Stripe, intents, refunds, settlements |
+| Notifications | ✅ Complete | Templates, push/email/SMS, campaigns, preferences |
+| Builder (SDUI) | ✅ Complete | Pages, sections, components, actions, conditions, data binding |
+| Publishing | ✅ Complete | Validation, manifest compiler, releases, rollback |
+| Media / DAM | ✅ Complete | Upload, sharp optimization, variants, folders, CDN |
+| Theme | ✅ Complete | Theme management, compiler, versioning, caching |
+| Integrations | ✅ Complete | Connector framework, SendGrid, Google Calendar |
+| Analytics & BI | ✅ Complete | Event tracking, dashboards with widget data resolution, reports |
+| Search & Discovery | ✅ Complete | Full-text index, synonyms, autocomplete, facets |
+| AI Platform | ✅ Complete | OpenAI/Anthropic/Mock providers, prompts, embeddings |
+| Platform Administration | ✅ Complete | Settings, announcements, feature flags, quotas |
+| Infrastructure & DevOps | ✅ Complete | Deployments, environments, health checks, backups |
+| Security & Compliance | ✅ Complete | Policies, API keys, security events, consent audits |
+| Developer Platform | ✅ Complete | Developer apps, webhook endpoints, event logs |
+| Marketplace & Plugins | ✅ Complete | Listings, plugin installations |
+| BFF Layer | ✅ Complete | Mobile, Tenant Dashboard, Business Dashboard, Website |
+| Three-Tier Architecture | ✅ Complete | Website/App/Mobile split, App/Public controller pattern |
+| TASK-0025: Dashboard | ✅ Complete | Widget data resolution, DTOs, widget type registry |
 
 ## Builder & Dashboards
 
@@ -77,7 +99,7 @@
 ## Known Gaps
 1. MenuGridSection needs per-item RuntimeNodes for action system add_to_cart
 2. FormEngine (multi-step forms) not yet wired to FormDataContext
-3. No backend exists — all data is mocked
+3. Backend has 0% test coverage — no unit or e2e tests written
 4. (Resolved) Screen & Layout Builder (KB-024) through Publishing Pipeline (KB-031) all completed
 5. No persistence layer for form data across app restarts
 
