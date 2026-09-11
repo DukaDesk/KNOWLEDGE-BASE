@@ -13,7 +13,7 @@ This file tracks the current state of the backend implementation repository.
 | Tenant terminology eradication (tenant → merchant) | KB v0.2.0 | Complete | Engineering |
 | App/Public split for all 13 modules | KB v0.2.1 | Complete | Engineering |
 | TASK-0024: Fix publish permission (owner/manager) | KB-061 | Complete | Engineering |
-| TASK-0025: Customizable dashboard endpoint | UI-0004 | Deferred | Engineering |
+| TASK-0025: Customizable dashboard endpoint | UI-0004 | Complete | Engineering |
 | E2E integration tests for all modules | KB v0.2.0 | Pending | Engineering |
 | Rate limiting and throttling configuration | KB v0.2.0 | Pending | Engineering |
 
@@ -30,6 +30,7 @@ This file tracks the current state of the backend implementation repository.
 | 2026-09 | Three-tier API Architecture | Website (Platform) / App (Tenant Self-Service) / Mobile (Consumer) split; "tenant" → "merchant" terminology |
 | 2026-09 | App/Public Controller Split | All 13 tenant modules split into App + Public controllers |
 | 2026-09 | Publish Permission Fix | Allow owner + manager roles (was owner only); NOT_OWNER error code |
+| 2026-09 | TASK-0025: Customizable Dashboard | Widget data resolution, BFF business dashboard wired, DTOs, widget type registry |
 
 ## Modules Implemented
 
@@ -53,7 +54,7 @@ This file tracks the current state of the backend implementation repository.
 | 16 | Payments | Complete | 12 (split: App + Public) |
 | 17 | Theme | Complete | 8 (split: App + Public) |
 | 18 | Integrations | Complete | 10 (split: App + Public) |
-| 19 | Analytics & BI | Complete | 20 (split: App + Public) |
+| 19 | Analytics & BI | Complete | 24 (split: App + Public) |
 | 20 | Search & Discovery | Complete | 11 (split: App + Public) |
 | 21 | AI Platform | Complete | 13 |
 | 22 | Platform Administration | Complete | 27 |
@@ -67,7 +68,7 @@ This file tracks the current state of the backend implementation repository.
 | 30 | BFF - Mobile | Complete | 9 |
 | 31 | BFF - Business Dashboard | Complete | 6 |
 | 32 | Health | Complete | 1 |
-| | **TOTAL** | | **~423** |
+| | **TOTAL** | | **~428** |
 
 ## Architecture: Three-Tier Endpoint Model
 
