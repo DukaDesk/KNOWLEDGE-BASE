@@ -2,7 +2,7 @@
 
 This file tracks the current state of the backend implementation repository.
 
-**KB Version:** 0.2.1
+**KB Version:** 0.3.0
 **Last Updated:** 2026-09-12
 
 ## Active Work
@@ -14,9 +14,9 @@ This file tracks the current state of the backend implementation repository.
 | App/Public split for all 13 modules | KB v0.2.1 | Complete | Engineering |
 | TASK-0024: Fix publish permission (owner/manager) | KB-061 | Complete | Engineering |
 | TASK-0025: Customizable dashboard endpoint | UI-0004 | Complete | Engineering |
+| Builder, Media, Templates, and Publishing contract | KB-042, KB-080 | Complete | Engineering |
 | E2E integration tests for all modules | KB v0.2.0 | Pending | Engineering |
 | Rate limiting and throttling configuration | KB v0.2.0 | Pending | Engineering |
-| Builder, Media, Templates, and Publishing contract | KB-042, KB-080 | Blocked | Backend / Builder |
 
 ## Completed Milestones
 
@@ -32,6 +32,7 @@ This file tracks the current state of the backend implementation repository.
 | 2026-09 | App/Public Controller Split | All 13 tenant modules split into App + Public controllers |
 | 2026-09 | Publish Permission Fix | Allow owner + manager roles (was owner only); NOT_OWNER error code |
 | 2026-09 | TASK-0025: Customizable Dashboard | Widget data resolution, BFF business dashboard wired, DTOs, widget type registry |
+| 2026-09 | Draft/Published Split | Private drafts (DraftPage/DraftSection/DraftComponent), immutable releases, manifest-first reads, template versioning, media MIME validation, shared asset pool |
 
 ## Modules Implemented
 
@@ -41,7 +42,7 @@ This file tracks the current state of the backend implementation repository.
 | 2 | Profile & Users | Complete | 10 |
 | 3 | Merchants | Complete | 11 (split: App + Public) |
 | 4 | Templates | Complete | 3 |
-| 5 | Builder (SDUI) | Complete | 25 (split: App + Public) |
+| 5 | Builder (SDUI) | Complete | 28 (split: App + Public) |
 | 6 | Renderer | Complete | 2 |
 | 7 | Commerce | Complete | 46 (split: App + Public) |
 | 8 | Media / DAM | Complete | 10 (App) |
@@ -69,7 +70,7 @@ This file tracks the current state of the backend implementation repository.
 | 30 | BFF - Mobile | Complete | 9 |
 | 31 | BFF - Business Dashboard | Complete | 6 |
 | 32 | Health | Complete | 1 |
-| | **TOTAL** | | **~428** |
+| | **TOTAL** | | **~434** |
 
 ## Architecture: Three-Tier Endpoint Model
 
@@ -89,7 +90,7 @@ This file tracks the current state of the backend implementation repository.
 
 | Issue | Impact | Owner |
 |-------|--------|-------|
-| Live definition returns legacy `{ name, theme.logo, screens: [] }` instead of deployed `PublishedApp` | Mobile receives no compiled screens, identity, or assets after publishing | Backend / Builder |
+| — | — | — |
 
 ## Next Up
 
@@ -98,7 +99,6 @@ This file tracks the current state of the backend implementation repository.
 - API versioning strategy (v2 planning)
 - Performance optimization and query tuning
 - Monitoring and alerting setup
-- Implement private Builder drafts, backend-managed template manifests, Media asset references, and deployed PublishedApp read paths
 
 ## Technology Stack
 

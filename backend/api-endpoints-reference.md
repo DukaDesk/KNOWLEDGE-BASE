@@ -1,8 +1,8 @@
 # DUKA-BACKEND API Endpoints Reference
 
-**Version:** 0.2.1
-**Knowledge Base Version:** KB v0.2.1
-**Last Updated:** 2026-09-11
+**Version:** 0.3.0
+**Knowledge Base Version:** KB v0.3.0
+**Last Updated:** 2026-09-12
 **Repository:** [DUKA-BACKEND](https://github.com/DukaDesk/DUKA-BACKEND)
 
 ## Overview
@@ -147,9 +147,9 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/templates` | List all templates (optional category filter) |
-| GET | `/api/v1/templates/:id` | Get template by ID |
-| POST | `/api/v1/templates/:id/use` | Apply template to a merchant |
+| GET | `/api/v1/templates` | List all templates (optional `?category=`, `?page=`, `?limit=` filters) |
+| GET | `/api/v1/templates/:id` | Get template by ID (rejects inactive templates) |
+| POST | `/api/v1/templates/:id/use` | Apply template to a merchant (preserves existing branding: logo, favicon, colors) |
 
 ---
 
@@ -159,23 +159,31 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/app/builder/pages` | Get all pages for current merchant |
-| PUT | `/api/v1/app/builder/pages/:pageId` | Update a page |
-| POST | `/api/v1/app/builder/pages/:pageId/sections` | Add a section to a page |
-| PUT | `/api/v1/app/builder/sections/:sectionId` | Update a section |
-| POST | `/api/v1/app/builder/sections/:sectionId/components` | Add a component to a section |
-| PUT | `/api/v1/app/builder/components/:componentId` | Update a component |
-| GET | `/api/v1/app/builder/navigation` | Get navigation for current merchant |
-| PUT | `/api/v1/app/builder/navigation` | Update navigation |
-| GET | `/api/v1/app/builder/component-types` | Get all registered component definitions |
-| GET | `/api/v1/app/builder/component-types/:type` | Get a specific component type definition |
-| GET | `/api/v1/app/builder/action-types` | Get all registered action definitions |
-| POST | `/api/v1/app/builder/actions/execute` | Execute an action with given context |
-| POST | `/api/v1/app/builder/conditions/evaluate` | Evaluate conditional visibility |
-| POST | `/api/v1/app/builder/data-binding/resolve` | Resolve a data binding against context |
-| POST | `/api/v1/app/builder/preview` | Preview full merchant rendering |
-| POST | `/api/v1/app/builder/pages/:pageId/preview` | Preview a single page |
-| POST | `/api/v1/app/builder/component-preview` | Validate and preview a component |
+| POST | `/api/v1/app/draft/initialize` | Initialize drafts from published state |
+| GET | `/api/v1/app/draft/status` | Get draft workspace status |
+| POST | `/api/v1/app/draft/discard` | Discard all drafts and reset |
+| GET | `/api/v1/app/pages` | Get all draft pages for current merchant |
+| PUT | `/api/v1/app/pages/:pageId` | Update a draft page |
+| DELETE | `/api/v1/app/pages/:pageId` | Delete a draft page |
+| POST | `/api/v1/app/pages/:pageId/sections` | Add a section to a draft page |
+| PUT | `/api/v1/app/sections/:sectionId` | Update a draft section |
+| DELETE | `/api/v1/app/sections/:sectionId` | Delete a draft section |
+| POST | `/api/v1/app/sections/:sectionId/components` | Add a component to a draft section |
+| PUT | `/api/v1/app/components/:componentId` | Update a draft component |
+| DELETE | `/api/v1/app/components/:componentId` | Delete a draft component |
+| GET | `/api/v1/app/navigation` | Get navigation for current merchant |
+| PUT | `/api/v1/app/navigation` | Update navigation |
+| GET | `/api/v1/app/component-types` | Get all registered component definitions |
+| GET | `/api/v1/app/component-types/:type` | Get a specific component type definition |
+| GET | `/api/v1/app/action-types` | Get all registered action definitions |
+| POST | `/api/v1/app/actions/execute` | Execute an action with given context |
+| POST | `/api/v1/app/conditions/evaluate` | Evaluate conditional visibility |
+| POST | `/api/v1/app/data-binding/resolve` | Resolve a data binding against context |
+| POST | `/api/v1/app/preview` | Preview full merchant rendering (from drafts) |
+| POST | `/api/v1/app/pages/:pageId/preview` | Preview a single draft page |
+| POST | `/api/v1/app/component-preview` | Validate and preview a component |
+| GET | `/api/v1/app/theme` | Get theme for current merchant |
+| PUT | `/api/v1/app/theme` | Update theme |
 
 ### Public (Mobile/Consumer)
 
@@ -196,7 +204,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/merchants/:id/definition` | Get application definition for a merchant |
+| GET | `/api/v1/merchants/:id/definition` | Get deployed published app definition (reads from Release.manifest; optional `?version=X.Y.Z`) |
 | GET | `/api/v1/resolve/:slug` | Resolve merchant by slug |
 
 ---
@@ -357,12 +365,12 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| POST | `/api/v1/merchants/:id/publishing/validate` | Validate current draft |
-| POST | `/api/v1/merchants/:id/publishing/publish` | Validate, compile, and publish (owner/manager only) |
+| POST | `/api/v1/merchants/:id/publishing/validate` | Validate current draft tables |
+| POST | `/api/v1/merchants/:id/publishing/publish` | Validate, compile drafts, create Release, clear drafts (owner/manager only) |
 | GET | `/api/v1/merchants/:id/publishing/releases` | Get release history |
 | GET | `/api/v1/merchants/:id/publishing/releases/:version` | Get specific release |
 | POST | `/api/v1/merchants/:id/publishing/rollback/:version` | Rollback to a previous version |
-| GET | `/api/v1/merchants/:id/publishing/draft` | Get current draft state |
+| GET | `/api/v1/merchants/:id/publishing/draft` | Get current compiled draft state |
 
 ---
 
@@ -900,7 +908,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | 2 | Profile & Users | 10 |
 | 3 | Merchants | 11 |
 | 4 | Templates | 3 |
-| 5 | Builder (SDUI) | 25 |
+| 5 | Builder (SDUI) | 28 |
 | 6 | Renderer | 2 |
 | 7 | Commerce | 46 |
 | 8 | Media / DAM | 10 |
@@ -928,4 +936,4 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | 30 | BFF - Mobile | 9 |
 | 31 | BFF - Business Dashboard | 6 |
 | 32 | Health | 1 |
-| | **TOTAL** | **~428** |
+| | **TOTAL** | **~434** |
