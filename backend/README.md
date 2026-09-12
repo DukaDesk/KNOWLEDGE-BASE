@@ -64,6 +64,7 @@ npm run start:dev
 - [API Endpoints Reference](api-endpoints-reference.md)
 - [Progress](PROGRESS.md)
 - [Architecture Alignment](ARCHITECTURE_ALIGNMENT.md)
+- [Builder, Media, Templates, and Publishing TODO](BUILDER_MEDIA_API_BACKEND_TODO.md)
 - [Contributing](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)
 
