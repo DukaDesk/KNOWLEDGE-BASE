@@ -48,6 +48,33 @@ This is a legacy/default app stub, not a compiled `PublishedApp`.
 - [x] Keep binary storage provider/bucket details behind the Media API.
 - [x] Support template asset import or registration so template images do not depend on third-party URLs.
 
+### 3.1 Critical Fix — `media_folderId_fkey` Foreign Key Violation
+
+**Observed error (prod, `/app/dist/modules/media/media.service.js:140:47`):**
+```
+Invalid `this.prisma.media.create()` invocation
+Foreign key constraint violated on the constraint: `media_folderId_fkey`
+  at this.prisma.media.create({ data: { folderId: "builder", ... } })
+```
+
+**Reproduction:** Merchant uploads any image via `POST /api/v1/app/media/upload?folderId=builder` (current Merchant frontend default). The string `"builder"` is not a `MediaFolder.id` UUID, so Prisma fails the FK check and the upload returns 500 instead of a CDN URL.
+
+**Root cause:**
+- `Media.folderId` is a FK to `MediaFolder.id` but the upload endpoint requires/forwards a client-supplied `folderId` without validating existence or auto-creating a default.
+- Seed data contains no folder named `"builder"`.
+
+**Required backend fix (choose one or combine):**
+- [ ] **Make `folderId` optional** — `POST /api/v1/app/media/upload` must succeed when `folderId` is omitted or `null`. In that case save media with `folderId = null` (root) or auto-assign a merchant-scoped default folder.
+- [ ] **Auto-create default folder** — On upload, if `folderId` refers to a name/slug that does not exist, create `MediaFolder { name: "builder", merchantId }` (or reuse existing) inside the same transaction, then create `Media` with the real UUID. Must be idempotent and merchant-isolated.
+- [ ] **Validate `folderId` early** — If `folderId` is supplied, look up `MediaFolder` by `id` (and `merchantId`) before `media.create`. If not found, return `400 { code: "INVALID_FOLDER", message: "Folder not found" }` instead of 500. Also validate that `folderId` is a UUID, not an arbitrary string.
+- [ ] **Add `GET /api/v1/app/media/folders` + `POST /api/v1/app/media/folders` to seed doc** — Ensure the Merchant frontend can discover or create folders before upload; document that the frontend should call `POST /app/media/folders { name: "builder" }` once and cache the returned `id`.
+- [ ] **Fix `media.service.js:140` to not pass raw query param directly to Prisma** — Normalize `folderId`: `folderId = folderId && isUUID(folderId) ? folderId : (await resolveDefaultFolder(merchantId))?.id ?? null`.
+- [ ] **Add integration test:** `POST /app/media/upload` without `folderId` → 201, with `folderId=invalid-uuid` → 400, with valid folderId → 201 and `media.folderId` matches.
+
+**Merchant frontend mitigation (already applied in `dukaDesk/src/services/api.js`):**
+- Stop sending `?folderId=builder` by default; only send `folderId` when it is a valid UUID returned from `POST /app/media/folders`.
+- Until backend is fixed, uploads will use root folder (`folderId = null`) to avoid FK violation.
+
 ## 4. Backend-Managed Template Manifests
 
 - [x] Define and persist the canonical template manifest schema: identity, category, version, theme, navigation, screens, components, data bindings, and asset references.
