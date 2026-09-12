@@ -3,7 +3,7 @@
 This file tracks the current state of the backend implementation repository.
 
 **KB Version:** 0.2.1
-**Last Updated:** 2026-09-11
+**Last Updated:** 2026-09-12
 
 ## Active Work
 
@@ -16,6 +16,7 @@ This file tracks the current state of the backend implementation repository.
 | TASK-0025: Customizable dashboard endpoint | UI-0004 | Complete | Engineering |
 | E2E integration tests for all modules | KB v0.2.0 | Pending | Engineering |
 | Rate limiting and throttling configuration | KB v0.2.0 | Pending | Engineering |
+| Builder, Media, Templates, and Publishing contract | KB-042, KB-080 | Blocked | Backend / Builder |
 
 ## Completed Milestones
 
@@ -84,6 +85,12 @@ This file tracks the current state of the backend implementation repository.
 - `*AppController` — JWT + `@CurrentUser`, auto-resolves tenantId
 - `*PublicController` — `@Public()` with explicit `:merchantId` param
 
+## Blockers
+
+| Issue | Impact | Owner |
+|-------|--------|-------|
+| Live definition returns legacy `{ name, theme.logo, screens: [] }` instead of deployed `PublishedApp` | Mobile receives no compiled screens, identity, or assets after publishing | Backend / Builder |
+
 ## Next Up
 
 - E2E integration tests for all modules
@@ -91,6 +98,7 @@ This file tracks the current state of the backend implementation repository.
 - API versioning strategy (v2 planning)
 - Performance optimization and query tuning
 - Monitoring and alerting setup
+- Implement private Builder drafts, backend-managed template manifests, Media asset references, and deployed PublishedApp read paths
 
 ## Technology Stack
 
