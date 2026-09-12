@@ -18,7 +18,21 @@ The current live definition response has been observed as:
 }
 ```
 
-This is a legacy/default app stub, not a compiled `PublishedApp`.
+And for live merchant `aa0cd445-80cf-40e6-aa8e-996d52b89278` (Emmanuel Akinyemi):
+
+```json
+{
+  "tenantId":"aa0cd445-80cf-40e6-aa8e-996d52b89278",
+  "name":"Emmanuel Akinyemi",
+  "slug":"emmanuel-akinyemi",
+  "status":"published",
+  "theme":{"primaryColor":"#0066FF","secondaryColor":"#00CC66","backgroundColor":"#FFFFFF","textColor":"#1A1A1A","fontFamily":"Inter","borderRadius":"8px","logo":null,"favicon":null},
+  "navigation":[],
+  "screens":[]
+}
+```
+
+Both are legacy/default app stubs, not compiled `PublishedApp`. Discovery (`/bff/mobile/discovery`) correctly returns 3 featured merchants, but each definition is empty.
 
 - [x] Persist the compiled manifest submitted to `POST /api/v1/merchants/{id}/publishing/publish`.
 - [x] Make `GET /api/v1/merchants/{id}/definition` return the deployed compiled `PublishedApp`.
@@ -26,6 +40,29 @@ This is a legacy/default app stub, not a compiled `PublishedApp`.
 - [x] Ensure responses include `manifestVersion`, `metadata`, `identity`, `navigation`, `theme`, `runtime`, `assets`, `content`, and a non-empty `screens` record.
 - [x] Preserve `identity.displayName`, `theme.brand.logo`, and `assets.logo`.
 - [ ] Add an integration test proving both mobile read paths return identical screen IDs after publish. *(Skipped — tests deferred)*
+
+### 1.1 Critical Fix — Empty `navigation` / `screens` in Live Definitions
+
+**Observed 2026-09-12:**
+- `GET /api/v1/merchants/aa0cd445-80cf-40e6-aa8e-996d52b89278/definition` → `navigation: []`, `screens: []` (should be at least 3-4 screens for any template)
+- Same for `33b5ca4a-72c6-4f1c-97bc-d8e18fb54487` and `9e1b4d89-a8f8-4372-9671-18a95721917e`
+- `GET /api/v1/bff/mobile/tenant/emmanuel-akinyemi/manifest` will return the same empty object (publishing draft is empty, so publish compiles empty).
+
+**Root causes:**
+1. **Merchant never populated draft pages.** `POST /api/v1/merchants/{id}/publishing/publish` currently compiles from `GET /api/v1/app/pages` / `GET /api/v1/merchants/{id}/publishing/draft`. If the merchant builder only writes to local `saveDesignData` / `localStorage` and never calls `POST /api/v1/app/pages` / `PUT /api/v1/app/pages/{pageId}` / `POST /api/v1/app/pages/{pageId}/sections`, the draft store is empty → publish compiles empty.
+2. **`publish` ignores `manifest` payload.** Merchant `PublishingPipeline` sends `{ version, manifest: <compiled> }`, but `PublishingController_publish` may ignore the body and only compile from its own DB draft. If draft is empty, definition stays empty regardless of what merchant sends.
+3. **Legacy fallback writes to wrong place.** Older merchant code did `PUT /api/v1/merchants/{id}/config { config: { deployed } }` and `PUT /api/v1/app/merchants/config`, but `RendererController_getAppDefinition` reads from the publishing table, not from config, so that write is invisible to mobile.
+
+**Required backend fix:**
+- [ ] **Make `POST /api/v1/merchants/{id}/publishing/publish` accept an optional `{ manifest }` body.** If `manifest.screens` is non-empty, persist it directly as the deployed version (validate `manifestVersion`, `screens`, `navigation`, `theme`), bypassing draft compilation. This unblocks the current Merchant builder which already compiles client-side.
+- [ ] **OR ensure draft sync is documented and enforced.** If the intended flow is draft-first, then `POST /api/v1/app/pages` (create page) must exist and be documented, and the Merchant must call `POST /api/v1/app/draft/initialize` + `PUT /api/v1/app/pages*` before publish. Currently `GET /api/v1/app/pages` exists but no `POST /api/v1/app/pages` is documented in Swagger — add it.
+- [ ] **Seed non-empty default app on merchant creation.** `POST /api/v1/merchants` should create at least a `home`/`shop` page and navigation (via `TemplateGenerator` equivalent on backend) so that a newly created merchant never has `screens: []`. Use the merchant's `category` to pick a template.
+- [ ] **Fix `GET /api/v1/merchants/{id}/definition` and `GET /api/v1/bff/mobile/tenant/{slug}/manifest` to always return the last *published* version, never the empty draft.** Add a fallback: if no published version exists, return the seeded default, not `[]`.
+- [ ] **Add integration test:** Create merchant → `GET definition` → assert `screens.length >= 1` and `navigation.length >= 1`; then `POST /app/pages` → `POST /publishing/publish` → `GET definition` → same screens.
+
+**Merchant frontend mitigation (already applied):**
+- `dukaDesk/src/services/PublishingPipeline.js` now validates `screens` non-empty before publish, generates default screens from `TemplateGenerator` if empty, and after `POST /publishing/publish` also best-effort syncs to `PUT /api/v1/app/merchants/config` and verifies `GET /merchants/{id}/definition` is non-empty (logs warning if still empty).
+- `dukaDesk/src/services/staticTemplates.js` filters out catalog entries with empty screens so the builder never starts from an empty template.
 
 ## 2. Draft Saves Versus Publishing
 
