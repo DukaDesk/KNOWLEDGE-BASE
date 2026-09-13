@@ -44,7 +44,7 @@ Both are legacy/default app stubs, not compiled `PublishedApp`. Discovery (`/bff
 ### 1.1 Critical Fix — Empty `navigation` / `screens` in Live Definitions
 
 **Observed 2026-09-12:**
-- `GET /api/v1/merchants/aa0cd445-80cf-40e6-aa8e-996d52b89278/definition` → `navigation: []`, `screens: []` (should be at least 3-4 screens for any template)
+- `GET /api/v1/merchants/aa0cd445-80cf-40e6-aa8e-996d52b89278/definition` → `navigation: []`, `screens: []` (should be at least 3-4 screens)
 - Same for `33b5ca4a-72c6-4f1c-97bc-d8e18fb54487` and `9e1b4d89-a8f8-4372-9671-18a95721917e`
 - `GET /api/v1/bff/mobile/tenant/emmanuel-akinyemi/manifest` will return the same empty object (publishing draft is empty, so publish compiles empty).
 
@@ -61,8 +61,26 @@ Both are legacy/default app stubs, not compiled `PublishedApp`. Discovery (`/bff
 - [ ] **Add integration test:** Create merchant → `GET definition` → assert `screens.length >= 1` and `navigation.length >= 1`; then `POST /app/pages` → `POST /publishing/publish` → `GET definition` → same screens.
 
 **Merchant frontend mitigation (already applied):**
-- `dukaDesk/src/services/PublishingPipeline.js` now validates `screens` non-empty before publish, generates default screens from `TemplateGenerator` if empty, and after `POST /publishing/publish` also best-effort syncs to `PUT /api/v1/app/merchants/config` and verifies `GET /merchants/{id}/definition` is non-empty (logs warning if still empty).
+- `dukaDesk/src/services/PublishingPipeline.js` now validates `screens` non-empty before publish, generates default screens from `TemplateGenerator.generateShopTemplate(category)` if empty, and after `POST /publishing/publish` also best-effort syncs to `PUT /api/v1/app/merchants/config` and verifies `GET /merchants/{id}/definition` is non-empty (logs warning if still empty).
 - `dukaDesk/src/services/staticTemplates.js` filters out catalog entries with empty screens so the builder never starts from an empty template.
+
+### 1.2 Critical Fix — Demo Tenant 401/403/404 Errors (2026-09-13)
+
+**Observed 2026-09-13 (logs from `tenant_demo_001`):**
+- `401 POST /api/v1/app/media/upload` — `uploadMediaAsset` had no `isDemoId()` guard; demo tenant hit real backend without valid JWT
+- `403 POST /api/v1/merchants/tenant_demo_001/publishing/publish` — backend rejects because `tenant_demo_001` lacks owner/manager role
+- `404 GET /api/v1/merchants/tenant_demo_001/definition` — backend returns "Tenant not found" because `tenant_demo_001` is not a real UUID
+- `slugifyAppName is not defined` — Vite HMR cached stale bundle missing the `slugifyAppName` function defined in `SectionPanel.jsx:9`
+
+**Fixes applied:**
+- [x] `uploadMediaAsset` in `api.js`: added `isDemoId()` guard that returns mock asset object for demo tenants (fixes 401)
+- [x] `publishProject` in `PublishingPipeline.js`: skip backend `POST /publishing/publish` for demo IDs (fixes 403); rely on fallback `PUT /api/v1/app/merchants/config`
+- [x] `publishProject` verification GET: skip `GET /merchants/{id}/definition` for demo IDs (fixes 404)
+- [x] `isDemoId` exported from `api.js` so `PublishingPipeline.js` can import it
+- [x] Cleared Vite cache (`node_modules/.vite`, `.vite`) and rebuilt to fix stale `slugifyAppName` bundle
+
+**Merchant frontend mitigation (already applied):**
+- Demo mode should never hit the real backend for media, publish, or definition endpoints. All demo tenant IDs (`tenant_demo_*`, `merchant_demo_*`) must be guarded by `isDemoId()` before any `httpClient` call.
 
 ## 2. Draft Saves Versus Publishing
 
