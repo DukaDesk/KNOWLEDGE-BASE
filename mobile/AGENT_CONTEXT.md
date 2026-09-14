@@ -111,6 +111,48 @@ Specifications that target this repository:
 - Add persisted store: use createMMKVStorage(id) factory from `src/store/storage.ts`.
 - Gate guest actions: fire `auth:required` EventBus event, caught by AuthPromptModal.
 
+- Stop and ask for human input when:
+
+- A change requires native module changes.
+- A security-critical decision is required.
+- A platform-specific store policy is involved.
+
+## Endpoint Contract (Live API)
+
+The mobile app consumes the live backend OpenAPI 3.0.0 contract (`GET /api/docs-json`, 328 paths). All endpoints must be verified against live docs before implementation.
+
+**Path canonicalization rules:**
+- Public catalog: `/api/v1/merchants/{merchantId}/products|categories|definition|booking/*` — no auth, `@Public()`
+- Authenticated mobile: `/api/v1/app/commerce/*`, `/api/v1/app/booking/*`, `/api/v1/app/security/consent` — JWT required
+- BFF mobile: `/api/v1/bff/mobile/*` — `unwrap()` for `{success,message,data}` envelope
+- **No** `/api/v1/tenants/*` — canonical prefix is `/api/v1/merchants/{id}` (verified via `GET /merchants/{id}/products` 200 vs `/tenants/{id}/products` 404)
+- **No** `/api/v1/profile`, `/api/v1/auth/me`, `/api/v1/cart/*`, `/api/v1/orders/*` — don't call these
+
+**Key endpoint parameter contracts (from live docs):**
+| Endpoint | Method | Params |
+|----------|--------|--------|
+| `/merchants/{merchantId}/products` | GET | `merchantId(path)*`, `sort`, `maxPrice`, `minPrice`, `search`, `categoryId`, `limit`, `page` |
+| `/merchants/{merchantId}/categories` | GET | `merchantId(path)*` |
+| `/merchants/{merchantId}/booking/availability` | GET | `merchantId(path)*`, `serviceId(query)*`, `date(query)*`, `staffId(query)` |
+| `/merchants/{merchantId}/booking/staff` | GET | `merchantId(path)*` |
+| `/merchants/{merchantId}/booking/locations` | GET | `merchantId(path)*` |
+| `/app/commerce/cart` | POST | none (tenant from JWT) |
+| `/app/commerce/cart/{id}/checkout` | POST | none |
+| `/app/commerce/orders` | GET | `limit`, `page`, `status` |
+| `/app/commerce/tax-calc` | GET | `subtotal*`, `region` |
+| `/app/booking/bookings` | GET | `limit`, `page`, `date`, `staffId`, `serviceId`, `status` |
+| `/app/booking/calendar` | GET | `from*`, `to*` |
+| `/bff/mobile/discovery` | GET | none |
+| `/bff/mobile/tenant/{slug}/manifest` | GET | `slug(path)*` |
+| `/app/security/consent` | POST | none |
+| `/bff/mobile/profile` | GET | none |
+
+**Envelope handling:** All responses wrapped in `{success, message, data}`. Use `unwrap()` helper in endpoint modules. `tenant.ts`, `bff.ts`, `discovery.ts` all use `unwrap()`.
+
+**Demo data unhooked:** Files `src/data/deskCategories.ts`, `src/data/nearbyStores.ts`, `src/data/promoAds.ts`, `src/data/runtime/tenants/**` exist on disk but are NOT imported by any screen. All explore/category screens fetch live only.
+
+**App slug = display name:** The slug is always the slugified version of the app/display name. In `DesignStore.js`, `setMeta` always syncs slug from appName. In `ManifestResolver.ts`, `displaySlug` is computed from displayName via the same algorithm: `.toLowerCase().trim().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'')`.
+
 ## Escalation
 
 Stop and ask for human input when:

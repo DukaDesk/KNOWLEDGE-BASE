@@ -1,6 +1,6 @@
 # DUKADESK OS — Progress
 
-**Last Updated:** 2026-09-11
+**Last Updated:** 2026-09-14
 
 ## Status Key
 
@@ -11,7 +11,7 @@
 
 ## Current Status
 
-**Overall:** Backend implementation complete (~428 endpoints, 32 modules). Knowledge Base architecture specs complete. Mobile app in progress.
+**Overall:** Backend implementation complete (~434 endpoints, 32 modules). Knowledge Base architecture specs complete. Mobile app: live endpoint sync complete (328 paths), slug derived from display name, demo data unhooked, hybridClient live-only.
 
 ## Constitution & Governance
 

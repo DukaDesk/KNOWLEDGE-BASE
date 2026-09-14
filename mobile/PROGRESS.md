@@ -1,18 +1,26 @@
 # Mobile Progress
 
-This file tracks the current state of the mobile repository.
+This file tracks the current state of the mobile repository (DukaDesk — Expo + React Native).
 
 ## Active Work
 
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
-| — | All 12 runtime packages complete | Done | — |
-| — | Bella Italia tenant fully published | Done | — |
+| Endpoint alignment to live OpenAPI 3.0.0 (328 paths) | `GET /api/docs-json` verification | Complete | Engineering |
+| Slug always derived from display name | `DesignStore.js` + `SectionPanel.jsx` + `ManifestResolver.ts` | Complete | Engineering |
+| Demo data unhooked from all UI screens | `nearbyStores`, `deskCategories`, `promoAds`, `runtime/tenants/**` | Complete | Engineering |
+| `hybridClient.ts` — live-only client replacing mock | `src/services/api/hybridClient.ts` | Complete | Engineering |
+| Builder slug field in Splash Screen card | `DesignStore.js` + `SectionPanel.jsx` | Complete | Engineering |
 
 ## Completed Milestones
 
 | Date | Milestone | Notes |
 |------|-----------|-------|
+| 2026-09-14 | Live endpoint sync | All 328 live OpenAPI paths verified; `/tenants`→`/merchants`, `/app/*` for authenticated mobile, `unwrap()` on tenant/bff/discovery; `getProducts` `limit/page/categoryId`, `getOrders` `limit/page/status`, `getTax` `subtotal/region`, `getBookings` `limit/page/status/date/serviceId/staffId`, `getCalendar` `from/to` |
+| 2026-09-14 | Slug derived from display name | `DesignStore.js` `setMeta` always syncs slug from appName; `ensureMetaSlug()` overwrites stale slug; `SectionPanel.jsx` slug input read-only via `slugifyAppName()`; `ManifestResolver.ts` computes `displaySlug` from displayName; `identity.slug` uses `displaySlug` |
+| 2026-09-14 | Demo data unhooked | `ExploreScreen`, `CategoriesScreen`, `CategoryTenantsScreen`, `my-desk.tsx` all fetch live only (`discoveryApi.getFeatured()`, `bffApi.getDiscoveryFeed()`, `commerceApi`); show `No published …` placeholders; no dummy imports |
+| 2026-09-14 | `hybridClient.ts` | Live-only client, no `createMockClient` import; `getClient()` returns hybrid client |
+| 2026-09-14 | Builder slug field | Added `slug` to `DesignStore.js` meta defaults, `slugify()` helper, `ensureMetaSlug()` migration, auto-slug from appName in `setMeta`; slug input in `SectionPanel.jsx` splash area with `dukadesk.app/{slug}` prefix |
 | 2026-07-20 | Package 12 — Runtime Validation & Test Data | 56 files: schemas, validators, integrity checks, runtime/renderer/publish tests, reports |
 | 2026-07-20 | Package 11 — Published Tenant Application | 32 files: manifest, routing (41 routes), navigation (5 tabs, 12 modals), security (ECDSA-SHA256), compatibility |
 | 2026-07-20 | Package 10 — Master Data & Content | 48 files: 500 products, 100 promos, 1000 images, full localization (~400 keys) |
@@ -34,14 +42,16 @@ This file tracks the current state of the mobile repository.
 
 | Issue | Impact | Owner |
 |-------|--------|-------|
-| — | — | — |
+| Backend `GET /merchants/{id}/definition` returns `screens:[]` for all published tenants | Mobile shows "No screens published yet" until backend persists compiled `PublishedApp` | Engineering |
+| Live branding fields (`identity.displayName`, `appName`, `branding`, `theme.brand.logo`, `assets.logo.url`) dropped by backend | Mobile can display them once backend returns them | Engineering |
 
 ## Next Up
 
-- Authentication runtime package directory (screens/ structured, missing package-level manifest)
-- Screen-level manifest consolidation for home, menu, cart, notifications, settings, support
-- Integration tests for runtime package loading
+- Backend persists compiled `PublishedApp` so `GET /merchants/{id}/definition` returns screens
+- Live branding fields returned by backend for display
+- E2E integration tests for all modules
+- API versioning strategy (v2 planning)
 
 ## Last Updated
 
-2026-07-20
+2026-09-14

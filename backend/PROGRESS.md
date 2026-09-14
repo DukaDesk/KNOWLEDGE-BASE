@@ -3,18 +3,17 @@
 This file tracks the current state of the backend implementation repository.
 
 **KB Version:** 0.3.0
-**Last Updated:** 2026-09-12
+**Last Updated:** 2026-09-14
 
 ## Active Work
 
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
-| Three-tier API architecture migration | KB v0.2.0 | Complete | Engineering |
-| Tenant terminology eradication (tenant → merchant) | KB v0.2.0 | Complete | Engineering |
-| App/Public split for all 13 modules | KB v0.2.1 | Complete | Engineering |
-| TASK-0024: Fix publish permission (owner/manager) | KB-061 | Complete | Engineering |
-| TASK-0025: Customizable dashboard endpoint | UI-0004 | Complete | Engineering |
-| Builder, Media, Templates, and Publishing contract | KB-042, KB-080 | Complete | Engineering |
+| Mobile endpoint sync to live OpenAPI 3.0.0 (328 paths) | `GET /api/docs-json` | Complete | Engineering |
+| Mobile slug derived from display name | `ManifestResolver.ts` + `DesignStore.js` | Complete | Engineering |
+| Demo data unhooked from UI screens | `nearbyStores`, `deskCategories`, `promoAds`, `runtime/tenants/**` | Complete | Engineering |
+| `hybridClient.ts` — live-only client replacing mock | `src/services/api/hybridClient.ts` | Complete | Engineering |
+| Builder slug field in Splash Screen card | `DesignStore.js` + `SectionPanel.jsx` | Complete | Engineering |
 | E2E integration tests for all modules | KB v0.2.0 | Pending | Engineering |
 | Rate limiting and throttling configuration | KB v0.2.0 | Pending | Engineering |
 
@@ -32,6 +31,7 @@ This file tracks the current state of the backend implementation repository.
 | 2026-09 | App/Public Controller Split | All 13 tenant modules split into App + Public controllers |
 | 2026-09 | Publish Permission Fix | Allow owner + manager roles (was owner only); NOT_OWNER error code |
 | 2026-09 | TASK-0025: Customizable Dashboard | Widget data resolution, BFF business dashboard wired, DTOs, widget type registry |
+| 2026-09 | Mobile endpoint sync | All 328 live OpenAPI paths verified; `/tenants`→`/merchants`, `/app/*` for authenticated mobile, `unwrap()` on all endpoints; demo data unhooked; `hybridClient.ts` live-only; slug derived from displayName |
 | 2026-09 | Draft/Published Split | Private drafts (DraftPage/DraftSection/DraftComponent), immutable releases, manifest-first reads, template versioning, media MIME validation, shared asset pool |
 
 ## Modules Implemented

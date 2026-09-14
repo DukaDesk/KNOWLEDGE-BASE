@@ -1,6 +1,6 @@
 # DUKADESK Progress Registry
 
-**Last Updated:** 2026-09-11
+**Last Updated:** 2026-09-14
 
 ## Status Key
 - ✅ Complete — Production ready
@@ -14,8 +14,8 @@
 |-----------|--------|-------|
 | Runtime Engine | 🔧 In Progress | Screen rendering, component registry, action system working |
 | Module System | 🔧 In Progress | Module registry working with default screens |
-| Manifest Resolver | ✅ Complete | Fetches tenant data, merges module defaults with tenant overrides |
-| Network Layer | ✅ Complete | Axios-based, interceptors, offline queue, caching |
+| Manifest Resolver | ✅ Complete | Fetches tenant data, merges module defaults with tenant overrides; `displaySlug` from displayName, `identity.slug` uses slugified name |
+| Network Layer | ✅ Complete | Axios-based, interceptors, offline queue, caching; `hybridClient.ts` live-only |
 | Auth System | ✅ Complete | Login/signup/reset flow, session management |
 | State Management | 🔧 In Progress | Zustand stores. CartStore works, form data context implemented |
 | Event Bus | ✅ Complete | Pub/sub for cross-component communication |
@@ -25,9 +25,12 @@
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Explore/Home Screen | ✅ Complete | Store discovery, search |
-| Desk Screen | 🔧 In Progress | Tab navigation, screen switching, splash screen working |
+| Explore/Home Screen | ✅ Complete | Live-only fetch `discoveryApi.getFeatured()`, `bffApi.getDiscoveryFeed()`, no demo data |
+| Desk Screen | ✅ Complete | Tab navigation, screen switching, splash with `resolvedDisplayName`/`resolvedLogo`, no dummy fallback |
 | Screen Renderer | ✅ Complete | Layout path + children path working |
+| Endpoint Layer | ✅ Complete | All 57 functions aligned to live OpenAPI 3.0.0 (328 paths); `/tenants`→`/merchants`, `/app/*` authenticated |
+| Slug System | ✅ Complete | Builder: `DesignStore.js` `setMeta` syncs slug from appName; Mobile: `ManifestResolver.ts` computes `displaySlug` from displayName |
+| Demo Data | ✅ Unhooked | `nearbyStores`, `deskCategories`, `promoAds`, `runtime/tenants/**` on disk but NOT imported |
 | Component Registry | 🔧 In Progress | 50+ components registered. Some unused, some incomplete |
 | Section Components | 🔧 In Progress | CategoryPills, MenuGrid, etc. wired to actions. AddressForm, CartSummary added |
 | Action Engine | ✅ Complete | All 21 ActionType values have registered handlers |
