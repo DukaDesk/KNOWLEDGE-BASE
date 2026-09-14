@@ -1,8 +1,8 @@
 # DUKA-BACKEND API Endpoints Reference
 
-**Version:** 0.3.0
-**Knowledge Base Version:** KB v0.3.0
-**Last Updated:** 2026-09-12
+**Version:** 0.3.1
+**Knowledge Base Version:** KB v0.3.1
+**Last Updated:** 2026-09-14
 **Repository:** [DUKA-BACKEND](https://github.com/DukaDesk/DUKA-BACKEND)
 
 ## Overview
@@ -102,6 +102,21 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 ---
 
 ## 2. Profile & Users
+
+### Admin - User Management
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/v1/admin/users` | List all users (paginated, filter: email, role, tenant, status) |
+| GET | `/api/v1/admin/users/:id` | Get user detail |
+| POST | `/api/v1/admin/users/:id/approve` | Approve a pending/suspended user (set status to active) |
+| POST | `/api/v1/admin/users/:id/reject` | Reject a user (set status to suspended) |
+| POST | `/api/v1/admin/users/:id/invite` | Invite user to tenant |
+| POST | `/api/v1/admin/users/:id/roles` | Assign/update roles for user |
+| DELETE | `/api/v1/admin/users/:id` | Remove user from platform |
+| GET | `/api/v1/admin/users/merchant/:merchantId` | Users scoped to a merchant |
+
+### Profile
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -316,13 +331,14 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | POST | `/api/v1/admin/merchants` | Create a new merchant |
 | POST | `/api/v1/admin/merchants/:id/approve` | Approve a merchant |
 | POST | `/api/v1/admin/merchants/:id/suspend` | Suspend a merchant |
+| DELETE | `/api/v1/admin/merchants/:id` | Soft-delete a merchant (30-day deactivation) |
 | GET | `/api/v1/admin/merchants` | Get all merchants |
 | GET | `/api/v1/admin/merchants/:id` | Get merchant detail |
 | PUT | `/api/v1/admin/merchants/:id` | Update merchant |
 | GET | `/api/v1/admin/merchants/:merchantId/settings` | Get merchant settings |
 | PUT | `/api/v1/admin/merchants/:merchantId/settings/:key` | Update merchant setting |
 | GET | `/api/v1/admin/stats` | Get platform stats |
-| POST | `/api/v1/admin/cleanup-deactivated` | Purge expired deactivated users |
+| POST | `/api/v1/admin/cleanup-deactivated` | Purge expired deactivated users and tenants |
 
 ---
 
@@ -551,17 +567,17 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/analytics/events` | Get analytics events with filters |
-| GET | `/api/v1/analytics/events/aggregate` | Aggregate events by period |
-| GET | `/api/v1/analytics/reports/revenue` | Revenue report |
-| GET | `/api/v1/analytics/reports/users` | User analytics |
-| GET | `/api/v1/analytics/reports/bookings` | Booking analytics |
-| GET | `/api/v1/analytics/summary` | Dashboard summary |
-| GET | `/api/v1/analytics/reports/saved` | List saved reports |
-| GET | `/api/v1/analytics/reports/:id` | Get saved report |
-| GET | `/api/v1/analytics/dashboards` | List dashboards |
-| GET | `/api/v1/analytics/dashboards/:id` | Get dashboard with widgets |
-| GET | `/api/v1/analytics/dashboards/:id/data` | Resolve all widget data for a dashboard (public, requires tenantId) |
+| GET | `/api/v1/analytics/events` | Get analytics events with filters (tenantId optional, resolved from JWT) |
+| GET | `/api/v1/analytics/events/aggregate` | Aggregate events by period (tenantId optional) |
+| GET | `/api/v1/analytics/reports/revenue` | Revenue report (tenantId optional) |
+| GET | `/api/v1/analytics/reports/users` | User analytics (tenantId optional) |
+| GET | `/api/v1/analytics/reports/bookings` | Booking analytics (tenantId optional) |
+| GET | `/api/v1/analytics/summary` | Dashboard summary (tenantId optional) |
+| GET | `/api/v1/analytics/reports/saved` | List saved reports (tenantId optional) |
+| GET | `/api/v1/analytics/reports/:id` | Get saved report (tenantId optional) |
+| GET | `/api/v1/analytics/dashboards` | List dashboards (tenantId optional) |
+| GET | `/api/v1/analytics/dashboards/:id` | Get dashboard with widgets (tenantId optional) |
+| GET | `/api/v1/analytics/dashboards/:id/data` | Resolve all widget data for a dashboard (tenantId optional) |
 
 ---
 
@@ -905,7 +921,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | # | Module | Endpoints |
 |---|--------|-----------|
 | 1 | Auth & IAM | 14 |
-| 2 | Profile & Users | 10 |
+| 2 | Profile & Users | 20 |
 | 3 | Merchants | 11 |
 | 4 | Templates | 3 |
 | 5 | Builder (SDUI) | 28 |
@@ -914,7 +930,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | 8 | Media / DAM | 10 |
 | 9 | QR Codes | 2 |
 | 10 | Discovery | 4 |
-| 11 | Admin | 10 |
+| 11 | Admin | 13 |
 | 12 | Notifications | 21 |
 | 13 | Publishing | 6 |
 | 14 | Booking & Scheduling | 40 |
@@ -936,4 +952,4 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | 30 | BFF - Mobile | 9 |
 | 31 | BFF - Business Dashboard | 6 |
 | 32 | Health | 1 |
-| | **TOTAL** | **~434** |
+| | **TOTAL** | **~447** |

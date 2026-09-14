@@ -2,7 +2,7 @@
 
 This file tracks the current state of the backend implementation repository.
 
-**KB Version:** 0.3.0
+**KB Version:** 0.3.1
 **Last Updated:** 2026-09-14
 
 ## Active Work
@@ -33,13 +33,14 @@ This file tracks the current state of the backend implementation repository.
 | 2026-09 | TASK-0025: Customizable Dashboard | Widget data resolution, BFF business dashboard wired, DTOs, widget type registry |
 | 2026-09 | Mobile endpoint sync | All 328 live OpenAPI paths verified; `/tenants`→`/merchants`, `/app/*` for authenticated mobile, `unwrap()` on all endpoints; demo data unhooked; `hybridClient.ts` live-only; slug derived from displayName |
 | 2026-09 | Draft/Published Split | Private drafts (DraftPage/DraftSection/DraftComponent), immutable releases, manifest-first reads, template versioning, media MIME validation, shared asset pool |
+| 2026-09 | P0 Admin Dashboard Fixes | Status enum validation, Number() pagination, POST users approve/reject, DELETE merchants soft-delete, analytics optional tenantId |
 
 ## Modules Implemented
 
 | # | Module | Status | Endpoints |
 |---|--------|--------|-----------|
 | 1 | Auth & IAM | Complete | 14 |
-| 2 | Profile & Users | Complete | 10 |
+| 2 | Profile & Users | Complete | 12 (split: App + Public) |
 | 3 | Merchants | Complete | 11 (split: App + Public) |
 | 4 | Templates | Complete | 3 |
 | 5 | Builder (SDUI) | Complete | 28 (split: App + Public) |
@@ -48,7 +49,7 @@ This file tracks the current state of the backend implementation repository.
 | 8 | Media / DAM | Complete | 10 (App) |
 | 9 | QR Codes | Complete | 2 |
 | 10 | Discovery | Complete | 4 |
-| 11 | Admin | Complete | 10 |
+| 11 | Admin | Complete | 13 |
 | 12 | Notifications | Complete | 21 (split: App + Public) |
 | 13 | Publishing | Complete | 6 |
 | 14 | Booking & Scheduling | Complete | 40 (split: App + Public) |
@@ -70,7 +71,7 @@ This file tracks the current state of the backend implementation repository.
 | 30 | BFF - Mobile | Complete | 9 |
 | 31 | BFF - Business Dashboard | Complete | 6 |
 | 32 | Health | Complete | 1 |
-| | **TOTAL** | | **~434** |
+| | **TOTAL** | | **~437** |
 
 ## Architecture: Three-Tier Endpoint Model
 
