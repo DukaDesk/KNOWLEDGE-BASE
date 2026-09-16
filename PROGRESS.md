@@ -11,7 +11,7 @@
 
 ## Current Status
 
-**Overall:** Backend implementation complete (~434 endpoints, 32 modules). Knowledge Base architecture specs complete. Mobile app: live endpoint sync complete (328 paths), slug derived from display name, demo data unhooked, hybridClient live-only. **Admin Portal (Business Dashboard + Platform Admin): live integration complete — zero mocks, RBAC strict, tenant correlation, responsive drawer, pending approval flow; `Admin-portal` `https://github.com/DukaDesk/DUKA-ADMIN` `Vite build 1889 modules ✓` at `3ece1cd`, live Railway `https://duka-backend-production.up.railway.app`, Vercel `duka-admin-477r.vercel.app`.**
+**Overall:** Backend implementation complete (~437 endpoints, 32 modules + `rejected` status). Knowledge Base architecture specs complete. Mobile app: live endpoint sync complete (328 paths), slug derived from display name, demo data unhooked, hybridClient live-only. **Admin Portal (Business Dashboard + Platform Admin): live complete — zero mocks, RBAC strict, tenant correlation, responsive drawer, pending approval with role, 6 new modules live (Orders/Products/Customers/Analytics/Marketing/Infrastructure), Bell icon, counts fix, per-merchant tenant users, merchant approve/decline with review; `Admin-portal` `https://github.com/DukaDesk/DUKA-ADMIN` `Vite build 1896 modules ✓` at `317a549`+`da83369`/`47f61e2`/`6588a6a`, live Railway `https://duka-backend-production.up.railway.app`, Vercel `duka-admin-477r.vercel.app`.**
 
 ## Constitution & Governance
 
