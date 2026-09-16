@@ -2,8 +2,8 @@
 
 This file tracks the current state of the backend implementation repository.
 
-**KB Version:** 0.3.2
-**Last Updated:** 2026-09-14
+**KB Version:** 0.3.3
+**Last Updated:** 2026-09-16
 
 ## Active Work
 
@@ -35,6 +35,7 @@ This file tracks the current state of the backend implementation repository.
 | 2026-09 | Draft/Published Split | Private drafts (DraftPage/DraftSection/DraftComponent), immutable releases, manifest-first reads, template versioning, media MIME validation, shared asset pool |
 | 2026-09 | P0 Admin Dashboard Fixes | Status enum validation, Number() pagination, POST users approve/reject, DELETE merchants soft-delete, analytics optional tenantId |
 | 2026-09 | P0 Admin Fixes v2 | UserStatus enum +pending/+rejected, case-insensitive status filter, GET /admin/users/tenant/:tenantId alias, body+query invite, Swagger @ApiQuery decorators |
+| 2026-09 | P0 tenantUsers Prisma Fix | Fixed tenantUsers→tenants (correct Prisma relation), dropped invalid role include (enum), added admin maintenance/policies stubs |
 
 ## Modules Implemented
 
