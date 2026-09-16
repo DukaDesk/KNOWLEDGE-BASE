@@ -1,7 +1,7 @@
 # DUKA-BACKEND API Endpoints Reference
 
-**Version:** 0.3.1
-**Knowledge Base Version:** KB v0.3.1
+**Version:** 0.3.2
+**Knowledge Base Version:** KB v0.3.2
 **Last Updated:** 2026-09-14
 **Repository:** [DUKA-BACKEND](https://github.com/DukaDesk/DUKA-BACKEND)
 
@@ -115,6 +115,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | POST | `/api/v1/admin/users/:id/roles` | Assign/update roles for user |
 | DELETE | `/api/v1/admin/users/:id` | Remove user from platform |
 | GET | `/api/v1/admin/users/merchant/:merchantId` | Users scoped to a merchant |
+| GET | `/api/v1/admin/users/tenant/:tenantId` | Users scoped to a tenant (legacy alias) |
 
 ### Profile
 
