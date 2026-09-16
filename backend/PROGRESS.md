@@ -36,6 +36,7 @@ This file tracks the current state of the backend implementation repository.
 | 2026-09 | P0 Admin Dashboard Fixes | Status enum validation, Number() pagination, POST users approve/reject, DELETE merchants soft-delete, analytics optional tenantId |
 | 2026-09 | P0 Admin Fixes v2 | UserStatus enum +pending/+rejected, case-insensitive status filter, GET /admin/users/tenant/:tenantId alias, body+query invite, Swagger @ApiQuery decorators |
 | 2026-09 | P0 tenantUsers Prisma Fix | Fixed tenantUsers→tenants (correct Prisma relation), dropped invalid role include (enum), added admin maintenance/policies stubs |
+| 2026-09 | Admin Portal live integration | Unblocked `Admin-portal` `https://github.com/DukaDesk/DUKA-ADMIN` — fixed `UsersService.listUsers` `tenantUsers→tenants` (`users.service.ts:59`), added `admin/maintenance` + `admin/policies` stubs 404→empty, `RegisterDto` required `role` + `AuthService` sets `status:'pending'` + `UserRole`, envelope `TransformInterceptor` handling, `EnhancedRemoteTablePage` `users` envelope + `pending→draft` mapping (`3ece1cd`) |
 
 ## Modules Implemented
 

@@ -86,7 +86,7 @@
 | Validation Engine | ✅ Complete | KB-030 — Validation Engine defined |
 | Publishing Pipeline | ✅ Complete | KB-031 — Publishing Pipeline defined |
 | SDUI Authoring | ✅ Complete | Template gallery (21 templates, search, category filter chips, color-block cards), drag-drop component palette, screen management, phone preview, PageFly-inspired section editor with inline editing, floating toolbars, editor theme design system |
-| Business Dashboard | ⏳ Planned | Not yet started |
+| Business Dashboard | ✅ Complete | Live `Admin-portal` `https://github.com/DukaDesk/DUKA-ADMIN` — shell + `PendingAdmins`/`Merchants`/`Marketplace`/`Audit`/`Subscriptions`/`Settings` (security/features/platform/team/maintenance/policies), live BFF `GET /bff/admin/overview|analytics|merchants`, `GET /admin/users|merchants|stats`, role-aware `platform_operator`/`support_agent`/`super_admin`, tenant correlation `getMerchantEnriched`, responsive drawer + `1889 modules ✓` at `3ece1cd` |
 | Tenant Dashboard | ⏳ Planned | Not yet started |
 
 ## SDUI & Data Layer
