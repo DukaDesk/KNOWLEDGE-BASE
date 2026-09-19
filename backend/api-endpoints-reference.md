@@ -1,8 +1,8 @@
 # DUKA-BACKEND API Endpoints Reference
 
-**Version:** 0.3.2
-**Knowledge Base Version:** KB v0.3.2
-**Last Updated:** 2026-09-14
+**Version:** 0.3.5
+**Knowledge Base Version:** KB v0.3.5
+**Last Updated:** 2026-09-18
 **Repository:** [DUKA-BACKEND](https://github.com/DukaDesk/DUKA-BACKEND)
 
 ## Overview
@@ -121,16 +121,12 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/profile` | Get current user profile |
-| PUT | `/api/v1/profile` | Update user profile |
-| GET | `/api/v1/profile/memberships` | Get all tenant memberships |
-| GET | `/api/v1/profile/consents` | Get all consents |
-| POST | `/api/v1/profile/consents` | Grant consent to a tenant |
-| DELETE | `/api/v1/profile/consents/:tenantId` | Revoke consent for a tenant |
-| POST | `/api/v1/profile/deactivate` | Deactivate profile (30-day soft delete) |
-| POST | `/api/v1/profile/reactivate` | Reactivate within 30-day window |
-| DELETE | `/api/v1/profile` | Immediate permanent deletion |
-| GET | `/api/v1/profile/deactivation-status` | Check remaining days before permanent deletion |
+| GET | `/api/v1/bff/mobile/profile` | Get aggregated current-user profile |
+| POST | `/api/v1/app/security/consent` | Record mobile app security/consent state |
+| POST | `/api/v1/bff/mobile/profile/deactivate` | Deactivate profile (30-day soft delete) |
+| POST | `/api/v1/bff/mobile/profile/reactivate` | Reactivate within 30-day window |
+| DELETE | `/api/v1/bff/mobile/profile` | Immediate permanent deletion |
+| GET | `/api/v1/bff/mobile/profile/deactivation-status` | Check deactivation status |
 
 ---
 
@@ -144,15 +140,15 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | GET | `/api/v1/merchants/:id` | Get merchant by ID (public) |
 | GET | `/api/v1/merchants/:id/features` | Get enabled capabilities (public) |
 
-### Tenant Self-Service (App)
+### App Self-Service (Merchant Owner)
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/app/merchants` | Get my merchants |
-| PUT | `/api/v1/app/merchants` | Update current merchant |
-| POST | `/api/v1/app/merchants/publish` | Publish current merchant |
-| GET | `/api/v1/app/merchants/config` | Get current merchant runtime configuration |
-| PUT | `/api/v1/app/merchants/config` | Update current merchant runtime configuration |
+| GET | `/api/v1/app/merchants` | Get apps owned by the authenticated merchant |
+| PUT | `/api/v1/app/merchants` | Update the current app |
+| POST | `/api/v1/app/merchants/publish` | Publish the current app |
+| GET | `/api/v1/app/merchants/config` | Get the current app runtime configuration |
+| PUT | `/api/v1/app/merchants/config` | Update the current app runtime configuration |
 | GET | `/api/v1/app/merchants/subscription` | Get current merchant subscription |
 | POST | `/api/v1/app/merchants/subscribe` | Subscribe to a plan |
 | POST | `/api/v1/app/merchants/subscription/cancel` | Cancel subscription |
@@ -271,18 +267,17 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | GET | `/api/v1/merchants/:merchantId/products/type/:type` | List products by type |
 | GET | `/api/v1/products/:id/price` | Get product price in specific currency |
 | GET | `/api/v1/products/:id/stock` | Get available stock for product/variant |
-| POST | `/api/v1/merchants/:merchantId/cart` | Get or create cart |
-| GET | `/api/v1/cart/:id` | Get cart with items |
-| POST | `/api/v1/cart/:id/items` | Add item to cart |
-| PATCH | `/api/v1/cart/items/:itemId` | Update cart item quantity |
-| DELETE | `/api/v1/cart/items/:itemId` | Remove item from cart |
-| POST | `/api/v1/cart/:id/coupon` | Apply coupon to cart |
-| DELETE | `/api/v1/cart/:id/coupon` | Remove coupon from cart |
-| POST | `/api/v1/cart/:id/checkout` | Convert cart to order |
-| GET | `/api/v1/merchants/:merchantId/orders` | List orders |
-| GET | `/api/v1/orders/:id` | Get order detail |
-| POST | `/api/v1/merchants/:merchantId/tax-calc` | Calculate tax for subtotal |
-| GET | `/api/v1/orders/:orderId/fulfillments` | List fulfillments for order |
+| POST | `/api/v1/app/commerce/cart` | Get or create authenticated cart |
+| GET | `/api/v1/app/commerce/cart/:id` | Get cart with items |
+| POST | `/api/v1/app/commerce/cart/:id/items` | Add item to cart |
+| PATCH | `/api/v1/app/commerce/cart/items/:itemId` | Update cart item quantity |
+| DELETE | `/api/v1/app/commerce/cart/items/:itemId` | Remove item from cart |
+| POST | `/api/v1/app/commerce/cart/:id/coupon` | Apply coupon to cart |
+| DELETE | `/api/v1/app/commerce/cart/:id/coupon` | Remove coupon from cart |
+| POST | `/api/v1/app/commerce/cart/:id/checkout` | Convert cart to order |
+| GET | `/api/v1/app/commerce/orders` | List authenticated orders |
+| GET | `/api/v1/app/commerce/orders/:id` | Get order detail |
+| GET | `/api/v1/app/commerce/tax-calc` | Calculate tax |
 
 ---
 
@@ -884,9 +879,9 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 | Method | Path | Description |
 |--------|------|-------------|
-| GET | `/api/v1/bff/mobile/tenant/:slug/manifest` | Get aggregated app manifest for mobile runtime |
+| GET | `/api/v1/bff/mobile/tenant/:slug/manifest` | Get aggregated app manifest for mobile customers (legacy route name; response represents an app) |
 | GET | `/api/v1/bff/mobile/discovery` | Get discovery feed (featured + categories) |
-| GET | `/api/v1/bff/mobile/tenants/:merchantId/catalog` | Get merchant catalog with products |
+| GET | `/api/v1/bff/mobile/merchants/:merchantId/catalog` | Get merchant catalog with products |
 | GET | `/api/v1/bff/mobile/profile` | Get aggregated user profile |
 | GET | `/api/v1/bff/mobile/notifications` | Get notifications with unread count |
 | POST | `/api/v1/bff/mobile/profile/deactivate` | Deactivate profile via BFF |

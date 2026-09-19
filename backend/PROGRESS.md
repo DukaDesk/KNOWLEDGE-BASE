@@ -1,11 +1,13 @@
 # Backend Progress
 
-This file tracks the current state of the backend implementation repository.
+This file tracks the current state of the backend implementation repository. **Terminology:** an **app** is the published experience owned by a **merchant**; **users** are mobile customers. Legacy backend paths may still contain `tenant`, but app-owner reads and writes use the `/api/v1/app/*` scope.
 
-**KB Version:** 0.3.4
-**Last Updated:** 2026-09-16
+**KB Version:** 0.3.5
+**Last Updated:** 2026-09-18
 
 ## Active Work
+
+Open incident tasks: [Published logo and release mismatch TODO](PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md). Evidence and validation are maintained separately in the [findings report](PUBLISHED_LOGO_RELEASE_MISMATCH_2026-09-19.md).
 
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
@@ -14,6 +16,9 @@ This file tracks the current state of the backend implementation repository.
 | Demo data unhooked from UI screens | `nearbyStores`, `deskCategories`, `promoAds`, `runtime/tenants/**` | Complete | Engineering |
 | `hybridClient.ts` — live-only client replacing mock | `src/services/api/hybridClient.ts` | Complete | Engineering |
 | Builder slug field in Splash Screen card | `DesignStore.js` + `SectionPanel.jsx` | Complete | Engineering |
+| Client contract alignment after live API migration | `DukaDesk` + `DUKA-MERCHANT/dukadesk` | In Progress | Engineering |
+| Published-definition parity verification | App config + mobile manifest | Complete | Engineering |
+| Flexible published screen layouts | Merchant layout preservation + mobile layout style support | Complete | Engineering |
 | E2E integration tests for all modules | KB v0.2.0 | Pending | Engineering |
 | Rate limiting and throttling configuration | KB v0.2.0 | Pending | Engineering |
 
@@ -98,6 +103,36 @@ This file tracks the current state of the backend implementation repository.
 | Issue | Impact | Owner |
 |-------|--------|-------|
 | — | — | — |
+
+## Client implementation alignment (2026-09-18)
+
+The backend contract is implemented and deployed, but the two clients are at different
+integration stages:
+
+- **DukaDesk mobile:** live discovery, published-definition resolution, BFF manifest
+  fallback, authenticated `/app/commerce/*` cart/order/tax calls, and guest-mode
+  gating are wired. Identity, nearby discovery, order history, and order detail
+  now use live endpoint modules rather than repository demo records. The deployed
+  BFF may return the published runtime screens under
+  `data.config.config.deployed.screens`, `data.config.config.screens`, or the
+  older `data.config.screens`; the mobile resolver handles all three shapes.
+  Published storefront manifests also support the merchant editor's
+  `promotion_list` component; the mobile runtime renders its offer cards
+  instead of showing an unsupported-component fallback.
+  TypeScript and Jest validation are part of the client quality gate.
+- **DUKA-MERCHANT/dukadesk:** dashboard, builder, app configuration, publishing,
+  public definition reads, and BFF manifest parity checks are wired. Design/config
+  persistence uses `/api/v1/app/merchants/config`; the removed
+  `/merchants/:id/publishing/draft` shortcut was not part of the current contract.
+- **Publishing pipeline validation:** release history is fetched once per publish,
+  preventing version calculation and release persistence from diverging when the
+  history provider is transient or mocked. Empty screen collections still receive
+  the documented template fallback, while existing screen definitions are preserved.
+- **Client validation (2026-09-18):** merchant production build and complete Vitest
+  suite pass; DukaDesk Jest suite passes (45 tests) and its TypeScript check passes.
+- **Backend-dependent gaps:** saved addresses and payment methods remain blocked
+  until their APIs are implemented. The mobile profile screens show an explicit
+  unavailable state; live flows must not silently promote demo records.
 
 ## Next Up
 

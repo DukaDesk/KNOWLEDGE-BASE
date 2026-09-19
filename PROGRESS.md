@@ -1,6 +1,25 @@
 # DUKADESK OS — Progress
 
-**Last Updated:** 2026-09-14
+**Last Updated:** 2026-09-19
+
+2026-09-19: Fixed complete nested PublishedApp resolution on mobile and merchant false publish success/image stripping. Live BFF still exposes Storefront v0.0.7 and the referenced logo returns 404; backend publication and public media delivery remain unresolved. Evidence: [Published logo/release mismatch](backend/PUBLISHED_LOGO_RELEASE_MISMATCH_2026-09-19.md). Agent tasks: [Dedicated TODO file](backend/PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md).
+
+
+Merchant and app identities are separated: the merchant remains the owner identity, while the customer-facing app uses an explicitly edited app name or defaults to its slug. Published dashboard app data reads the manifest identity and logo.
+
+Explore app icons now resolve published logos from `meta.logo`, `theme.brand.logo`, `branding.logo`, and equivalent nested manifest fields.
+
+Merchant publishing now preserves the uploaded image MIME type and extension when materializing data URLs instead of hardcoding every asset as JPEG. The deployed logo currently returns a relative `/uploads/*.webp` URL that responds 404 on the deployed backend, so backend media delivery must expose a valid public/CDN URL before mobile can render that asset.
+
+The merchant editor's splash **Change logo** and Settings app-logo controls now upload the original file immediately through `/api/v1/app/media/upload`, resolve an authenticated CDN delivery URL when the upload response only contains an internal path, and then persist that URL in design state. A local preview remains visible while the upload completes.
+
+If media upload succeeds but the backend returns only an inaccessible relative `/uploads/...` path, the editor now keeps the local preview and reports the delivery problem instead of replacing the working splash icon with a broken image.
+
+The media upload flow now explicitly changes uploaded app logos to `visibility: "public"` through the media update endpoint before resolving CDN delivery. This is required for unauthenticated mobile app icons; an existing private/broken asset must be re-uploaded after this change.
+
+Demo editor sessions (`tenant_demo_*`) do not call the backend media service. They now store selected logos as local data URLs instead of fabricated `cdn.dukadesk.com` URLs, preventing broken previews while preserving the production upload path for real merchants.
+
+Media URL extraction also accepts CDN response strings and common delivery fields (`signedUrl`, `fileUrl`, and `location`), while relative public paths are resolved against the API host instead of being rejected as missing URLs.
 
 ## Status Key
 
@@ -11,7 +30,7 @@
 
 ## Current Status
 
-**Overall:** Backend implementation complete (~437 endpoints, 32 modules + `rejected` status). Knowledge Base architecture specs complete. Mobile app: live endpoint sync complete (328 paths), slug derived from display name, demo data unhooked, hybridClient live-only. **Admin Portal (Business Dashboard + Platform Admin): live complete — zero mocks, RBAC strict, tenant correlation, responsive drawer, pending approval with role, 6 new modules live (Orders/Products/Customers/Analytics/Marketing/Infrastructure), Bell icon, counts fix, per-merchant tenant users, merchant approve/decline with review; `Admin-portal` `https://github.com/DukaDesk/DUKA-ADMIN` `Vite build 1896 modules ✓` at `317a549`+`da83369`/`47f61e2`/`6588a6a`, live Railway `https://duka-backend-production.up.railway.app`, Vercel `duka-admin-477r.vercel.app`.**
+**Overall:** Backend implementation complete (~437 endpoints, 32 modules + `rejected` status). Knowledge Base architecture specs complete. Mobile app: live endpoint sync complete (328 paths), slug derived from display name, demo data removed from identity/nearby/order-history paths, hybridClient live-only; current client fixes cover deterministic manifest fallback IDs, the no-`Alert.alert` permission flow, API response narrowing, stable async permission test behavior, live authentication/profile/discovery calls, live order history/detail reads, deployed BFF runtime-config screen resolution, flexible runtime layout styles, and an Explore app-launcher view that resolves identity from the nested published manifest (`identity.slug`, `displayName`, and manifest logo) rather than the merchant-level discovery envelope, with a compact phone-style icon grid. Relative uploaded logo paths are resolved against the API base URL. Saved addresses and payment methods now show an explicit unavailable state instead of fabricated records until backend endpoints exist. Merchant portal: Vite production build passes; the complete Vitest suite passes; dashboard, builder, app configuration persistence, published definition reads, and BFF manifest parity checks are wired to the current App/Mobile contract. Publishing now reuses one release-history read for both versioning and persistence and preserves supported screen layout settings instead of unconditionally replacing them with a fixed scroll layout. **Admin Portal (Business Dashboard + Platform Admin): live complete — zero mocks, RBAC strict, tenant correlation, responsive drawer, pending approval with role, 6 new modules live (Orders/Products/Customers/Analytics/Infrastructure), Bell icon, counts fix, per-merchant tenant users, merchant approve/decline with review; `Admin-portal` `https://github.com/DukaDesk/DUKA-ADMIN` `Vite build 1896 modules ✓` at `317a549`+`da83369`/`47f61e2`/`6588a6a`, live Railway `https://duka-backend-production.up.railway.app`, Vercel `duka-admin-477r.vercel.app`.**
 
 ## Constitution & Governance
 
@@ -93,11 +112,17 @@ High-level summary:
 | Platform Integration Architecture (KB-094–106) | 🔧 In Progress |
 | Enterprise Platform Services (KB-107–140) | 🔧 In Progress |
 
+The merchant editor now exposes per-screen runtime layout controls (container kind, gap, directional padding, alignment, flex sizing, minimum height, scrolling, and container background) and persists them into the published manifest. Terminology is explicit: merchants own apps, and mobile users are the customers of those apps; app-owner editor requests use `/api/v1/app/*` rather than tenant-scoped endpoints.
+
+Mobile runtime compatibility now includes the merchant builder's `promotion_list` component, so published storefront screens no longer fall back to an unsupported-component placeholder.
+
 ## Known Gaps
 
 1. CI pipeline is a placeholder and requires runner configuration.
 2. Repository validation script needs to be implemented.
 3. Issue and PR templates are basic and may be expanded.
+4. Saved consumer addresses and payment methods remain backend dependencies; mobile screens must not use demo data in live flows.
+5. Backend automated test coverage remains pending despite endpoint implementation being complete.
 
 ## Roadmap
 

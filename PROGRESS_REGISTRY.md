@@ -1,6 +1,9 @@
 # DUKADESK Progress Registry
 
-**Last Updated:** 2026-09-14
+**Last Updated:** 2026-09-19
+
+2026-09-19: Fixed complete nested PublishedApp resolution on mobile and merchant false publish success/image stripping. Live BFF still exposes Storefront v0.0.7 and the referenced logo returns 404; backend publication and public media delivery remain unresolved. Evidence: [Published logo/release mismatch](backend/PUBLISHED_LOGO_RELEASE_MISMATCH_2026-09-19.md). Agent tasks: [Dedicated TODO file](backend/PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md).
+
 
 ## Status Key
 - ✅ Complete — Production ready
@@ -12,7 +15,7 @@
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Runtime Engine | 🔧 In Progress | Screen rendering, component registry, action system working |
+| Runtime Engine | 🔧 In Progress | Screen rendering, component registry, action system working; deterministic fallback IDs and validation fixes applied 2026-09-18 |
 | Module System | 🔧 In Progress | Module registry working with default screens |
 | Manifest Resolver | ✅ Complete | Fetches tenant data, merges module defaults with tenant overrides; `displaySlug` from displayName, `identity.slug` uses slugified name |
 | Network Layer | ✅ Complete | Axios-based, interceptors, offline queue, caching; `hybridClient.ts` live-only |
@@ -84,10 +87,10 @@
 | Data Model Builder | ✅ Complete | KB-028 — Data Model Builder defined |
 | Preview Runtime | ✅ Complete | KB-029 — Preview Runtime defined |
 | Validation Engine | ✅ Complete | KB-030 — Validation Engine defined |
-| Publishing Pipeline | ✅ Complete | KB-031 — Publishing Pipeline defined |
+| Publishing Pipeline | ✅ Complete | KB-031 — Publishing Pipeline defined; release history is read once per publish and existing screen definitions are preserved while empty projects use template fallback |
 | SDUI Authoring | ✅ Complete | Template gallery (21 templates, search, category filter chips, color-block cards), drag-drop component palette, screen management, phone preview, PageFly-inspired section editor with inline editing, floating toolbars, editor theme design system |
 | Business Dashboard | ✅ Complete | Live `Admin-portal` `https://github.com/DukaDesk/DUKA-ADMIN` — shell + `PendingAdmins`/`Merchants`/`Marketplace`/`Audit`/`Subscriptions`/`Settings` + **Orders/Products/Customers/Analytics/Marketing/Infrastructure** (`317a549` `1896 modules ✓`, live `GET /app/commerce/*`, `GET /admin/users/merchant/:id`, `GET /analytics/reports/*`, `GET /infra/overview`), role-aware `platform_operator`/`support_agent`/`super_admin`, tenant correlation `getMerchantEnriched` + `da83369` customers per-merchant, `Bell` icon `bb05d76`, counts mapping `47f61e2`, merchant **approve/decline with credential review** `6588a6a` `POST /admin/merchants/:id/reject` |
-| Tenant Dashboard | ⏳ Planned | Not yet started |
+| Tenant Dashboard | 🔧 In Progress | Merchant portal dashboard/builder exists locally; published definition and BFF parity reads wired, but it is not yet the full manifest-driven tenant runtime |
 
 ## SDUI & Data Layer
 
@@ -105,6 +108,8 @@
 3. Backend has 0% test coverage — no unit or e2e tests written
 4. (Resolved) Screen & Layout Builder (KB-024) through Publishing Pipeline (KB-031) all completed
 5. No persistence layer for form data across app restarts
+6. Mobile saved addresses and payment methods await backend endpoints.
+7. Merchant portal preview/editor and mobile `ScreenEngine` use related schemas but are not yet one shared cross-platform renderer; parity is currently verified by published definition/BFF manifest comparison.
 
 ## Marketplace
 
