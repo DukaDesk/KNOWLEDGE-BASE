@@ -2,8 +2,8 @@
 
 This file tracks the current state of the backend implementation repository. **Terminology:** an **app** is the published experience owned by a **merchant**; **users** are mobile customers. Legacy backend paths may still contain `tenant`, but app-owner reads and writes use the `/api/v1/app/*` scope.
 
-**KB Version:** 0.3.5
-**Last Updated:** 2026-09-18
+**KB Version:** 0.3.6
+**Last Updated:** 2026-09-19
 
 ## Active Work
 
@@ -42,6 +42,7 @@ Open incident tasks: [Published logo and release mismatch TODO](PUBLISHED_LOGO_R
 | 2026-09 | P0 Admin Fixes v2 | UserStatus enum +pending/+rejected, case-insensitive status filter, GET /admin/users/tenant/:tenantId alias, body+query invite, Swagger @ApiQuery decorators |
 | 2026-09 | P0 tenantUsers Prisma Fix | Fixed tenantUsers→tenants (correct Prisma relation), dropped invalid role include (enum), added admin maintenance/policies stubs |
 | 2026-09 | Merchant reject + stats | TenantStatus +rejected, POST /admin/merchants/:id/reject with rejectionReason, GET /admin/merchants/stats by status |
+| 2026-09 | Published logo/release mismatch fix | S3-compatible StorageService, manifest body on publish, body limits, publish creates new Release directly |
 | 2026-09 | Admin Portal live integration | Unblocked `Admin-portal` `https://github.com/DukaDesk/DUKA-ADMIN` — fixed `UsersService.listUsers` `tenantUsers→tenants` (`users.service.ts:59`), added `admin/maintenance` + `admin/policies` stubs 404→empty, `RegisterDto` required `role` + `AuthService` sets `status:'pending'` + `UserRole`, envelope `TransformInterceptor` handling, `EnhancedRemoteTablePage` `users` envelope + `pending→draft` mapping (`3ece1cd`) |
 | 2026-09 | Orders/Products/Customers live | `317a549` — Commerce `GET /app/commerce/orders|products` + `adjust-stock`, `GET /admin/users/merchant/:id` tenant users, `da83369` customers per-merchant filter |
 | 2026-09 | Merchant decline + counts + Bell | `47f61e2` `totalTenants→totalMerchants` + `GET /marketplace/stats`; `bb05d76` `Bell` icon; `6588a6a` `TenantStatus` `+rejected`, `AdminService:40` `rejectTenant` with `config.rejectionReason`, `POST /admin/merchants/:id/reject` review card |
@@ -160,7 +161,4 @@ integration stages:
 
 ## Deployment
 
-- **Platform:** Railway (via `railway.json`)
-- **Health check:** `/api/v1/health`
-- **Build command:** `npm run build`
-- **Start command:** `npm run start:prod`
+- **Pl
