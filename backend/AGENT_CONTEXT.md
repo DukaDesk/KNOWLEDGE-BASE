@@ -123,3 +123,6 @@ Stop and ask for human input when:
 - A security-critical decision is required.
 - A breaking change affects multiple repositories.
 - A new external dependency is required.
+
+
+2026-09-20: Backend checkout inspected; live read paths still expose an unversioned definition and nested v0.0.7. Confirmed array-only publish validation, duplicate-release path, cache/rollback and WebP deletion defects. [Cross-stack fix plan](../ARCHITECTURE/PUBLISHED_APP_DELIVERY_FIX_PLAN_2026-09-20.md); separate stack TODOs linked there. Status: planned, implementation open.

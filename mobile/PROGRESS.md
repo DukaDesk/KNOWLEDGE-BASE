@@ -4,6 +4,8 @@ This file tracks the current state of the mobile repository (DukaDesk — Expo +
 
 ## Active Work
 
+2026-09-19: Published-app shell reconstruction implemented. [Report](PUBLISHED_APP_RECONSTRUCTION_2026-09-19.md) | [Executed plan](PUBLISHED_APP_RECONSTRUCTION_TODO.md) | [Deployment/device TODO](PUBLISHED_APP_PARITY_VERIFICATION_TODO.md).
+
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
 | Endpoint alignment to live OpenAPI 3.0.0 (328 paths) | `GET /api/docs-json` verification | Complete | Engineering |
@@ -55,3 +57,5 @@ This file tracks the current state of the mobile repository (DukaDesk — Expo +
 ## Last Updated
 
 2026-09-14
+
+2026-09-20: Backend release revalidation and explicit update adoption implemented; 88 mobile tests and Android/iOS exports pass. [Delivery report](PUBLISHED_APP_DELIVERY_CLIENT_IMPLEMENTATION_2026-09-20.md).

@@ -2,6 +2,9 @@
 
 **Last Updated:** 2026-09-19
 
+2026-09-19: Mobile now uses one shell and the complete published snapshot, with explicit errors for incompatible definitions. Merchant compilation preserves section/splash/chrome data and checks complete read-back. [Implementation report](mobile/PUBLISHED_APP_RECONSTRUCTION_2026-09-19.md) | [Execution plan](mobile/PUBLISHED_APP_RECONSTRUCTION_TODO.md) | [Remaining parity TODO](mobile/PUBLISHED_APP_PARITY_VERIFICATION_TODO.md).
+
+
 2026-09-19: Fixed complete nested PublishedApp resolution on mobile and merchant false publish success/image stripping. Live BFF still exposes Storefront v0.0.7 and the referenced logo returns 404; backend publication and public media delivery remain unresolved. Evidence: [Published logo/release mismatch](backend/PUBLISHED_LOGO_RELEASE_MISMATCH_2026-09-19.md). Agent tasks: [Dedicated TODO file](backend/PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md).
 
 
@@ -175,3 +178,10 @@ Mobile runtime compatibility now includes the merchant builder's `promotion_list
 - Wave 4: Commerce, Payments, Orders, Media, Notifications
 - Wave 5: AI, Analytics, Integrations, Automation
 - Wave 6: Production Hardening, Performance, Security, Observability, Scale
+
+
+2026-09-20: Backend checkout inspected; live read paths still expose an unversioned definition and nested v0.0.7. Confirmed array-only publish validation, duplicate-release path, cache/rollback and WebP deletion defects. [Cross-stack fix plan](ARCHITECTURE/PUBLISHED_APP_DELIVERY_FIX_PLAN_2026-09-20.md); separate stack TODOs linked there. Status: planned, implementation open.
+
+2026-09-20: Mobile release revalidation/staged adoption and merchant verified publish/rollback implemented. Local tests and web/Android/iOS bundle builds passed. [Client delivery report](mobile/PUBLISHED_APP_DELIVERY_CLIENT_IMPLEMENTATION_2026-09-20.md). Backend and device release gates remain open.
+
+2026-09-20: Fixed manifest root-tab rendering and tenant splash lifecycle; removed injected operational text. [Splash/tab ownership report](mobile/SPLASH_AND_MANIFEST_TABS_2026-09-20.md); separate verification TODO linked there.

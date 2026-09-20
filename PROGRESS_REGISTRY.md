@@ -2,6 +2,9 @@
 
 **Last Updated:** 2026-09-19
 
+2026-09-19: Mobile now uses one shell and the complete published snapshot, with explicit errors for incompatible definitions. Merchant compilation preserves section/splash/chrome data and checks complete read-back. [Implementation report](mobile/PUBLISHED_APP_RECONSTRUCTION_2026-09-19.md) | [Execution plan](mobile/PUBLISHED_APP_RECONSTRUCTION_TODO.md) | [Remaining parity TODO](mobile/PUBLISHED_APP_PARITY_VERIFICATION_TODO.md).
+
+
 2026-09-19: Fixed complete nested PublishedApp resolution on mobile and merchant false publish success/image stripping. Live BFF still exposes Storefront v0.0.7 and the referenced logo returns 404; backend publication and public media delivery remain unresolved. Evidence: [Published logo/release mismatch](backend/PUBLISHED_LOGO_RELEASE_MISMATCH_2026-09-19.md). Agent tasks: [Dedicated TODO file](backend/PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md).
 
 
@@ -17,7 +20,7 @@
 |-----------|--------|-------|
 | Runtime Engine | 🔧 In Progress | Screen rendering, component registry, action system working; deterministic fallback IDs and validation fixes applied 2026-09-18 |
 | Module System | 🔧 In Progress | Module registry working with default screens |
-| Manifest Resolver | ✅ Complete | Fetches tenant data, merges module defaults with tenant overrides; `displaySlug` from displayName, `identity.slug` uses slugified name |
+| Manifest Resolver | ✅ Complete | Validates and retains one complete published snapshot; no module/default-screen injection or guessed identity |
 | Network Layer | ✅ Complete | Axios-based, interceptors, offline queue, caching; `hybridClient.ts` live-only |
 | Auth System | ✅ Complete | Login/signup/reset flow, session management |
 | State Management | 🔧 In Progress | Zustand stores. CartStore works, form data context implemented |
@@ -276,3 +279,10 @@
 | ADR-004 | Event Bus for Cross-Component Communication | ✅ Accepted | 2026-06-30 |
 | ADR-005 | Branded Splash Screen | ✅ Accepted | 2026-07-09 |
 | ADR-006 | Knowledge Base Initialization | ✅ Accepted | 2026-07-09 |
+
+
+2026-09-20: Backend checkout inspected; live read paths still expose an unversioned definition and nested v0.0.7. Confirmed array-only publish validation, duplicate-release path, cache/rollback and WebP deletion defects. [Cross-stack fix plan](ARCHITECTURE/PUBLISHED_APP_DELIVERY_FIX_PLAN_2026-09-20.md); separate stack TODOs linked there. Status: planned, implementation open.
+
+2026-09-20: Mobile release revalidation/staged adoption and merchant verified publish/rollback implemented. Local tests and web/Android/iOS bundle builds passed. [Client delivery report](mobile/PUBLISHED_APP_DELIVERY_CLIENT_IMPLEMENTATION_2026-09-20.md). Backend and device release gates remain open.
+
+2026-09-20: Fixed manifest root-tab rendering and tenant splash lifecycle; removed injected operational text. [Splash/tab ownership report](mobile/SPLASH_AND_MANIFEST_TABS_2026-09-20.md); separate verification TODO linked there.
