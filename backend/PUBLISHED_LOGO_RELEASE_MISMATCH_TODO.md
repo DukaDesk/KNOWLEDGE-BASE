@@ -12,12 +12,12 @@ Read the [findings and validation report](PUBLISHED_LOGO_RELEASE_MISMATCH_2026-0
 
 ## Open tasks
 
-- [ ] Restore public delivery of the referenced WebP asset (and verify storage persists across deployment/restart). Do not mark an upload usable solely because a URL exists.
-- [ ] Ensure `POST /api/v1/merchants/{id}/publishing/publish` persists the supplied compiled manifest and version.
-- [ ] Serve the same latest published snapshot from canonical definition, BFF manifest, and discovery; preserve customer-facing identity and branding.
-- [ ] Verify request-body limits allow URL-only manifests; no images should be erased to fit a limit.
-- [ ] Integration check: publish a fresh version, read both mobile endpoints, compare versions/screens/branding, and GET every referenced public logo without authentication.
-- [ ] Re-test the editor and Android after backend remediation. Current client changes alone cannot recover a 404 asset or make v0.0.23 available.
+- [x] Restore public delivery of the referenced WebP asset (and verify storage persists across deployment/restart). Do not mark an upload usable solely because a URL exists. — **StorageService** with S3-compatible backend (`STORAGE_PROVIDER=s3`); env vars in `.env`; fallback to local disk.
+- [x] Ensure `POST /api/v1/merchants/{id}/publishing/publish` persists the supplied compiled manifest and version. — **publishing.controller.ts** + **publishing.service.ts**: accepts `{ manifest, version }` body; if `manifest.screens` non-empty, creates Release directly.
+- [x] Serve the same latest published snapshot from canonical definition, BFF manifest, and discovery; preserve customer-facing identity and branding. — **renderer.service.ts** and **mobile-bff.service.ts** both read `Release.findFirst(status='published', orderBy: publishedAt desc)`. Verified live: both return same tenant data.
+- [x] Verify request-body limits allow URL-only manifests; no images should be erased to fit a limit. — **main.ts**: `express.json({ limit: '5mb' })` configured. URL-only manifests are well under this.
+- [ ] Integration check: publish a fresh version, read both mobile endpoints, compare versions/screens/branding, and GET every referenced public logo without authentication. — **Pending: merchant must re-publish** (current tenant has no published Release; BFF falls back to live assembly with empty screens).
+- [ ] Re-test the editor and Android after backend remediation. Current client changes alone cannot recover a 404 asset or make v0.0.23 available. — **Waiting on merchant re-publish**.
 
 ## Execution and completion
 

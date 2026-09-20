@@ -161,4 +161,7 @@ integration stages:
 
 ## Deployment
 
-- **Pl
+- **Platform:** Railway (via `railway.json`)
+- **Health check:** `/api/v1/health`
+- **Build command:** `npm run build`
+- **Start command:** `npm run start:prod`
