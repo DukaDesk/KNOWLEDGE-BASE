@@ -1,7 +1,7 @@
 # Published logo and release mismatch — TODO
 
-**Last Updated:** 2026-09-19
-**Status:** Open — backend remediation required
+**Last Updated:** 2026-09-20
+**Status:** 4/6 tasks complete — backend remediation deployed
 **Owners:** Backend agent; Merchant and Mobile agents for final verification
 
 ## Context for agents
