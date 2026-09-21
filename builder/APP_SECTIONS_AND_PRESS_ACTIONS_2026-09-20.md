@@ -47,3 +47,15 @@ Removed floating component/section title, delete, duplicate, library, image-uplo
 ## Layout and section hierarchy correction
 Section is now a variant in the Layout gallery alongside the existing 1/1 and split layouts, rather than a separate Structure palette command. Sections and layout slots again provide inline plus / Add a section controls; insertion selects the new nested section. General shows Add Element only for selected root or nested sections and inserts into the selected nested section. Nothing selected no longer exposes the component picker. Accordion moved from Structure into Components and retains its existing Coming soon status. Existing saved structures and manifest node types are unchanged. This supersedes the earlier removal of inline section insertion controls; floating delete/duplicate/color toolbars remain removed.
 
+
+## 2026-09-21 - Container layout picker and component categories
+
+- Sections remain real nested containers with a visible empty content area. The inline Add a section control opens Layout and expands/highlights its Elements entry; it no longer immediately inserts a nested section.
+- The layout picker retains section, parent-container and insertion position until a choice is made, then inserts and selects that choice. Closing the picker creates nothing.
+- Elements now offers Structure (Layout, Screens, Tabs) and Components with icon-bearing category buttons. Choosing a category opens General with only that category. When a child is selected, browsing targets its nearest section container.
+- Heading and Paragraph are separate text presets in General's Text dropdown; Accordion remains an unavailable placeholder there. Video remains an unavailable Media placeholder.
+- Removed repeated standalone Heading/Paragraph/Button/List/Icon/Divider/Images entries and the duplicate primary-button authoring choice. Layout/tab entries are not repeated in the component catalog. Existing saved types are still supported.
+- The previous direct-insertion behavior described above is superseded by this layout-choice flow. No backend or mobile contract changes are required.
+
+Validation for the 2026-09-21 changes: merchant production build passed; full merchant suite passed 99 tests across 16 files. Browser visual verification remains in the separate TODO file.
+

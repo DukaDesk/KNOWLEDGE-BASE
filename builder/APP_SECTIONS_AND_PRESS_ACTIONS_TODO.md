@@ -21,3 +21,7 @@ Read: [implementation and contract](APP_SECTIONS_AND_PRESS_ACTIONS_2026-09-20.md
 - [x] Restore inline section insertion in layouts/sections; move Section into Layout and Accordion into Components; gate General Add Element on section selection.
 - [ ] Browser check: add a section to a split layout, select it, add components through General, then clear selection and confirm Add Element is hidden.
 
+
+- [x] Replace immediate nested-section insertion with a Layout picker retaining the target container; show components by category in General and remove duplicate palette entries.
+- [ ] Browser check: open Layout from an empty nested section, cancel without mutation, reopen and choose a split layout; verify subsequent components go into the selected child section. Check Text and other categories separately.
+
