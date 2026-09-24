@@ -1,7 +1,7 @@
 # Published logo and release mismatch — TODO
 
-**Last Updated:** 2026-09-20
-**Status:** 4/6 tasks complete — backend remediation deployed
+**Last Updated:** 2026-09-24
+**Status:** 5/6 tasks complete — backend remediation + B1–B6 code landed; final live re-test waiting on merchant re-publish
 **Owners:** Backend agent; Merchant and Mobile agents for final verification
 
 ## Context for agents
@@ -14,9 +14,9 @@ Read the [findings and validation report](PUBLISHED_LOGO_RELEASE_MISMATCH_2026-0
 
 - [x] Restore public delivery of the referenced WebP asset (and verify storage persists across deployment/restart). Do not mark an upload usable solely because a URL exists. — **StorageService** with S3-compatible backend (`STORAGE_PROVIDER=s3`); env vars in `.env`; fallback to local disk.
 - [x] Ensure `POST /api/v1/merchants/{id}/publishing/publish` persists the supplied compiled manifest and version. — **publishing.controller.ts** + **publishing.service.ts**: accepts `{ manifest, version }` body; if `manifest.screens` non-empty, creates Release directly.
-- [x] Serve the same latest published snapshot from canonical definition, BFF manifest, and discovery; preserve customer-facing identity and branding. — **renderer.service.ts** and **mobile-bff.service.ts** both read `Release.findFirst(status='published', orderBy: publishedAt desc)`. Verified live: both return same tenant data.
+- [x] Serve the same latest published snapshot from canonical definition, BFF manifest, and discovery; preserve customer-facing identity and branding. — **`ActiveReleaseService`** (2026-09-24) is the single reader for renderer + mobile BFF; both return the same active production snapshot with a `release` receipt (id/version/checksum). Discovery filters `activeReleaseId != null`.
 - [x] Verify request-body limits allow URL-only manifests; no images should be erased to fit a limit. — **main.ts**: `express.json({ limit: '5mb' })` configured. URL-only manifests are well under this.
-- [ ] Integration check: publish a fresh version, read both mobile endpoints, compare versions/screens/branding, and GET every referenced public logo without authentication. — **Pending: merchant must re-publish** (current tenant has no published Release; BFF falls back to live assembly with empty screens).
+- [~] Integration check: publish a fresh version, read both mobile endpoints, compare versions/screens/branding, and GET every referenced public logo without authentication. — **Code + unit parity tests landed 2026-09-24; still needs a live run against a published merchant (pending re-publish + deployed backend).**
 - [ ] Re-test the editor and Android after backend remediation. Current client changes alone cannot recover a 404 asset or make v0.0.23 available. — **Waiting on merchant re-publish**.
 
 ## Execution and completion

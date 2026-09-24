@@ -1,7 +1,8 @@
 # Published app delivery: cross-stack fix plan
 
 Date: 2026-09-20
-Status: Inspection and plan complete; implementation tasks open
+Last Updated: 2026-09-24
+Status: Backend B1–B6 code complete (unit-tested); B4 migration file written (not applied); B7–B8 and merchant/mobile release gates open. Live staging evidence not yet attached.
 Objective: One installed DukaDesk native shell launches tenant applications from backend-published manifests. Publishing supported content/layout/actions must not require a separate tenant binary or a shell release.
 
 ## Clarification

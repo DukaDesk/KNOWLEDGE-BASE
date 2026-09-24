@@ -1,6 +1,8 @@
 # DUKADESK OS — Progress
 
-**Last Updated:** 2026-09-19
+**Last Updated:** 2026-09-24
+
+2026-09-24: **Backend published-app delivery B1–B6 implemented** on `DUKA-BACKEND` main — canonical `ActiveReleaseService` shared by definition + BFF, `ManifestValidator` for PublishedApp 1.0.0 object screens (no compiler fall-through), atomic release activation with `tenant.activeReleaseId` + Idempotency-Key, owner/manager authz on publish/rollback/history, media `folderId` find-or-create + StorageService URL retention (`.webp` self-delete guard), default non-empty app seed on merchant create, `ApiQuotaGuard` wired. Unit suites added. B4 migration file written (not applied); B7 compatibility contract and B8 live integration evidence remain open. Tasks: [PUBLISHED_APP_DELIVERY_BACKEND_TODO.md](backend/PUBLISHED_APP_DELIVERY_BACKEND_TODO.md). Status: code complete / live verify pending.
 
 2026-09-19: Mobile now uses one shell and the complete published snapshot, with explicit errors for incompatible definitions. Merchant compilation preserves section/splash/chrome data and checks complete read-back. [Implementation report](mobile/PUBLISHED_APP_RECONSTRUCTION_2026-09-19.md) | [Execution plan](mobile/PUBLISHED_APP_RECONSTRUCTION_TODO.md) | [Remaining parity TODO](mobile/PUBLISHED_APP_PARITY_VERIFICATION_TODO.md).
 

@@ -2,12 +2,12 @@
 
 This file tracks the current state of the backend implementation repository. **Terminology:** an **app** is the published experience owned by a **merchant**; **users** are mobile customers. Legacy backend paths may still contain `tenant`, but app-owner reads and writes use the `/api/v1/app/*` scope.
 
-**KB Version:** 0.3.7
-**Last Updated:** 2026-09-20
+**KB Version:** 0.3.8
+**Last Updated:** 2026-09-24
 
 ## Active Work
 
-Open incident tasks: [Published logo and release mismatch TODO](PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md). Evidence and validation are maintained separately in the [findings report](PUBLISHED_LOGO_RELEASE_MISMATCH_2026-09-19.md).
+Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_BACKEND_TODO.md) (B1–B3, B5–B6 implemented 2026-09-24; B4 migration apply, B7 compatibility, B8 live integration evidence remain). Incident checklist: [Published logo and release mismatch TODO](PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md). Media/folder checklist: [Builder Media API backend TODO](BUILDER_MEDIA_API_BACKEND_TODO.md).
 
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
@@ -19,8 +19,10 @@ Open incident tasks: [Published logo and release mismatch TODO](PUBLISHED_LOGO_R
 | Client contract alignment after live API migration | `DukaDesk` + `DUKA-MERCHANT/dukadesk` | In Progress | Engineering |
 | Published-definition parity verification | App config + mobile manifest | Complete | Engineering |
 | Flexible published screen layouts | Merchant layout preservation + mobile layout style support | Complete | Engineering |
+| Published app delivery B1–B6 backend | `PUBLISHED_APP_DELIVERY_BACKEND_TODO.md` | Complete (code) / Live verify pending | Backend |
+| Media folderId FK fix + storage URL retention | `media.service.ts` | Complete | Backend |
 | E2E integration tests for all modules | KB v0.2.0 | Pending | Engineering |
-| Rate limiting and throttling configuration | KB v0.2.0 | Pending | Engineering |
+| Rate limiting and throttling configuration | KB v0.2.0 | In Progress | Backend |
 
 ## Completed Milestones
 
@@ -47,6 +49,7 @@ Open incident tasks: [Published logo and release mismatch TODO](PUBLISHED_LOGO_R
 | 2026-09 | Admin Portal live integration | Unblocked `Admin-portal` `https://github.com/DukaDesk/DUKA-ADMIN` — fixed `UsersService.listUsers` `tenantUsers→tenants` (`users.service.ts:59`), added `admin/maintenance` + `admin/policies` stubs 404→empty, `RegisterDto` required `role` + `AuthService` sets `status:'pending'` + `UserRole`, envelope `TransformInterceptor` handling, `EnhancedRemoteTablePage` `users` envelope + `pending→draft` mapping (`3ece1cd`) |
 | 2026-09 | Orders/Products/Customers live | `317a549` — Commerce `GET /app/commerce/orders|products` + `adjust-stock`, `GET /admin/users/merchant/:id` tenant users, `da83369` customers per-merchant filter |
 | 2026-09 | Merchant decline + counts + Bell | `47f61e2` `totalTenants→totalMerchants` + `GET /marketplace/stats`; `bb05d76` `Bell` icon; `6588a6a` `TenantStatus` `+rejected`, `AdminService:40` `rejectTenant` with `config.rejectionReason`, `POST /admin/merchants/:id/reject` review card |
+| 2026-09-24 | Published app delivery B1–B6 | Canonical `ActiveReleaseService`, `ManifestValidator` (1.0.0 object screens), atomic release/activation + `activeReleaseId`, Idempotency-Key, owner/manager authz on publish/rollback, media `folderId` resolve + storage URLs, default merchant app seed, `ApiQuotaGuard`, unit suites (`manifest-validator`, `publishing`, `active-release`, `media`, press-action round-trip). B4 migration file written (not yet applied). |
 
 ## Modules Implemented
 
