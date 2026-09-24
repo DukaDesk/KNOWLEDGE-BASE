@@ -5,7 +5,8 @@
 The `backend/` repository contains the core server-side platform for DUKADESK OS. It exposes REST APIs, manages business logic, handles events, and coordinates data persistence.
 
 **Implementation Repository:** [DUKA-BACKEND](https://github.com/DukaDesk/DUKA-BACKEND)
-**KB Version:** 0.2.1
+**KB Version:** 0.3.8
+**Last Updated:** 2026-09-24
 
 ## Responsibilities
 
@@ -98,6 +99,7 @@ Specifications that target this repository:
 | KB v0.1.0 | Knowledge Base v0.1.0 | Superseded |
 | KB v0.2.0 | Three-tier API Architecture | Active |
 | KB v0.2.1 | App/Public Split + Dashboard | Active |
+| KB v0.3.8 | Published app delivery B1–B6 | Active (live verify pending) |
 
 ## Agent Conventions
 
@@ -126,3 +128,5 @@ Stop and ask for human input when:
 
 
 2026-09-20: Backend checkout inspected; live read paths still expose an unversioned definition and nested v0.0.7. Confirmed array-only publish validation, duplicate-release path, cache/rollback and WebP deletion defects. [Cross-stack fix plan](../ARCHITECTURE/PUBLISHED_APP_DELIVERY_FIX_PLAN_2026-09-20.md); separate stack TODOs linked there. Status: planned, implementation open.
+
+2026-09-24: B1–B3, B5–B6 landed on DUKA-BACKEND main (commit `00baea3`): `ManifestValidator`, atomic activation + `activeReleaseId`, shared `ActiveReleaseService`, owner/manager authz, media folderId + storage URLs, default merchant app seed, `ApiQuotaGuard`, 5 unit suites (38 tests). B4 migration file written (not applied); B7 compatibility contract and B8 live integration evidence remain open. Tasks: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_BACKEND_TODO.md).

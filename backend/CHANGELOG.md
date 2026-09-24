@@ -4,6 +4,18 @@ All notable changes to the backend repository are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased] — 2026-09-24
+
+### Added
+- Published app delivery B1–B6 (KB 0.3.8): `ManifestValidator` for PublishedApp 1.0.0 object screens, atomic release activation with `tenant.activeReleaseId` + Idempotency-Key, shared `ActiveReleaseService` for renderer + mobile BFF, owner/manager authz on publish/rollback/history, media `folderId` find-or-create + StorageService URL retention, default non-empty app seed on merchant create, `ApiQuotaGuard`
+- Unit test suites: `manifest-validator`, `publishing.service`, `active-release.service`, `media.service`, press-action round-trip (5 suites / 38 tests)
+- Additive migration `20260924000000_add_active_release` (written, not yet applied)
+
+### Changed
+- B1, B2, B3, B5, B6 ticked in `PUBLISHED_APP_DELIVERY_BACKEND_TODO.md`; B4/B7/B8 marked partial with notes
+- Media folderId + publish-manifest items ticked in `BUILDER_MEDIA_API_BACKEND_TODO.md` (35/39)
+- Progress + agent context bumped to KB 0.3.8
+
 ## [0.2.1] — 2026-09-11
 
 ### Added
