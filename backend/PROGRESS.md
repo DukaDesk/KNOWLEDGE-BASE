@@ -141,8 +141,11 @@ integration stages:
 
 ## Next Up
 
+- Apply `prisma/migrations/20260924000000_add_active_release` and verify backfill (B4)
+- Publish machine-readable compatibility contract + merchant preflight (B7)
+- Live e2e publish/rollback/read-path/media evidence (B8)
 - E2E integration tests for all modules
-- Rate limiting and throttling configuration
+- Rate limiting and throttling configuration (quota defaults + docs)
 - API versioning strategy (v2 planning)
 - Performance optimization and query tuning
 - Monitoring and alerting setup
