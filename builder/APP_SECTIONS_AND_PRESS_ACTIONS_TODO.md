@@ -1,6 +1,7 @@
 # App sections and press actions - verification TODO
 
 Date: 2026-09-20
+Last Updated: 2026-09-24
 Read: [implementation and contract](APP_SECTIONS_AND_PRESS_ACTIONS_2026-09-20.md)
 
 - [x] Rename builder section labels and fix empty/custom slug editing and reload.
@@ -8,7 +9,7 @@ Read: [implementation and contract](APP_SECTIONS_AND_PRESS_ACTIONS_2026-09-20.md
 - [x] Add compiler, action-editor, slug-store and mobile press regression tests.
 - [ ] Release/device verification: deploy updated merchant and mobile clients, publish two pills/menu cards with different destinations, confirm both canonical backend reads preserve their actions, then verify each opens the assigned page on Android/iOS.
 - [ ] Browser smoke check: clear and retype slug, blur, save, reload; verify custom slug remains. Preview individual pills/menu cards and verify Back.
-- [ ] Complete existing backend published delivery work before treating a local/client test as proof that production serves the new release.
+- [~] Complete existing backend published delivery work before treating a local/client test as proof that production serves the new release. — **Backend B1–B6 code landed 2026-09-24** (`00baea3`); round-trip unit test covers two pills → different screens. **Deploy + production publish still required** for this gate.
 
 - [x] Replace repeated attachment controls with one selection-driven property editor; cover pill selection, target switching and isolated updates with regression tests.
 - [ ] Browser smoke check: click different pills/cards and confirm the same property editor shows each item's saved destination without duplicate attachment controls.

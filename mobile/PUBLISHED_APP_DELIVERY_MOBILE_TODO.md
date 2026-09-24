@@ -1,9 +1,10 @@
 # Published app delivery - mobile TODO
 
 Date: 2026-09-20
+Last Updated: 2026-09-24
 Status: M1/M2 implemented and locally tested; M3/M4 backend integration and M5 device acceptance remain open.
 Repository: D:/work/DD/DukaDesk
-Dependency: Backend B1-B5; retain completed manifest reconstruction work.
+Dependency: Backend B1–B6 code complete on DUKA-BACKEND main (commit `00baea3`, pending deploy + migration apply); retain completed manifest reconstruction work. B4 migration, B7 compatibility contract, B8 live evidence still open.
 Read: [Coordinated plan and evidence](../ARCHITECTURE/PUBLISHED_APP_DELIVERY_FIX_PLAN_2026-09-20.md)
 
 - [x] **M1 - Revalidation lifecycle.** Refactor PublishedAppShell's mount/tenant-only loader into a cancellable release loader. Revalidate on entry, focus and foreground, and provide explicit reload/retry. Deduplicate requests; reject stale responses after tenant changes. Compare backend release ID/checksum, not only version or screen count. Test A-to-B publication while mounted and backgrounded.

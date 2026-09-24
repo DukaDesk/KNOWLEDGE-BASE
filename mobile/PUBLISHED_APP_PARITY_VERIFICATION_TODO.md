@@ -1,12 +1,13 @@
 # Published-app parity verification - TODO
 
 Date: 2026-09-19
-Status: Open
+Last Updated: 2026-09-24
+Status: Backend B1–B6 code complete (pending deploy); live release/media verification open
 Owners: Backend, Merchant, Mobile agents
 
 Read the [implementation report](PUBLISHED_APP_RECONSTRUCTION_2026-09-19.md) and [execution plan](PUBLISHED_APP_RECONSTRUCTION_TODO.md) first.
 
-- [ ] Backend: complete the separate [release/media remediation checklist](../backend/PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md). Both mobile endpoints must return the same complete submitted snapshot and all referenced media must be publicly retrievable.
+- [~] Backend: complete the separate [release/media remediation checklist](../backend/PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md). Both mobile endpoints must return the same complete submitted snapshot and all referenced media must be publicly retrievable. — **Code landed 2026-09-24** (canonical `ActiveReleaseService` + storage URL retention + webp self-delete guard); **live re-test pending deploy + merchant re-publish** (see backend logo TODO 5/6).
 - [ ] Release coordination: deploy the compatible mobile runtime and merchant compiler, then republish the real merchant app. Verify its version and full content through both read paths. Existing releases do not gain omitted fields automatically.
 - [ ] Mobile/Merchant: compare the same real published release at matching viewport sizes on Android and iOS against the merchant output. Cover section order/spacing, header/footer, tabs, nested containers, images, overlays, splash, typography, and navigation actions. Attach evidence and results to the report.
 - [x] Mobile: inventory current live v0.0.7 component types and correct known property/data-shape mismatches. See the report and PublishedRenderer regressions.

@@ -1,9 +1,10 @@
 # Published app delivery - merchant TODO
 
 Date: 2026-09-20
+Last Updated: 2026-09-24
 Status: W1-W3 client implementation complete; W4 backend contract and W5 deployment/integration remain open.
 Repository: D:/work/DD/DUKA-MERCHANT/dukaDesk
-Dependency: Backend B1-B5. [Coordinated plan](../ARCHITECTURE/PUBLISHED_APP_DELIVERY_FIX_PLAN_2026-09-20.md)
+Dependency: Backend B1–B6 code complete on DUKA-BACKEND main (commit `00baea3`, pending deploy + migration apply); B7 compatibility contract still open (W4). [Coordinated plan](../ARCHITECTURE/PUBLISHED_APP_DELIVERY_FIX_PLAN_2026-09-20.md)
 
 - [x] **W1 - Backend-owned publication receipt.** Keep the full compiled 1.0.0 snapshot; send an idempotency key and consume authoritative releaseId/version/checksum. Reconcile requested version with backend receipt, including conflict handling. Preserve exact full-snapshot verification; verify both canonical definition and BFF against the committed receipt before displaying live status. Distinguish committed-but-verification-pending from rejected publication to prevent duplicate retries.
 - [x] **W2 - Separate editor history from production state.** Stop treating saveDeployment/writeConfig as live activation. Use canonical backend release history/current-release APIs for production status. Config may retain editor drafts/history but cannot override the active release. Config bookkeeping failure after a committed publish must not falsely report that the publication never happened.

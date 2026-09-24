@@ -44,18 +44,18 @@ This file tracks the current state of the mobile repository (DukaDesk — Expo +
 
 | Issue | Impact | Owner |
 |-------|--------|-------|
-| Backend `GET /merchants/{id}/definition` returns `screens:[]` for all published tenants | Mobile shows "No screens published yet" until backend persists compiled `PublishedApp` | Engineering |
-| Live branding fields (`identity.displayName`, `appName`, `branding`, `theme.brand.logo`, `assets.logo.url`) dropped by backend | Mobile can display them once backend returns them | Engineering |
+| Live backend still serving legacy empty/stale definitions until DUKA-BACKEND B1–B6 deploy + migration apply | Mobile shows "No screens published yet" or stale branding until deploy + merchant re-publish | Backend / Release |
+| Live branding fields (`identity.displayName`, `appName`, `branding`, `theme.brand.logo`, `assets.logo.url`) | Code path returns them once active release is live; pending deploy + republish | Backend / Release |
 
 ## Next Up
 
-- Backend persists compiled `PublishedApp` so `GET /merchants/{id}/definition` returns screens
-- Live branding fields returned by backend for display
+- Deploy backend B1–B6 + apply `20260924000000_add_active_release`, then re-publish a merchant and verify both read paths (B8)
+- Mobile M3 canonical read transition after backend parity is deployed
 - E2E integration tests for all modules
 - API versioning strategy (v2 planning)
 
 ## Last Updated
 
-2026-09-14
+2026-09-24
 
 2026-09-20: Backend release revalidation and explicit update adoption implemented; 88 mobile tests and Android/iOS exports pass. [Delivery report](PUBLISHED_APP_DELIVERY_CLIENT_IMPLEMENTATION_2026-09-20.md).
