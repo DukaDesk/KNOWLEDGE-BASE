@@ -7,7 +7,7 @@ This file tracks the current state of the backend implementation repository. **T
 
 ## Active Work
 
-Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_BACKEND_TODO.md) (B1–B3, B5–B6 implemented 2026-09-24; B4 migration apply, B7 compatibility, B8 live integration evidence remain). Incident checklist: [Published logo and release mismatch TODO](PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md). Media/folder checklist: [Builder Media API backend TODO](BUILDER_MEDIA_API_BACKEND_TODO.md).
+Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_BACKEND_TODO.md) (B1–B3, B5–B6 implemented 2026-09-24; B4 migration ready for deploy via Railway `migrate deploy`, B7 compatibility, B8 live integration evidence remain). Incident checklist: [Published logo and release mismatch TODO](PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md). Media/folder checklist: [Builder Media API backend TODO](BUILDER_MEDIA_API_BACKEND_TODO.md).
 
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
@@ -141,7 +141,7 @@ integration stages:
 
 ## Next Up
 
-- Apply `prisma/migrations/20260924000000_add_active_release` and verify backfill (B4)
+- Verify `prisma migrate deploy` applied `20260924000000_add_active_release` after Railway deploy; confirm backfill + conflict audit
 - Publish machine-readable compatibility contract + merchant preflight (B7)
 - Live e2e publish/rollback/read-path/media evidence (B8)
 - E2E integration tests for all modules
