@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased] — 2026-09-27
 
 ### Added
+- **B7 runtime compatibility contract**: `GET /api/v1/compatibility` (anonymous) serves contract `dukadesk.published-app-runtime` 1.0.0 — supported manifest versions, 35 component types (builder registry + production template/section types + KB fixture + mobile v0.0.7 shell registry), 10 action types, 16 capabilities, asset reference kinds, limits (`maxScreens` 200, `maxNestingDepth` 25, `maxComponents` 2000, `maxAssetReferences` 500) — `src/shared/compatibility/`
+- **Merchant preflight**: `POST /api/v1/merchants/:id/publishing/preflight` (owner/manager) validates a manifest, or compiles the current drafts without persisting (`ManifestCompiler.compile(tenantId, { persist: false })`), and returns `{contract, source, valid, compatible, errors, warnings, counts}` without publishing
+- **Activation gate**: `CompatibilityService.assertCompatible()` runs in both publish paths before version allocation/activation — unknown component, unresolvable or cross-tenant media id, unknown required capability, unsupported manifest version or limit breach → 422 `INCOMPATIBLE_RUNTIME`; unknown action types surface as warnings on the publish receipt
+- Discovery now projects the active release identity and lists only activated tenants (`activeReleaseId != null`), returning `release {id, version, checksum, channel, publishedAt}` with name/slug/logo/publishedAt
+- Suites: `compatibility.service.spec.ts` (11 cases), `discovery.service.spec.ts` (4 cases), publishing B7 preflight/compatibility cases — 58 tests total
 - `docs/B4_MIGRATION_RUNBOOK.md` — production recovery timeline, rollback SQL (`ALTER TABLE "tenants" DROP COLUMN "activeReleaseId"`), evidence table (deployment IDs, backfill count, audit result)
 - Read-only audit `scripts/audit-active-release.js` — migration ledger, schema/index, backfill gaps, dangling/cross-tenant pointers, tenant status vs releases, manifest shapes, counts; SELECT-only, retries transient Railway proxy drops (`AUDIT_RETRIES`, default 5)
 - `package.json` `predeploy` script: `prisma migrate deploy && prisma db seed`
@@ -19,7 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `scripts/seed-super-admin.js` no longer rewrites `20260827120000_seed_admin/migration.sql` at runtime (would reintroduce the missing `updatedAt` 23502 failure)
 
 ### Changed
-- B4 ticked in `PUBLISHED_APP_DELIVERY_BACKEND_TODO.md` (applied in production 2026-09-26/27); B7/B8 remain open
+- B4 **and B7** ticked in `PUBLISHED_APP_DELIVERY_BACKEND_TODO.md`; B8 remains the only open release gate
 - Progress notes and deployment section updated for the working pre-deploy seed
 
 ## [0.3.8] — 2026-09-24

@@ -7,7 +7,7 @@ This file tracks the current state of the backend implementation repository. **T
 
 ## Active Work
 
-Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_BACKEND_TODO.md) (B1–B3, B5–B6 implemented 2026-09-24; **B4 migration applied in production 2026-09-26/27** — baseline recovery, backfill 0 rows, audit clean; B7 compatibility contract and B8 live integration evidence remain). Incident checklist: [Published logo and release mismatch TODO](PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md). Media/folder checklist: [Builder Media API backend TODO](BUILDER_MEDIA_API_BACKEND_TODO.md). Recovery evidence: DUKA-BACKEND `docs/B4_MIGRATION_RUNBOOK.md`.
+Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_BACKEND_TODO.md) (B1–B6 implemented 2026-09-24; **B4 migration applied in production 2026-09-26/27**; **B7 runtime compatibility contract + merchant preflight live 2026-09-27**; B8 live integration evidence remains). Incident checklist: [Published logo and release mismatch TODO](PUBLISHED_LOGO_RELEASE_MISMATCH_TODO.md). Media/folder checklist: [Builder Media API backend TODO](BUILDER_MEDIA_API_BACKEND_TODO.md). Recovery evidence: DUKA-BACKEND `docs/B4_MIGRATION_RUNBOOK.md`.
 
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
@@ -21,6 +21,7 @@ Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_
 | Flexible published screen layouts | Merchant layout preservation + mobile layout style support | Complete | Engineering |
 | Published app delivery B1–B6 backend | `PUBLISHED_APP_DELIVERY_BACKEND_TODO.md` | Complete (code) / Live verify pending | Backend |
 | B4 active-release migration applied in production | `prisma/migrations/20260924000000_add_active_release` | Complete | Backend |
+| B7 runtime compatibility contract + merchant preflight | `GET /api/v1/compatibility`, `POST /merchants/:id/publishing/preflight` | Complete (deployed 2026-09-27) | Backend |
 | Media folderId FK fix + storage URL retention | `media.service.ts` | Complete | Backend |
 | E2E integration tests for all modules | KB v0.2.0 | Pending | Engineering |
 | Rate limiting and throttling configuration | KB v0.2.0 | In Progress | Backend |
@@ -51,7 +52,7 @@ Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_
 | 2026-09 | Orders/Products/Customers live | `317a549` — Commerce `GET /app/commerce/orders|products` + `adjust-stock`, `GET /admin/users/merchant/:id` tenant users, `da83369` customers per-merchant filter |
 | 2026-09 | Merchant decline + counts + Bell | `47f61e2` `totalTenants→totalMerchants` + `GET /marketplace/stats`; `bb05d76` `Bell` icon; `6588a6a` `TenantStatus` `+rejected`, `AdminService:40` `rejectTenant` with `config.rejectionReason`, `POST /admin/merchants/:id/reject` review card |
 | 2026-09-24 | Published app delivery B1–B6 | Canonical `ActiveReleaseService`, `ManifestValidator` (1.0.0 object screens), atomic release/activation + `activeReleaseId`, Idempotency-Key, owner/manager authz on publish/rollback, media `folderId` resolve + storage URLs, default merchant app seed, `ApiQuotaGuard`, unit suites (`manifest-validator`, `publishing`, `active-release`, `media`, press-action round-trip). B4 migration file written (not yet applied). |
-| 2026-09-27 | B4 applied in production | Recovered `_prisma_migrations` baseline (7× `migrate resolve --applied`, stale rolled-back row removed), applied `20260924000000_add_active_release` on deploy `a00865ae` (backfill 0 rows — `releases` empty), fixed `preDeployCommand` (now `npm run predeploy`) and shipped `tsconfig.json` to the runner so `prisma db seed` runs (3 templates, `acme-store`). Read-only audit `scripts/audit-active-release.js` → 0 errors; health 200. Evidence: DUKA-BACKEND `docs/B4_MIGRATION_RUNBOOK.md`. |
+| 2026-09-27 | B4 applied + B7 contract live | `20260924000000_add_active_release` applied on deploy `a00865ae` (backfill 0 rows — `releases` empty) after baseline recovery (7× `migrate resolve --applied`, stale rolled-back row removed); `preDeployCommand` now `npm run predeploy` and `tsconfig.json` ships to the runner so the seed runs (3 templates, `acme-store`). **B7** (deploy `717d7d8d`): `GET /api/v1/compatibility` serves contract `dukadesk.published-app-runtime` 1.0.0 (35 components / 10 actions / 16 capabilities / limits), `POST /merchants/:id/publishing/preflight` dry-runs a manifest or the compiled drafts, publish enforces the contract (422 `INCOMPATIBLE_RUNTIME`), discovery filters to activated tenants and projects the active release identity. Evidence: DUKA-BACKEND `docs/B4_MIGRATION_RUNBOOK.md`. |
 
 ## Modules Implemented
 
@@ -145,7 +146,6 @@ integration stages:
 
 - Merchants re-publish (B8 pre-condition) — 4 tenants report `status=published` with no published production release
 - Live e2e publish/rollback/read-path/media evidence (B8)
-- Publish machine-readable compatibility contract + merchant preflight (B7)
 - E2E integration tests for all modules
 - Rate limiting and throttling configuration (quota defaults + docs)
 - API versioning strategy (v2 planning)

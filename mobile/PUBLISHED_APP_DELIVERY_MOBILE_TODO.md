@@ -4,7 +4,7 @@ Date: 2026-09-20
 Last Updated: 2026-09-24
 Status: M1/M2 implemented and locally tested; M3/M4 backend integration and M5 device acceptance remain open.
 Repository: D:/work/DD/DukaDesk
-Dependency: Backend B1–B6 code complete on DUKA-BACKEND main (commit `00baea3`, deployed; B4 migration applied in production 2026-09-27); retain completed manifest reconstruction work. B7 compatibility contract, B8 live evidence still open.
+Dependency: Backend B1–B6 code complete on DUKA-BACKEND main (commit `00baea3`, deployed; B4 migration applied 2026-09-27; **B7 runtime contract live at `GET /api/v1/compatibility` and merchant preflight at `POST /api/v1/merchants/{id}/publishing/preflight`**); retain completed manifest reconstruction work. B8 live evidence still open.
 Read: [Coordinated plan and evidence](../ARCHITECTURE/PUBLISHED_APP_DELIVERY_FIX_PLAN_2026-09-20.md)
 
 - [x] **M1 - Revalidation lifecycle.** Refactor PublishedAppShell's mount/tenant-only loader into a cancellable release loader. Revalidate on entry, focus and foreground, and provide explicit reload/retry. Deduplicate requests; reject stale responses after tenant changes. Compare backend release ID/checksum, not only version or screen count. Test A-to-B publication while mounted and backgrounded.

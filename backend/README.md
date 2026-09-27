@@ -11,7 +11,7 @@ Core server-side platform for DUKADESK OS. Multi-tenant Backend-as-a-Platform (B
 - **85+ Prisma models** (2073 lines)
 - **Three-tier architecture:** Website (Platform), App (Tenant Self-Service), Mobile (Consumer)
 - **Completion rate:** ~84/100
-- **Published app delivery:** B1–B6 code complete (unit-tested); **B4 migration applied in production 2026-09-27** (audit clean), B7 compatibility contract, B8 live integration evidence pending — [delivery TODO](PUBLISHED_APP_DELIVERY_BACKEND_TODO.md)
+- **Published app delivery:** B1–B6 code complete (unit-tested); **B4 migration applied in production 2026-09-27** (audit clean); **B7 compatibility contract + merchant preflight live 2026-09-27** (`GET /api/v1/compatibility`); B8 live integration evidence pending — [delivery TODO](PUBLISHED_APP_DELIVERY_BACKEND_TODO.md)
 
 ## Technology Stack
 
