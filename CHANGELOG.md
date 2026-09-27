@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Backend B4 completed in production (2026-09-27): migration `20260924000000_add_active_release` applied (backfill 0 rows), read-only audit `scripts/audit-active-release.js`, recovery runbook DUKA-BACKEND `docs/B4_MIGRATION_RUNBOOK.md`, `package.json` `predeploy` script.
 - Backend published-app delivery B1–B6 (2026-09-24): `ActiveReleaseService`, `ManifestValidator`, atomic release activation + `activeReleaseId`, Idempotency-Key, media folderId resolution, default merchant app seed, `ApiQuotaGuard`, unit test suites.
 - DUKADESK Platform Definition (PD-001–PD-013) in `platform-definition/`.
 - DUKADESK Platform Constitution (KB-C001–KB-C009) in `dukadesk-constitution/`.
@@ -19,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- `backend/PUBLISHED_APP_DELIVERY_BACKEND_TODO.md`: **B4 ticked** (applied in production 2026-09-27); B7/B8 remain open.
+- Deploy-path fixes recorded in `backend/PROGRESS.md` + `backend/AGENT_CONTEXT.md`: `preDeployCommand` → `npm run predeploy`, `tsconfig.json` copied to the runner image.
 - `backend/PUBLISHED_APP_DELIVERY_BACKEND_TODO.md`: B1, B2, B3, B5, B6 ticked; press-action round-trip checks ticked; B4/B7/B8 partial with notes.
 - `backend/BUILDER_MEDIA_API_BACKEND_TODO.md`: media folderId + publish-manifest + default seed items ticked (35/39).
 - `backend/PROGRESS.md` bumped to KB 0.3.8.

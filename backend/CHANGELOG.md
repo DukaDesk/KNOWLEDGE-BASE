@@ -4,7 +4,25 @@ All notable changes to the backend repository are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased] — 2026-09-24
+## [Unreleased] — 2026-09-27
+
+### Added
+- `docs/B4_MIGRATION_RUNBOOK.md` — production recovery timeline, rollback SQL (`ALTER TABLE "tenants" DROP COLUMN "activeReleaseId"`), evidence table (deployment IDs, backfill count, audit result)
+- Read-only audit `scripts/audit-active-release.js` — migration ledger, schema/index, backfill gaps, dangling/cross-tenant pointers, tenant status vs releases, manifest shapes, counts; SELECT-only, retries transient Railway proxy drops (`AUDIT_RETRIES`, default 5)
+- `package.json` `predeploy` script: `prisma migrate deploy && prisma db seed`
+
+### Fixed
+- Baseline recovery: 7 migrations marked applied with `prisma migrate resolve --applied` (schema verified object-by-object first); the duplicate rolled-back row `resolve` left for `seed_admin` deleted so the ledger has no phantom failures
+- `railway.json` `preDeployCommand` → `npm run predeploy`: the previous raw `&&` string only executed `migrate deploy`, so `prisma db seed` never ran in production (`permissions`/`plans`/`templates` all 0)
+- `Dockerfile` runner stage now copies `tsconfig.json`; without it `prisma db seed` failed with `ERR_UNKNOWN_FILE_EXTENSION` on `prisma/seed.ts` (ts-node fell back to Node's module syntax detection, which cannot load `.ts` as ESM on Node 20)
+- `20260924000000_add_active_release` applied on deploy `a00865ae` — backfill updated 0 rows (expected: `releases` empty); index `tenants_activeReleaseId_idx` present; audit 0 errors, health 200
+- `scripts/seed-super-admin.js` no longer rewrites `20260827120000_seed_admin/migration.sql` at runtime (would reintroduce the missing `updatedAt` 23502 failure)
+
+### Changed
+- B4 ticked in `PUBLISHED_APP_DELIVERY_BACKEND_TODO.md` (applied in production 2026-09-26/27); B7/B8 remain open
+- Progress notes and deployment section updated for the working pre-deploy seed
+
+## [0.3.8] — 2026-09-24
 
 ### Added
 - Published app delivery B1–B6 (KB 0.3.8): `ManifestValidator` for PublishedApp 1.0.0 object screens, atomic release activation with `tenant.activeReleaseId` + Idempotency-Key, shared `ActiveReleaseService` for renderer + mobile BFF, owner/manager authz on publish/rollback/history, media `folderId` find-or-create + StorageService URL retention, default non-empty app seed on merchant create, `ApiQuotaGuard`

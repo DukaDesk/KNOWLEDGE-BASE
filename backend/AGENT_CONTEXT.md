@@ -6,7 +6,7 @@ The `backend/` repository contains the core server-side platform for DUKADESK OS
 
 **Implementation Repository:** [DUKA-BACKEND](https://github.com/DukaDesk/DUKA-BACKEND)
 **KB Version:** 0.3.8
-**Last Updated:** 2026-09-24
+**Last Updated:** 2026-09-27
 
 ## Responsibilities
 
@@ -78,6 +78,8 @@ d
 | `npm run prisma:generate` | Generate Prisma client |
 | `npm run prisma:migrate` | Run database migrations |
 | `npm run prisma:seed` | Seed the database |
+| `npm run predeploy` | Railway pre-deploy: `prisma migrate deploy && prisma db seed` (keep both inside one npm script — a raw `&&` string in `preDeployCommand` only ran the first command) |
+| `railway run node scripts/audit-active-release.js` | Read-only production audit: ledger, `activeReleaseId`, backfill, pointers, manifests, counts (retries transient proxy drops) |
 
 ## Engineering Standards
 
@@ -99,7 +101,7 @@ Specifications that target this repository:
 | KB v0.1.0 | Knowledge Base v0.1.0 | Superseded |
 | KB v0.2.0 | Three-tier API Architecture | Active |
 | KB v0.2.1 | App/Public Split + Dashboard | Active |
-| KB v0.3.8 | Published app delivery B1–B6 | Active (live verify pending) |
+| KB v0.3.8 | Published app delivery B1–B6 | Active (B4 applied in prod 2026-09-27; live verify pending) |
 
 ## Agent Conventions
 
@@ -130,3 +132,5 @@ Stop and ask for human input when:
 2026-09-20: Backend checkout inspected; live read paths still expose an unversioned definition and nested v0.0.7. Confirmed array-only publish validation, duplicate-release path, cache/rollback and WebP deletion defects. [Cross-stack fix plan](../ARCHITECTURE/PUBLISHED_APP_DELIVERY_FIX_PLAN_2026-09-20.md); separate stack TODOs linked there. Status: planned, implementation open.
 
 2026-09-24: B1–B3, B5–B6 landed on DUKA-BACKEND main (commit `00baea3`): `ManifestValidator`, atomic activation + `activeReleaseId`, shared `ActiveReleaseService`, owner/manager authz, media folderId + storage URLs, default merchant app seed, `ApiQuotaGuard`, 5 unit suites (38 tests). B4 migration file written (not applied); B7 compatibility contract and B8 live integration evidence remain open. Tasks: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_BACKEND_TODO.md).
+
+2026-09-27: B4 completed in production. The first `migrate deploy` (2026-09-25, `a10c79c6`) failed P3018/23502 because `20260827120000_seed_admin` omitted `users.updatedAt` and production had been managed with `db push` (no `_prisma_migrations` baseline). Recovery: fix in `edb4b86`, 7× `migrate resolve --applied`, stale rolled-back duplicate row deleted, `20260924000000_add_active_release` applied on deploy `a00865ae` (backfill 0 rows — `releases` empty), then two deploy-path defects fixed (`preDeployCommand` chain via `npm run predeploy`; `tsconfig.json` copied into the runner image so the seed stops failing with `ERR_UNKNOWN_FILE_EXTENSION`). Seed now runs (3 templates, `acme-store`), audit 0 errors, health 200. Evidence: DUKA-BACKEND `docs/B4_MIGRATION_RUNBOOK.md`. Remaining: B7 contract, B8 merchant re-publish + live evidence.

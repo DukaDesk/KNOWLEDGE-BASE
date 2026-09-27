@@ -1,6 +1,8 @@
 # DUKADESK OS — Progress
 
-**Last Updated:** 2026-09-24
+**Last Updated:** 2026-09-27
+
+2026-09-27: **Backend B4 applied in production.** The `20260924000000_add_active_release` migration is live on `duka-backend-production` (deploy `a00865ae`): the failed first attempt was recovered by baselining seven earlier migrations with `prisma migrate resolve --applied`, removing the stale rolled-back ledger row, and fixing `20260827120000_seed_admin` (`users.updatedAt`). Backfill updated 0 rows (no releases exist yet). Two deploy-path defects fixed: `preDeployCommand` now runs `npm run predeploy` (the raw `&&` string only executed `migrate deploy`, so the seed never ran), and `tsconfig.json` ships to the runner image (seed previously died on `ERR_UNKNOWN_FILE_EXTENSION`). Seed now creates 3 templates + `acme-store`; read-only audit `scripts/audit-active-release.js` reports 0 errors; `/api/v1/health` 200. Evidence: DUKA-BACKEND `docs/B4_MIGRATION_RUNBOOK.md`. Remaining: B7 compatibility contract, B8 merchant re-publish + live integration evidence.
 
 2026-09-24: **Backend published-app delivery B1–B6 implemented** on `DUKA-BACKEND` main — canonical `ActiveReleaseService` shared by definition + BFF, `ManifestValidator` for PublishedApp 1.0.0 object screens (no compiler fall-through), atomic release activation with `tenant.activeReleaseId` + Idempotency-Key, owner/manager authz on publish/rollback/history, media `folderId` find-or-create + StorageService URL retention (`.webp` self-delete guard), default non-empty app seed on merchant create, `ApiQuotaGuard` wired. Unit suites added. B4 migration file written (not applied); B7 compatibility contract and B8 live integration evidence remain open. Tasks: [PUBLISHED_APP_DELIVERY_BACKEND_TODO.md](backend/PUBLISHED_APP_DELIVERY_BACKEND_TODO.md). Status: code complete / live verify pending.
 
