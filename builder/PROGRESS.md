@@ -2,14 +2,14 @@
 
 This file tracks the current state of the builder repository.
 
-**Last Updated:** 2026-09-24
+**Last Updated:** 2026-09-27
 
 ## Active Work
 
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
-| Published app delivery W1–W3 | `PUBLISHED_APP_DELIVERY_MERCHANT_TODO.md` | Complete (code) / deploy pending | Merchant |
-| Published app delivery W4–W5 | Backend B7 compatibility contract + live release | Open (depends on backend B7/B8) | Merchant / Backend |
+| Published app delivery W1–W3 | `PUBLISHED_APP_DELIVERY_MERCHANT_TODO.md` | Complete (code) — backend deployed 2026-09-27 | Merchant |
+| Published app delivery W4–W5 | Backend B7 compatibility contract + live release | W4 contract now live (`GET /api/v1/compatibility`); client consumption + W5 live evidence open | Merchant / Backend |
 | App sections + press actions | `APP_SECTIONS_AND_PRESS_ACTIONS_TODO.md` | Complete (code) / device verify pending | Merchant / Mobile |
 
 ## Completed Milestones
@@ -24,12 +24,12 @@ This file tracks the current state of the builder repository.
 
 | Issue | Impact | Owner |
 |-------|--------|-------|
-| Backend B1–B6 not yet deployed; B7 compatibility contract open | W4 preflight + W5 live evidence blocked | Backend / Release |
+| Backend deployed (B4 migration applied, B7 contract live 2026-09-27); merchant re-publish + W5 live evidence open | W4 preflight wiring + W5 live evidence | Merchant / Release |
 
 ## Next Up
 
-- Deploy backend B1–B6 + migration, republish, capture receipt + dual-read evidence (W5)
-- Consume backend runtime-support contract once B7 lands (W4)
+- Republish the intended latest template, capture receipt + dual-read evidence (W5)
+- Consume the backend runtime-support contract (live at `GET /api/v1/compatibility`) for W4 preflight
 - Device/browser verification for press actions and sections TODOs
 
 ## Last Updated

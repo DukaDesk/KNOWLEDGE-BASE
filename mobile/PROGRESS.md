@@ -44,18 +44,20 @@ This file tracks the current state of the mobile repository (DukaDesk — Expo +
 
 | Issue | Impact | Owner |
 |-------|--------|-------|
-| Live backend still serving legacy empty/stale definitions until DUKA-BACKEND B1–B6 deploy + migration apply | Mobile shows "No screens published yet" or stale branding until deploy + merchant re-publish | Backend / Release |
-| Live branding fields (`identity.displayName`, `appName`, `branding`, `theme.brand.logo`, `assets.logo.url`) | Code path returns them once active release is live; pending deploy + republish | Backend / Release |
+| Live backend still serving legacy empty/stale definitions until merchant re-publish | Mobile shows "No screens published yet" until a merchant republishes (backend deployed 2026-09-27: B4 migration + B7 contract) | Backend / Release |
+| Live branding fields (`identity.displayName`, `appName`, `branding`, `theme.brand.logo`, `assets.logo.url`) | Code path returns them once active release is live; backend deployed, republish pending | Backend / Release |
 
 ## Next Up
 
-- Deploy backend B1–B6 + apply `20260924000000_add_active_release`, then re-publish a merchant and verify both read paths (B8)
+- Merchant re-publish, then verify both read paths (B8) — backend is deployed (B4 migration applied, B7 contract live 2026-09-27)
 - Mobile M3 canonical read transition after backend parity is deployed
 - E2E integration tests for all modules
 - API versioning strategy (v2 planning)
 
 ## Last Updated
 
-2026-09-24
+2026-09-27
+
+Backend deployed: `20260924000000_add_active_release` applied in production (audit clean) and B7 runtime contract live at `GET /api/v1/compatibility` — no mobile client changes required yet.
 
 2026-09-20: Backend release revalidation and explicit update adoption implemented; 88 mobile tests and Android/iOS exports pass. [Delivery report](PUBLISHED_APP_DELIVERY_CLIENT_IMPLEMENTATION_2026-09-20.md).
