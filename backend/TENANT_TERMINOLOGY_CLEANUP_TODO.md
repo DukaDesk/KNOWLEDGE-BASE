@@ -113,6 +113,7 @@ variable names — rename only if touching those files anyway. API surface first
 ## 2026-09-29 local implementation
 - [x] §6 additive merchants references in all token-issuing auth responses; active memberships only, actual merchant IDs. Pending registration returns []. Login/register/refresh descriptions updated.
 - [x] §5 merchant lookup/member/resolver messages and stable codes; HTTP error envelope preserves codes.
-- [ ] §5 other service errors and active-release compatibility code migration remain.
+- [x] §5 remaining service errors (`Tenant not found` → `MERCHANT_NOT_FOUND` in admin/builder/qr/publishing/compiler/renderer/active-release), publish/member messages, all `(Tenant Self-Service)` tags, `current tenant` summaries, `Tenant Dashboard BFF` tag. Mobile accepts both codes during transition.
+- [x] Signup: `RegisterDto.role` optional; role-less register provisions active user + owned merchant (slug retry) + immediate tokens. Merchant portal sends `businessName`.
 - [ ] Live deployment, full Swagger response schemas and coordinated consumer verification remain.
 See BACKEND_TODO_REVIEW_2026-09-29.md for the reviewed queue.
