@@ -109,3 +109,10 @@ variable names — rename only if touching those files anyway. API surface first
 - Live contract: `GET /api/docs-json` (three-tier: Website `/admin/*`, App `/app/*`, Mobile `/merchants/*`)
 - Sign-in investigation: merchant `services/api.js` `fetchTenantSilently`/`buildMerchant` vs `GET /app/merchants` membership shape
 - B7 compatibility contract: `GET /api/v1/compatibility` (already merchant-neutral — keep as the naming example)
+
+## 2026-09-29 local implementation
+- [x] §6 additive merchants references in all token-issuing auth responses; active memberships only, actual merchant IDs. Pending registration returns []. Login/register/refresh descriptions updated.
+- [x] §5 merchant lookup/member/resolver messages and stable codes; HTTP error envelope preserves codes.
+- [ ] §5 other service errors and active-release compatibility code migration remain.
+- [ ] Live deployment, full Swagger response schemas and coordinated consumer verification remain.
+See BACKEND_TODO_REVIEW_2026-09-29.md for the reviewed queue.
