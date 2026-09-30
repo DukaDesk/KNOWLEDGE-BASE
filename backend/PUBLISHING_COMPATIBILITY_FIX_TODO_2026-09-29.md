@@ -19,3 +19,8 @@
 - Backend compatibility suite: 14 tests passed.
 - Merchant HTTP client, compiler, and publishing pipeline: 28 tests passed.
 - Changes are local; deployment and affected-draft verification remain pending.
+
+## Follow-up: solid paint rejected as a component
+Builder DesignStore and staticTemplates attach fills/strokes/effects metadata to nodes. The compatibility walker incorrectly traverses those records, interpreting fill type solid as a runtime component. Exclude these appearance-only subtrees from the component walk; preserve the full manifest and asset traversal. Regression tests cover appearance metadata and continued rejection of a real component named solid. Backend deployment is required.
+
+Follow-up validation: reproduced the exact solid rejection before the fix (15 passed, 1 failed); after excluding appearance metadata, all 16 compatibility tests passed. Used a per-command isolated ts-jest transform with TS6 rootDir/deprecation settings after the standard run stalled; repository test configuration unchanged. Fix remains local pending backend deployment.
