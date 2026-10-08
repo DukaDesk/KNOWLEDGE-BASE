@@ -1,6 +1,8 @@
 # DUKADESK Progress Registry
 
-**Last Updated:** 2026-09-27
+**Last Updated:** 2026-10-08
+
+2026-10-08: **AI-assisted merchant builder implemented locally** — the Section Editor now exposes a DukaDesk Builder Agent chat that classifies scope, uses the current registered component/property catalog, emits bounded declarative proposals, validates with the builder engine, and applies only after explicit merchant confirmation via undo-aware state. Canonical guidance: [builder AI contract](builder/AI_ASSISTED_BUILDER.md). Dedicated tenant-scoped backend enforcement remains open: `DUKA-BACKEND/docs/BUILDER_AGENT_BACKEND_TODO.md`.
 
 2026-09-27: **Backend B7 compatibility contract live** (deploy `717d7d8d`) — anonymous `GET /api/v1/compatibility` publishes `dukadesk.published-app-runtime` 1.0.0 (manifest versions, 35 component types, 10 actions, 16 capabilities, limits); merchant `POST /merchants/:id/publishing/preflight` returns `{valid, compatible, errors, warnings, counts}` without publishing; `PublishingService` enforces the contract before activation (422 `INCOMPATIBLE_RUNTIME`); discovery now filters `activeReleaseId != null` and projects the active release identity. Gate: 58 tests / lint 0 errors / tsc 0 issues. Remaining: B8.
 

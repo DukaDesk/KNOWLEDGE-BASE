@@ -2,7 +2,7 @@
 
 This file tracks the current state of the builder repository.
 
-**Last Updated:** 2026-09-27
+**Last Updated:** 2026-10-08
 
 ## Active Work
 
@@ -11,6 +11,7 @@ This file tracks the current state of the builder repository.
 | Published app delivery W1–W3 | `PUBLISHED_APP_DELIVERY_MERCHANT_TODO.md` | Complete (code) — backend deployed 2026-09-27 | Merchant |
 | Published app delivery W4–W5 | Backend B7 compatibility contract + live release | W4 contract now live (`GET /api/v1/compatibility`); client consumption + W5 live evidence open | Merchant / Backend |
 | App sections + press actions | `APP_SECTIONS_AND_PRESS_ACTIONS_TODO.md` | Complete (code) / device verify pending | Merchant / Mobile |
+| AI-assisted builder agent | `AI_ASSISTED_BUILDER.md` | Merchant chat/proposal flow implemented; dedicated backend endpoint hardening open | Merchant / Backend |
 
 ## Completed Milestones
 
@@ -34,7 +35,11 @@ This file tracks the current state of the builder repository.
 
 ## Last Updated
 
-2026-09-24
+2026-10-08
+
+## 2026-10-08 - AI-assisted builder agent
+
+Added a visible Builder Agent chat to the Section Editor. It proposes declarative changes only for the current registered component catalog, refuses unsupported/backend scope, validates proposed designs, and requires explicit merchant approval before applying through the undo-aware design store. The current generic AI completion endpoint is transitional; tenant-scoped server-side policy enforcement is tracked in `DUKA-BACKEND/docs/BUILDER_AGENT_BACKEND_TODO.md`. See [AI-Assisted Builder](AI_ASSISTED_BUILDER.md).
 
 ## 2026-09-24 - Published app delivery W1–W3 code complete
 Idempotent publish receipt, editor history separated from production activation, real backend rollback wired. Depends on backend deploy. See [merchant delivery TODO](PUBLISHED_APP_DELIVERY_MERCHANT_TODO.md).

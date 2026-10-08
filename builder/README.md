@@ -26,6 +26,7 @@ scripts/lint
 ## Documentation
 
 - [Agent Context](AGENT_CONTEXT.md)
+- [AI-Assisted Builder Agent](AI_ASSISTED_BUILDER.md)
 - [Architecture Alignment](ARCHITECTURE_ALIGNMENT.md)
 - [Contributing](CONTRIBUTING.md)
 - [Changelog](CHANGELOG.md)

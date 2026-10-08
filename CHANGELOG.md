@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- 2026-10-08: Added the AI-assisted Builder Agent contract and progress entry. The merchant implementation is review-first and validation-gated; backend system-prompt ownership, tenant scoping, usage limits, and structured-output validation remain tracked follow-up work.
+
 - Backend B7 completed in production (2026-09-27): runtime contract `GET /api/v1/compatibility`, merchant preflight `POST /merchants/:id/publishing/preflight`, activation gate (422 `INCOMPATIBLE_RUNTIME`), discovery release-identity projection.
 - Backend B4 completed in production (2026-09-27): migration `20260924000000_add_active_release` applied (backfill 0 rows), read-only audit `scripts/audit-active-release.js`, recovery runbook DUKA-BACKEND `docs/B4_MIGRATION_RUNBOOK.md`, `package.json` `predeploy` script.
 - Backend published-app delivery B1–B6 (2026-09-24): `ActiveReleaseService`, `ManifestValidator`, atomic release activation + `activeReleaseId`, Idempotency-Key, media folderId resolution, default merchant app seed, `ApiQuotaGuard`, unit test suites.

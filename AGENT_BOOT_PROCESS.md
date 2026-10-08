@@ -112,6 +112,7 @@ When conflicts are discovered: report the conflict, identify affected documents,
 | Manifest Specification | ARCHITECTURE/manifest-specification.md | — | — | — |
 | Capability System | ARCHITECTURE/capability-system.md | — | — | — |
 | Builder Studio | ARCHITECTURE/builder-studio.md | — | — | — |
+| AI-Assisted Builder Agent | builder/AI_ASSISTED_BUILDER.md | KB-022, KB-030 | ADR-013 | DUKA-MERCHANT — Section Editor Builder Agent |
 | Desk Builder | ARCHITECTURE/desk-builder.md | — | — | — |
 | Screen & Layout Builder | ARCHITECTURE/screen-layout-builder.md | — | — | — |
 | Workflow Builder | ARCHITECTURE/workflow-builder.md | — | — | — |
