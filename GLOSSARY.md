@@ -191,7 +191,34 @@ The following principles govern the naming of all platform concepts.
 | **Relationships** | A Tenant belongs to an Organization. A Tenant has one or more Desks. A Tenant has a Manifest. A Tenant has Users. A Tenant has a Theme. |
 | **Examples** | Mama's Kitchen (a restaurant), Grace Pharmacy (a pharmacy). Each is a Tenant with its own Desk. |
 | **Related Terms** | Organization, Workspace, Desk, Manifest, User |
-| **Notes** | Tenant is one of the most important concepts in the platform. Every architectural decision assumes multiple Tenants operating independently. Tenant isolation is enforced at every layer: data, configuration, authentication, resource usage. |
+| **Notes** | Product term superseded by **Merchant** per ADR-016 (2026-10-08): in all product, API, and documentation language, "tenant" reads as "merchant". Retained as a code/data-model term — Prisma `Tenant`/`TenantUser`, `tenantId`, `TenantResolver`, `tenantStore`, `exit_tenant` — see ADR-016 mapping table. "Multi-tenant" stays as the architecture adjective. |
+
+---
+
+#### Merchant
+
+| Field | Value |
+|-------|-------|
+| **Definition** | An independent business operating on the DUKADESK platform — the product term for what the data model still records as a Tenant. A Merchant owns its merchant app (PublishedApp), branding, configuration, users, catalog, orders, and data, strictly isolated from all other Merchants at the data layer. |
+| **Purpose** | To provide a fully isolated operational environment for each platform customer. Every Merchant experiences the platform as their own private instance. |
+| **Responsibilities** | Owning its own branding, configuration, capabilities, users, content, orders, and data. Isolating its data from all other Merchants. |
+| **Relationships** | A Merchant belongs to an Organization. A Merchant has a merchant app (PublishedApp) with a Manifest. A Merchant has Users. A Merchant has a Theme. API resource: `/api/v1/merchants/{id}`. |
+| **Examples** | Mama's Kitchen (a restaurant), Grace Pharmacy (a pharmacy). Each is a Merchant with its own merchant app. |
+| **Related Terms** | Tenant (code term), Organization, Merchant App, Manifest, User |
+| **Notes** | Canonical product term per ADR-016. Never use "tenant" for this concept in new product/API/documentation language. |
+
+---
+
+#### Merchant App
+
+| Field | Value |
+|-------|-------|
+| **Definition** | The live, consumer-facing application of a single Merchant — the published `PublishedApp` rendered by the Runtime from the Merchant's Manifest (screens, navigation, theme). The product term for what older documents call a "Tenant Application" or "Desk" instance. |
+| **Purpose** | To deliver a Merchant's capabilities to end users as a cohesive, branded application. |
+| **Responsibilities** | Presenting the Merchant's capabilities as a unified user experience. Rendering screens defined in the Manifest. Applying the Merchant's Theme. Executing Actions through the Runtime. |
+| **Relationships** | A Merchant App belongs to a Merchant. A Merchant App is defined by a Manifest. A Merchant App is rendered by the Runtime (mobile route `desk/[id]`). A Merchant App is produced by the publishing pipeline (Release). |
+| **Related Terms** | Merchant, Tenant (code term), Manifest, Runtime, Publication |
+| **Notes** | Canonical product term per ADR-016. The mobile runtime symbols are `PublishedAppShell`, `PublishedAppContext`, `openPublishedApp`. |
 
 ---
 

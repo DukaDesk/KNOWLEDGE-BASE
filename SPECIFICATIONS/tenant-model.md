@@ -1,5 +1,11 @@
 # Specification: Tenant Model
 
+> **Rename note (ADR-016, 2026-10-08):** product/API language is now
+> **Merchant** (merchant app = `PublishedApp`). This spec keeps the name
+> `tenant-model.md` and the `tenantId`/Manifest mechanics below because they
+> describe live code identifiers (Prisma `Tenant`, `TenantResolver`,
+> `ManifestResolver`). Read "tenant" here as "merchant" per ADR-016.
+
 **Last Updated:** 2026-07-09
 
 ## Overview

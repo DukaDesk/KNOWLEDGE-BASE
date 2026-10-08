@@ -1,5 +1,12 @@
 # Specification: Tenant System
 
+> **Rename note (ADR-016, 2026-10-08):** product/API language is now
+> **Merchant** — lifecycle, subscription, identification, and publishing below
+> all describe merchants and merchant apps. `TenantDomain`, `x-tenant-id`,
+> `tenantId` remain live code identifiers (see ADR-016 mapping). The public
+> API surface is `/api/v1/merchants/…` and `/api/v1/app/…`; no `/tenants/*`
+> route exists.
+
 **Last Updated:** 2026-07-13
 
 ## Overview
