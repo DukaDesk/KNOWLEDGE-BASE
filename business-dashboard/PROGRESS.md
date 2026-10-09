@@ -8,6 +8,7 @@ This file tracks the current state of the business-dashboard repository. Impleme
 |------|---------------|--------|-------|
 | E2E integration tests for all modules | UI-0003, SEC-0002, FEAT-0002 | In Progress | Team H |
 | Performance optimization and query tuning | — | Planned | Team H |
+| Surro-inspired visual upgrade (sidebar sections, KPI cards, quick actions, events feed, topbar search) | — | Implemented locally, unpushed | Team H |
 
 ## Completed Milestones
 
@@ -28,6 +29,8 @@ This file tracks the current state of the business-dashboard repository. Impleme
 | 2026-09-16 | Total merchant counts mapping | `47f61e2` — `AdminDashboard.jsx:19` `getMetricValue` aliases `totalTenants→totalMerchants`, `publishedTenants→activeMerchants`, `draftTenants→pending`, `totalRevenue→monthlyRevenue`, plus `GET /marketplace/stats` for listings |
 | 2026-09-16 | Customers: app/tenant users per merchant | `da83369` — `Customers.jsx:11` merchant filter `GET /admin/users/merchant/:id` (TenantUser) with fallback `GET /admin/users?role=customer`, teal badge `Tenant App`, detail shows `tenants[]` memberships |
 | 2026-09-16 | Merchant approve/decline with credential review | `c4d9a27`+`6588a6a` — `AdminService:40` `rejectTenant` sets `status:'rejected'` + `config.rejectionReason`, `TenantStatus`+`rejected`, `AdminController:14` `POST /admin/merchants/:id/reject`; `MerchantManagement.jsx:92` review card + footer `Decline`/`Approve — Go Live` before `draft→published` live |
+| 2026-10-01 | Two-stage merchant approval + review screen | `81fb6fd`+`84fd7a2` — `Tenant.verificationStatus/appStatus` + `KycSubmission` + migration; merchant `POST /app/merchants/compliance` + `POST /app/merchants/review/submit`; admin verify/verify-reject/compliance/review/preview/apps-approve/apps-reject (approve publishes via `publishAsAdmin` bypass); `MerchantReview.jsx` full-screen (picture top-right, credentials/verification/subscription/app sections, 390×844 phone preview, Approve App bottom-left gated verified+in_review); table Verification/App badges + filters |
+| 2026-09-30 | Invite-only admin signup | `ef05547`+`f08e875` — `AdminInvite` (unique token, 7-day expiry, email+role bound, single-use); `Register.jsx` reads `?token=`, validates via `GET /auth/invites/validate`, locks email+role, posts `inviteToken` (bare `/register` shows invite-required); Settings “Generate Invite Link” modal + pending list with revoke; invited admins active immediately (legacy pendings still in `PendingAdmins`) |
 
 ## Blockers
 
@@ -43,4 +46,4 @@ This file tracks the current state of the business-dashboard repository. Impleme
 
 ## Last Updated
 
-2026-09-16
+2026-10-01
