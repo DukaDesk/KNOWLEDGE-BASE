@@ -157,18 +157,18 @@ Mobile runtime compatibility now includes the merchant builder's `promotion_list
 ### Wave 1 Foundation Specifications Created
 
 - SEC-0001 Authentication Architecture and User Identity
-- SEC-0002 Authorization and RBAC — **implemented strict platform roles `super_admin`/`platform_operator`/`support_agent` in `Admin-portal/src/services/permissions.js:12`**
+- SEC-0002 Authorization and RBAC — **implemented strict platform roles `super_admin`/`platform_operator`/`support_agent` in `DUKA-ADMIN/src/services/permissions.js:12`**
 - FEAT-0001 User Registration and Login — **implemented `Register.jsx:8` role tab-toggle required + `POST /auth/register {role}` pending + `DUKA-BACKEND RegisterDto`**
 - FEAT-0002 Tenant Lifecycle and Isolation — **implemented `normalizeMerchantStatus` + `getMerchantEnriched` isolation**
 - API-0001 Authentication API
-- API-0002 Tenant Management API — **alias `GET /admin/merchants` ↔ `GET /tenants` in `businessDashboard.js:44`**
+- API-0002 Tenant Management API — **`GET /admin/merchants` + BFF `GET /bff/admin/merchants` in `businessDashboard.js`; no `/tenants` backend route exists**
 - DB-0001 User and Identity Schema
 - DB-0002 Tenant Schema
 - EVT-0001 User Authentication Events
 - EVT-0002 Tenant Lifecycle Events
 - UI-0001 Public Website Foundation and Authentication Flows
 - UI-0002 Mobile App Foundation and Authentication Flows
-- UI-0003 Business Dashboard Foundation and Shell — **implemented `Admin-portal` shell `App.jsx:128`, `AdminSidebar`, `AdminDashboard`, `PendingAdmins`, `Settings` live**
+- UI-0003 Business Dashboard Foundation and Shell — **implemented `DUKA-ADMIN` shell `App.jsx`, `AdminSidebar`, `AdminDashboard`, `PendingAdmins`, `Settings` live**
 - UI-0004 Tenant Dashboard Foundation and Shell
 
 ### Wave 1 Work Items Created

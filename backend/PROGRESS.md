@@ -94,15 +94,16 @@ Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_
 | 32 | Health | Complete | 1 |
 | | **TOTAL** | | **~437** |
 
-## Architecture: Three-Tier Endpoint Model
+## Architecture: Endpoint Model (ADR-016 product language)
 
 | Tier | Path Prefix | Audience | Auth | Purpose |
 |------|-------------|----------|------|---------|
-| **Website (Platform)** | `/admin/*`, `/auth/*`, `/discovery/*`, `/templates/*`, `/bff/website/*` | Platform operators | JWT / Public | Registration, tenant creation, admin ops |
-| **App (Tenant Self-Service)** | `/app/*` | Tenant owners/managers | JWT + `@CurrentUser` | Write + config for own tenant (auto-resolved via `TenantResolverService`) |
+| **Website (Platform)** | `/admin/*`, `/auth/*`, `/discovery/*`, `/templates/*`, `/bff/website/*` | Platform operators | JWT / Public | Registration, merchant creation, admin ops |
+| **App (Merchant Self-Service)** | `/app/*` | Merchant owners/managers | JWT + `@CurrentUser` | Write + config for own merchant app (auto-resolved via `TenantResolverService` — code name) |
 | **Mobile/Consumer** | `/merchants/:merchantId/*` | End users (public) | `@Public()` | Read-only catalog, booking, checkout |
+| **Platform Admin BFF** | `/bff/admin/*` | Platform operators | JWT | Aggregated ops views |
 
-**Tenant Resolution:** `TenantResolverService` finds `TenantUser` where `role IN ['owner','manager']` and `status='active'`, picks first with `owner` priority.
+**Merchant Resolution:** `TenantResolverService` (code name) finds `TenantUser` where `role IN ['owner','manager']` and `status='active'`, picks first with `owner` priority.
 
 **Controller Pattern:**
 - `*AppController` — JWT + `@CurrentUser`, auto-resolves tenantId

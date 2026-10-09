@@ -5,6 +5,13 @@
 > **Status:** OPEN — paths mostly migrated; labels, messages, params and payloads still say "tenant"
 > **Date:** 2026-09-28
 > **Ref:** Live contract `https://duka-backend-production.up.railway.app/api/docs-json` (snapshot 2026-09-28, ~340 paths)
+>
+> **2026-10-08 update:** product/API language decided in **ADR-016** (merchant/merchant app;
+> code identifiers stay). §2 tags, §5 messages/codes, §6 auth payloads landed 2026-09-29
+> (see §2026-09-29 note below). §1: backend now serves `merchants/:slug/manifest`
+> (mobile-bff) but mobile `ManifestResolver`/`bff.ts` still call the `tenant` path —
+> verify the old path is still served (or add alias) before flipping callers. §3/§4
+> acceptance still open.
 
 ## Why
 

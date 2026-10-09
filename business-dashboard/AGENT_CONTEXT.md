@@ -20,31 +20,45 @@ The `business-dashboard/` repository contains the administrative dashboard used 
 
 ## Technology Stack
 
-- Framework: React 18.2 + Vite 5.4 + React Router 6.20 (see `Admin-portal/package.json:17`)
+- Framework: React 18.2 + Vite 5 + React Router 6.20 (see `DUKA-ADMIN/package.json`)
 - State Management: React Context (`AuthContext.jsx`) + hooks (`useToast.js`) + localStorage (`admin_token`, `dukadesk_admin`)
 - API Client: `apiClient.ts:44` `fetch` with `VITE_API_URL=https://duka-backend-production.up.railway.app` + `/api/v1`, JWT `Authorization: Bearer`, `retry:3` exponential backoff, `TransformInterceptor` envelope `success` handling, `x-railway-request-id` trace
 - UI: lucide-react 1.39, custom CSS vars (`index.css:1` KB tokens `color-primary-500 #2563EB`), `recharts` 2.10 available but charts use custom SVG `RevenueChart:83`/`MerchantGrowthChart:113`
 - Testing: Playwright 1.40 (`tests/smoke.spec.ts` covers UI-0003 AC-01–04: shell renders, role-aware nav, invite, settings); `vite build` 1889 modules ✓
 
-## Repository Structure
+## Repository Structure (DUKA-ADMIN)
 
 ```text
-business-dashboard/
-  src/           # Source code
-  tests/         # Test suites
-  docs/          # Repository documentation
-  scripts/       # Automation scripts
-  AGENT_CONTEXT.md
-  README.md
+DUKA-ADMIN/
+  src/
+    App.jsx                # State-driven router (PAGE_ROUTES + canAccessPage RBAC)
+    main.jsx               # BrowserRouter + AuthProvider + ErrorBoundary
+    components/
+      Auth/AdminLogin.jsx
+      Layout/AdminSidebar.jsx, AdminTopbar.jsx
+      UI/                  # Toast, Breadcrumbs, ErrorBoundary, RemoteTablePage, …
+    context/AuthContext.jsx  # Sole global (admin + token, localStorage dukadesk_admin)
+    hooks/useToast.js
+    pages/                 # Dashboard, Merchants/*, Marketplace, Audit, Subscriptions,
+                           # Analytics, Marketing, Infrastructure, Settings, PendingAdmins,
+                           # Auth/Register, Forbidden, NotFound
+    services/              # apiClient.ts (typed fetch + retry), api.js (legacy),
+                           # businessDashboard.js (domain APIs), audit.js, permissions.js
+    utils/                 # badgeTones, maskEmail, unwrapAuth
+  tests/                   # Playwright (smoke, new-modules, pages/*, utils/auth)
+  playwright.config.ts  vite.config.ts  vercel.json
 ```
 
 ## Build and Test
 
 ```bash
-scripts/bootstrap
-scripts/build
-scripts/test
-scripts/lint
+cd DUKA-ADMIN
+npm install
+npm run dev        # Vite, :5173
+npm run typecheck  # tsc --noEmit
+npm run lint
+npm test           # playwright (also test:ui / test:headed / test:debug)
+npm run build
 ```
 
 ## Engineering Standards
@@ -66,9 +80,9 @@ Specifications that target this repository:
 |---------------|-------|-------|
 | UI-0003 | Business Dashboard Foundation and Shell | Complete — shell `App.jsx:128`, sidebar `AdminSidebar`, dashboard `AdminDashboard`, users `PendingAdmins`, settings `Settings` live |
 | SEC-0002 | Authorization and RBAC | Complete — `permissions.js:12` `super_admin/platform_operator/support_agent` + `AuthContext` heal + `Forbidden.jsx` |
-| FEAT-0002 | Tenant Lifecycle and Isolation | Complete — `FEAT-0002` FR-01–06 via `getMerchants` `normalizeMerchantStatus` `pending→draft`/`active→published` + `getMerchantEnriched` |
-| API-0002 | Tenant Management API | Complete — alias `GET /admin/merchants` for `GET /tenants` + `suspend` per spec; `POST /auth/register {role}` pending |
-| ADM-001 | Administration Domain | Complete — Platform Config, Audit Logs (`BFF /bff/admin/audit`), Monitoring (`/health`, `/infra/status`), Feature Flags (`/admin/feature-flags`), System Health |
+| FEAT-0002 | Tenant Foundation | Complete — merchant lifecycle via `getMerchants` `normalizeMerchantStatus` `pending→draft`/`active→published` + `getMerchantEnriched` |
+| API-0002 | Tenant Management API | Complete — `GET /admin/merchants` + BFF `GET /bff/admin/merchants` (+ `/:id/analytics`); no `/tenants` route exists on the backend (admin `GET /tenants` caller is stale — do not add callers); `suspend` per spec; `POST /auth/register {role}` via invite flow |
+Platform coverage (no ADM spec exists — tracked here, not as a specification): Platform Config, Audit Logs (`GET /bff/admin/audit`), Monitoring (`/health`, `/infra/status`), Feature Flags (`/admin/feature-flags`), System Health.
 
 ## Agent Conventions
 

@@ -6,9 +6,9 @@ This document records the architectural constraints and decisions that guide bus
 
 | ADR | Title | Status |
 |-----|-------|--------|
-| ADR-001 | Authentication Protocol | Accepted via `auth.service.ts:37` JWT + OTP + Google/Apple |
-| ADR-002 | Multi-Tenant Data Isolation | Accepted via `TenantResolverService` + `normalizeMerchantStatus` + `getMerchantEnriched` isolation |
-| ADR-003 | Web Rendering Strategy | Accepted via Vite React `businessDashboardApi` BFF `TransformInterceptor` envelope |
+| ADR-009 | JWT + Refresh Token Authentication | Accepted — admin login via JWT + OTP (`AdminLogin.jsx`) |
+| ADR-011 | Tenant Resolution Strategy | Accepted — merchant isolation via `TenantResolverService` (code name) + `normalizeMerchantStatus` + `getMerchantEnriched` |
+| ADR-016 | Tenant → Merchant/App Rename | Accepted — product language merchant/merchant app; code identifiers stay |
 
 ## Design Principles
 
@@ -28,7 +28,7 @@ This document records the architectural constraints and decisions that guide bus
 
 - Admin actions require appropriate authorization — enforced via `JwtAuthGuard` + `RbacGuard` (`DUKA-BACKEND`) and `canPerform` front-end hides nav/actions per `SEC-0002` SR-05/SR-06.
 - Billing and pricing changes require explicit approval — `SubscriptionManagement.jsx:116` `updateSubscription` gated by `subscriptions:manage`.
-- Tenant isolation must be maintained — `FEAT-0002` FR-03 via `Merchant` separate Site Builder portal vs `Tenant` mobile, correlated only when `tenantId` linked (`getMerchantEnriched:43`).
+- Tenant isolation must be maintained — merchant data separated per merchant scope; the merchant portal (site builder) and the consumer merchant app (mobile `PublishedApp`) correlate only when the merchant id/slug is linked (`getMerchantEnriched:43`).
 
 ## Alignment Verification
 

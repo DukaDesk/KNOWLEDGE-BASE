@@ -20,32 +20,39 @@ The `mobile/` repository contains the DUKADESK OS mobile applications for iOS an
 
 ## Technology Stack
 
-- Framework: React Native via Expo SDK 52 (v56.0.0 docs)
+- Framework: React Native via Expo SDK 56 (`expo ~56.0.12`, `expo-router ~56.2.11`, React 19.2, RN 0.85.3)
 - Language: TypeScript (strict mode)
-- State Management: Zustand (session, action loading, settings) + React Context/useReducer for local state
-- Persistence: MMKV (4 separate instances via factory pattern: tenant, session, booking, platform)
-- Routing: expo-router (file-based routing, `app/(tabs)/` structure, deep links)
-- Networking: axios with unwrap() helper for { success, message, data } envelope
-- Google Auth: expo-auth-session (lazy-imported to avoid native module crash)
-- Testing: TBD
+- State Management: Zustand 5 (session, tenant, cart, booking, platform, search, settings, actionLoading, shellTools, tour, fabPosition) + React Context/useReducer for local state
+- Persistence: MMKV 4.x via `createMMKVStorage(id)` factory (`src/store/storage.ts`) with in-memory Map fallback — separate instances: session, tenant (merchant state), booking, platform, settings, tour, shell-preferences
+- Routing: expo-router file-based (`app/(tabs)/`, `app/(auth)/`, live merchant route `app/desk/[id]` → `PublishedAppShell`; legacy `app/app/[tenantId]` orphaned)
+- Networking: axios with `unwrap()` helper for `{ success, message, data }` envelope; live-only `hybridClient`
+- Google Auth: `expo-auth-session` (lazy-imported) + `@react-native-google-signin/google-signin`
+- Testing: Jest + jest-expo (`npm test`, `jest.setup.js`); typecheck via `npm run lint` (`tsc --noEmit`)
 
-## Repository Structure (DUKA-MOBILE)
+## Repository Structure (DukaDesk)
 
 ```text
-mobile/
+DukaDesk/
   app/                     # expo-router file-based routes
-    (tabs)/                # Tab navigator screens
-    _layout.tsx            # Root layout
+    _layout.tsx            # Root Stack
+    (tabs)/                # Tab navigator (index, categories, profile)
+    (auth)/                # sign-in, sign-up, forgot/reset-password
+    desk/[id].tsx          # LIVE merchant route → PublishedAppShell
+    app/[tenantId].tsx     # LEGACY orphan (openPublishedApp pushes desk/[id])
+    cart, checkout, my-desk, categories/[slug], recommended,
+    new-arrivals, notifications, profile/*
   src/
-    components/            # Reusable UI components (HeroBanner, PrimaryButton, DynamicCard, ValidationModal, etc.)
-    data/                  # Static data, runtime tenant data
-      runtime/tenants/bella-italia/  # All 12 runtime packages
-    network/               # API client, constants
-    screens/               # Screen-level components
-    services/              # API endpoints, auth service
-    store/                 # Zustand stores (session, actionLoading, settings, storage)
+    components/            # Reusable UI (HeroBanner, PrimaryButton, DynamicCard, ValidationModal, etc.)
+    data/                  # Static data; runtime sample merchant data (code dir: runtime/tenants/{bella-italia,mamas-kitchen,grace-pharmacy} — demo, unhooked)
+    network/               # API client, constants (base URL)
+    screens/               # Screen-level components (explore, categories, auth, profile, …)
+    services/api/          # endpoints/{auth,profile,discovery,commerce,booking,bff,tenant,promotions}.ts + hybridClient (live-only)
+    store/                 # 12 Zustand stores (sessionStore, tenantStore=merchant state, cart, booking, platform, search, settings, actionLoading, shellTools, tour, fabPosition) + storage.ts factory
+    runtime/               # SDUI engine: ScreenEngine, PublishedAppShell/Context, ManifestResolver, ActionEngine, EventBus, ThemeEngine
+    renderers/             # Sections (tab_bar, cart_content, menu-grid, order-history, …)
     utils/                 # Permissions helpers, event bus
-  scripts/                 # EAS build scripts
+  scripts/                 # run-eas.mjs, progress.mjs, dukadesk-init.mjs
+  app.config.js, eas.json  # EAS dev/staging/production
   AGENT_CONTEXT.md
   README.md
 ```
@@ -91,7 +98,7 @@ Specifications that target this repository:
 | PKG-08 | Profile, Wallet & Loyalty runtime package | Complete |
 | PKG-09 | Notifications, Settings & Support runtime package | Complete |
 | PKG-10 | Master Data & Content runtime package | Complete |
-| PKG-11 | Published Tenant Application package | Complete |
+| PKG-11 | Published Merchant Application package (PublishedApp) | Complete |
 | PKG-12 | Runtime Validation & Test Data package | Complete |
 
 ## Agent Conventions
@@ -106,7 +113,7 @@ Specifications that target this repository:
 
 - Implement a UI specification: build screens, components, and navigation (expo-router).
 - Integrate an API: add endpoint in `src/services/api/endpoints/`, use unwrap() helper.
-- Generate runtime tenant data: run node scripts from `C:\Users\Prime\AppData\Local\Temp\opencode\pkg*.js`.
+- Reference sample merchant data: checked-in `src/data/runtime/tenants/*` (code dir name; demo only, unhooked from live screens).
 - Handle push notifications: use expo-notifications with lazy permission request.
 - Add persisted store: use createMMKVStorage(id) factory from `src/store/storage.ts`.
 - Gate guest actions: fire `auth:required` EventBus event, caught by AuthPromptModal.
@@ -136,7 +143,7 @@ The mobile app consumes the live backend OpenAPI 3.0.0 contract (`GET /api/docs-
 | `/merchants/{merchantId}/booking/availability` | GET | `merchantId(path)*`, `serviceId(query)*`, `date(query)*`, `staffId(query)` |
 | `/merchants/{merchantId}/booking/staff` | GET | `merchantId(path)*` |
 | `/merchants/{merchantId}/booking/locations` | GET | `merchantId(path)*` |
-| `/app/commerce/cart` | POST | none (tenant from JWT) |
+| `/app/commerce/cart` | POST | none (merchant from JWT) |
 | `/app/commerce/cart/{id}/checkout` | POST | none |
 | `/app/commerce/orders` | GET | `limit`, `page`, `status` |
 | `/app/commerce/tax-calc` | GET | `subtotal*`, `region` |

@@ -60,7 +60,7 @@ KPIs: Customers, Revenue (Month), Open Orders, Avg Rating.
 
 Excluded: inventory, marketing. KPIs: Members, Giving (Month), New Givers, Attendance.
 
-Admin page: `attendance` (`/dashboard/attendance` → `sector/Attendance.jsx`).
+Admin page: `attendance` (`/dashboard/attendance` → `components/pages/sector/Attendance.jsx`).
 
 ### 5. School / Education
 
@@ -73,7 +73,7 @@ Admin page: `attendance` (`/dashboard/attendance` → `sector/Attendance.jsx`).
 
 Excluded: inventory, marketing. KPIs: Students, Fees (Month), Pending Fees, Attendance.
 
-Admin pages: `attendance` (`/dashboard/attendance`), `fees` (`/dashboard/fees` → `sector/Fees.jsx`).
+Admin pages: `attendance` (`/dashboard/attendance`), `fees` (`/dashboard/fees` → `components/pages/sector/Fees.jsx`).
 
 ### 6. Booking / Services (laundry, salon, clinic, gym)
 
@@ -85,7 +85,7 @@ Admin pages: `attendance` (`/dashboard/attendance`), `fees` (`/dashboard/fees` �
 
 Excluded: inventory. KPIs: Customers, Revenue (Month), Bookings Today, Avg Rating.
 
-Admin page: `appointments` (`/dashboard/appointments` → `sector/AppointmentsToday.jsx`).
+Admin page: `appointments` (`/dashboard/appointments` → `components/pages/sector/AppointmentsToday.jsx`).
 
 ## KPI contract
 

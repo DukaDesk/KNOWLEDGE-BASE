@@ -1,13 +1,13 @@
-# Tenant Dashboard
+# Merchant Dashboard
 
-Tenant-facing dashboard for DUKADESK OS customers.
+Merchant-facing dashboard for DUKADESK customers. Product term per ADR-016
+(`tenant-dashboard/` and backend `bff/tenant` are code names).
 
 ## Responsibilities
 
-- Tenant user interface
-- Workspace and project management
-- User and role management within a tenant
-- Tenant-specific settings and preferences
+- Merchant user interface (`DUKA-MERCHANT/dukaDesk` shell + pages + sector pages)
+- Business, product, order, customer, and team management for one merchant
+- Merchant-specific settings and preferences
 - Operational workflows and notifications
 
 ## Technology Stack
@@ -17,10 +17,10 @@ See `AGENT_CONTEXT.md` for current technology choices.
 ## Getting Started
 
 ```bash
-scripts/bootstrap
-scripts/build
-scripts/test
-scripts/lint
+cd ../..  # DD workspace
+cd DUKA-MERCHANT/dukaDesk
+npm install
+npm run dev
 ```
 
 ## Documentation

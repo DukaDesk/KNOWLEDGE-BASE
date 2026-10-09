@@ -7,9 +7,9 @@ Core server-side platform for DUKADESK OS. Multi-tenant Backend-as-a-Platform (B
 
 ## Current State
 
-- **~428 endpoints** across 32 modules
-- **85+ Prisma models** (2073 lines)
-- **Three-tier architecture:** Website (Platform), App (Tenant Self-Service), Mobile (Consumer)
+- **~428 endpoints** across 30 modules
+- **112 Prisma models** (PostgreSQL 16)
+- **Four BFF surfaces:** Website Platform (`bff/website`), Merchant self-service App (`/app/*` + `bff/tenant` code name), Consumer Mobile (`/merchants/*` + `bff/mobile`), Platform Admin (`/admin/*` + `bff/admin`) — product language per ADR-016
 - **Completion rate:** ~84/100
 - **Published app delivery:** B1–B6 code complete (unit-tested); **B4 migration applied in production 2026-09-27** (audit clean); **B7 compatibility contract + merchant preflight live 2026-09-27** (`GET /api/v1/compatibility`); B8 live integration evidence pending — [delivery TODO](PUBLISHED_APP_DELIVERY_BACKEND_TODO.md)
 

@@ -10,6 +10,7 @@
 | Status | Drafting |
 | Owner | Product / Architecture |
 | Last Updated | 2026-07-12 |
+| Rename | **ADR-016 (2026-10-08):** product language is now **merchant / merchant app**. Read "tenant" below as "merchant" and "tenant application/Desk instance" as "merchant app (`PublishedApp`)". Code identifiers (`Tenant` model, `tenantId`, `TenantResolver`) are unchanged — see ADR-016 mapping. |
 
 ---
 

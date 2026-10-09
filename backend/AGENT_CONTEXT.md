@@ -11,8 +11,8 @@ The `backend/` repository contains the core server-side platform for DUKADESK OS
 ## Responsibilities
 
 - Core business logic and domain services
-- REST API endpoints (~428 endpoints across 32 modules)
-- Three-tier architecture: Website (Platform), App (Tenant Self-Service), Mobile (Consumer)
+- REST API endpoints (~30 modules: public `/merchants/*`, self-service `/app/*`, platform `/admin/*`, BFF `/bff/*`, discovery, health, compatibility)
+- Four BFF surfaces: Website Platform (`bff/website`), Merchant self-service App (`/app/*` + `bff/tenant` — controller code name), Consumer Mobile (`/merchants/*` + `bff/mobile`), Platform Admin (`/admin/*` + `bff/admin`)
 - Authentication and authorization (JWT, OAuth 2.0)
 - Event publishing and consumption (Bull/Redis queues)
 - Database access and migrations (Prisma + PostgreSQL)
@@ -51,8 +51,9 @@ d
     main.ts                   # Application entry point
     app.module.ts             # Root module
     common/                   # Shared utilities, guards, interceptors, filters
-    modules/                  # Domain modules (auth, tenants, commerce, etc.)
-    bff/                      # Backend-for-frontend modules (website, mobile, etc.)
+    modules/                  # Domain modules (auth, merchants, commerce, etc. — 30 dirs)
+    bff/                      # Backend-for-frontend (mobile, website, tenant-dashboard*, business-dashboard)
+                              # *`tenant-dashboard` is the folder/controller code name; product term is Merchant Dashboard (ADR-016)
   prisma/
     schema.prisma             # Database schema (~2070 lines)
     seed.ts                   # Seed data

@@ -15,15 +15,16 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 - **Swagger Docs:** `/api/docs`
 - **Framework:** NestJS (TypeScript/Node.js)
 
-### Three-Tier Endpoint Architecture
+### Endpoint Architecture (ADR-016 product language)
 
 | Tier | Path Prefix | Audience | Auth | Purpose |
 |------|-------------|----------|------|---------|
-| **Website (Platform)** | `/admin/*`, `/auth/*`, `/discovery/*`, `/templates/*`, `/bff/website/*` | Platform operators | JWT / Public | Registration, tenant creation, admin |
-| **App (Tenant Self-Service)** | `/app/*` | Tenant owners/managers | JWT + `@CurrentUser` | Write + config for own tenant |
+| **Website (Platform)** | `/admin/*`, `/auth/*`, `/discovery/*`, `/templates/*`, `/bff/website/*` | Platform operators | JWT / Public | Registration, merchant creation, admin |
+| **App (Merchant Self-Service)** | `/app/*` | Merchant owners/managers | JWT + `@CurrentUser` | Write + config for own merchant app |
 | **Mobile/Consumer** | `/merchants/:merchantId/*` | End users (public) | `@Public()` or JWT | Read-only catalog, booking, checkout |
+| **Platform Admin BFF** | `/bff/admin/*` | Platform operators | JWT | Aggregated ops views (`overview`, `merchants`, `audit`, `analytics`, `revenue`) |
 
-**Tenant Resolution:** `TenantResolverService` resolves `tenantId` from authenticated user's `TenantUser` membership (`owner` or `manager` role, `active` status).
+**Merchant Resolution:** `TenantResolverService` (code name) resolves `tenantId` from authenticated user's `TenantUser` membership (`owner` or `manager` role, `active` status).
 
 **Controller Pattern:**
 - `*AppController` — `@Controller({ path: 'app/<module>' })` + `JwtAuthGuard` + `TenantResolverService`
@@ -167,7 +168,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 5. Builder (SDUI)
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -223,7 +224,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 7. Commerce
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -283,7 +284,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 8. Media / DAM
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -340,7 +341,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 12. Notifications
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -388,7 +389,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 14. Booking & Scheduling
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -442,7 +443,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 15. Forms & Workflow
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -469,7 +470,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 16. Payments
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -495,7 +496,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 17. Theme
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -517,7 +518,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 18. Integrations
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -541,7 +542,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 19. Analytics & BI
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -579,7 +580,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 20. Search & Discovery
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -729,7 +730,7 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 
 ## 24. Security & Compliance
 
-### Tenant Self-Service (App)
+### Merchant Self-Service (App)
 
 | Method | Path | Description |
 |--------|------|-------------|
@@ -896,11 +897,11 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | Method | Path | Description |
 |--------|------|-------------|
 | GET | `/api/v1/bff/admin/overview` | Get platform overview stats |
-| GET | `/api/v1/bff/admin/tenants` | Get paginated merchant list |
+| GET | `/api/v1/bff/admin/merchants` | Get paginated merchant list |
 | GET | `/api/v1/bff/admin/audit` | Get recent audit logs |
 | GET | `/api/v1/bff/admin/analytics` | Dashboard analytics: revenue trend, user growth, order volume, GMV, active merchants |
 | GET | `/api/v1/bff/admin/revenue` | Revenue report with filters: dateFrom, dateTo, merchantId, groupBy (day/week/month) |
-| GET | `/api/v1/bff/admin/tenants/:merchantId/analytics` | Per-merchant analytics (for drill-down) |
+| GET | `/api/v1/bff/admin/merchants/:id/analytics` | Per-merchant analytics (for drill-down) |
 
 ---
 

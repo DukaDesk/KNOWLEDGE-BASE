@@ -10,7 +10,7 @@
 | `static` | Hardcoded default value | `{ source: "static", defaultValue: "Hello" }` |
 | `context` | Dot-path lookup into runtime context | `{ source: "context", path: "user.name" }` |
 | `api` | HTTP fetch to external URL | `{ source: "api", url: "https://...", method: "GET" }` |
-| `query` | Prisma database query scoped to tenant | `{ source: "query", query: "products.latest" }` |
+| `query` | Prisma database query scoped to merchant (code: tenant scope) | `{ source: "query", query: "products.latest" }` |
 
 ## Commerce Vertical
 
@@ -123,7 +123,7 @@ When a binding returns no data, components should render their configured `empty
 
 ## Scope Rules
 
-- All `query` bindings are automatically scoped to the current tenant
-- `api` bindings bypass tenant scope (external URLs)
+- All `query` bindings are automatically scoped to the current merchant (tenant scope in code)
+- `api` bindings bypass merchant scope (external URLs)
 - `context` bindings are read-only
 - `static` bindings are compile-time constants
