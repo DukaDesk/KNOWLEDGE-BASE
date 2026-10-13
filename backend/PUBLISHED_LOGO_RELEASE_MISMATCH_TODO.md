@@ -1,7 +1,7 @@
 # Published logo and release mismatch — TODO
 
-**Last Updated:** 2026-09-24
-**Status:** 5/6 tasks complete — backend remediation + B1–B6 code landed; final live re-test waiting on merchant re-publish
+**Last Updated:** 2026-10-13
+**Status:** 5/6 tasks complete — backend remediation + B1–B6 code landed; R2 storage live 2026-10-13 (new uploads verified anonymously); final live re-test waiting on merchant re-publish + re-upload of pre-R2 media
 **Owners:** Backend agent; Merchant and Mobile agents for final verification
 
 ## Context for agents
@@ -12,12 +12,12 @@ Read the [findings and validation report](PUBLISHED_LOGO_RELEASE_MISMATCH_2026-0
 
 ## Open tasks
 
-- [x] Restore public delivery of the referenced WebP asset (and verify storage persists across deployment/restart). Do not mark an upload usable solely because a URL exists. — **StorageService** with S3-compatible backend (`STORAGE_PROVIDER=s3`); env vars in `.env`; fallback to local disk.
+- [x] Restore public delivery of the referenced WebP asset (and verify storage persists across deployment/restart). Do not mark an upload usable solely because a URL exists. — **StorageService** with S3-compatible backend; **live in production on Cloudflare R2 since 2026-10-13** (`STORAGE_PROVIDER=s3`, bucket `dukadesk`, endpoint `https://a846cd1ad03fb3b24935790348aa5d07.r2.cloudflarestorage.com`, region `auto`, public base `CDN_URL=https://pub-7ed3e12a1d58436aa69b237283e39b66.r2.dev`; `storage.service.ts` baseUrl prefers `CDN_URL` in S3 mode, `3bef824` / deploy `6261e2ac`). Verified: upload → r2.dev URLs, anonymous GET original + variants → 200 `image/webp`, objects listed in bucket. Local disk remains the dev fallback.
 - [x] Ensure `POST /api/v1/merchants/{id}/publishing/publish` persists the supplied compiled manifest and version. — **publishing.controller.ts** + **publishing.service.ts**: accepts `{ manifest, version }` body; if `manifest.screens` non-empty, creates Release directly.
 - [x] Serve the same latest published snapshot from canonical definition, BFF manifest, and discovery; preserve customer-facing identity and branding. — **`ActiveReleaseService`** (2026-09-24) is the single reader for renderer + mobile BFF; both return the same active production snapshot with a `release` receipt (id/version/checksum). Discovery filters `activeReleaseId != null`.
 - [x] Verify request-body limits allow URL-only manifests; no images should be erased to fit a limit. — **main.ts**: `express.json({ limit: '5mb' })` configured. URL-only manifests are well under this.
-- [~] Integration check: publish a fresh version, read both mobile endpoints, compare versions/screens/branding, and GET every referenced public logo without authentication. — **Code + unit parity tests landed 2026-09-24; still needs a live run against a published merchant (pending re-publish + deployed backend).**
-- [ ] Re-test the editor and Android after backend remediation. Current client changes alone cannot recover a 404 asset or make v0.0.23 available. — **Waiting on merchant re-publish**.
+- [~] Integration check: publish a fresh version, read both mobile endpoints, compare versions/screens/branding, and GET every referenced public logo without authentication. — **Code + unit parity tests landed 2026-09-24; anonymous media GET path verified live for new R2 uploads 2026-10-13; still needs a full run against a published merchant (pending re-publish + merchant re-upload of pre-R2 media, whose signed-endpoint URLs fail anonymously).**
+- [ ] Re-test the editor and Android after backend remediation. Current client changes alone cannot recover a 404 asset or make v0.0.23 available. — **Waiting on merchant re-publish and re-upload of pre-R2 media (old DB rows keep signed-endpoint URLs → 400/404 anonymous)**.
 
 ## Execution and completion
 
