@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- DUKA-ADMIN and DUKA-BACKEND app review (DUKA-ADMIN #2, DUKA-BACKEND #2): platform booking analytics removed without removing merchant-app booking features; infrastructure visibility and merchant actions improved; `operations` is an app-review-only role. Backend enforces `super_admin`/`operations` review and permits approval/rejection without credential verification while preserving app lifecycle/design checks and sensitive-data separation. DUKA-ADMIN #3 fixed Playwright's duplicate preview-server startup; #4 added tagged visual coverage. Both follow-up PRs are merged; visual regression, build, and lint/typecheck checks pass on #4, while its E2E check was still in progress at this update.
 - `backend/PUBLISHED_APP_DELIVERY_BACKEND_TODO.md`: **B4 and B7 ticked** (both live in production 2026-09-27); B8 is the only open release gate.
 - Deploy-path fixes recorded in `backend/PROGRESS.md` + `backend/AGENT_CONTEXT.md`: `preDeployCommand` → `npm run predeploy`, `tsconfig.json` copied to the runner image.
 - `backend/PUBLISHED_APP_DELIVERY_BACKEND_TODO.md`: B1, B2, B3, B5, B6 ticked; press-action round-trip checks ticked; B4/B7/B8 partial with notes.

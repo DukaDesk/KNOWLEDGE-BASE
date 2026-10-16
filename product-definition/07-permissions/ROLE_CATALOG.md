@@ -7,6 +7,7 @@
 | Super Admin | Platform | Full platform control |
 | Platform Operator | Platform | Manages tenants, marketplace, system health |
 | Support Agent | Platform | Provides support to tenant users |
+| Operations | Platform | Reviews merchant app submissions; no general merchant-management or credential access |
 
 ## Tenant Roles
 
@@ -27,6 +28,8 @@
 Super Admin
     Platform Operator
         Support Agent
+
+Operations (app-review only; separate from the hierarchy above)
 
 Organization Owner
     Tenant Owner

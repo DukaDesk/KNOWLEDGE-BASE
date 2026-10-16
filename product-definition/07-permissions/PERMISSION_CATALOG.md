@@ -88,7 +88,10 @@ tenant:manage
 marketplace:manage
 system:monitor
 support:access
+merchant-apps:review
 ```
+
+`merchant-apps:review` is granted to Super Admin and the specialized Operations role. Backend authorization limits Operations to app-review data and actions; it does not grant merchant management, credential/compliance, or subscription access.
 
 ## Role to Permission Mapping
 
