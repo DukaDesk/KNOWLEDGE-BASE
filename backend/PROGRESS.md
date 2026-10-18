@@ -3,7 +3,7 @@
 This file tracks the current state of the backend implementation repository. **Terminology:** an **app** is the published experience owned by a **merchant**; **users** are mobile customers. Legacy backend paths may still contain `tenant`, but app-owner reads and writes use the `/api/v1/app/*` scope.
 
 **KB Version:** 0.3.8
-**Last Updated:** 2026-10-13
+**Last Updated:** 2026-10-18
 
 ## Active Work
 
@@ -56,6 +56,7 @@ Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_
 | 2026-10-01 | Two-stage approval backend | `81fb6fd` — separate `verificationStatus/appStatus` (legacy `TenantStatus` untouched), `KycSubmission` + migration, merchant KYC submit + app submit-review, admin verify/review/preview/approve-app (via `publishAsAdmin` owner-guard bypass) + review bundle + queue filters |
 | 2026-09-30 | Invite-only admin signup | `ef05547` — `AdminInvite` model + migration (unique token, 7-day expiry, used/revoked tracking), `AdminInviteService` (dual-provided Auth+Admin modules), `RegisterDto.inviteToken`, `register()` requires token on role path (active + tokens immediately; merchant self-serve without role untouched), `POST/GET/DELETE /admin/invites` + public `GET /auth/invites/validate` |
 | 2026-10-13 | Production media storage on Cloudflare R2 | `3bef824` (deploy `6261e2ac`) — `STORAGE_PROVIDER=s3` + `STORAGE_ENDPOINT=https://a846cd1ad03fb3b24935790348aa5d07.r2.cloudflarestorage.com` + `STORAGE_REGION=auto` + `STORAGE_BUCKET=dukadesk` + `CDN_URL=https://pub-7ed3e12a1d58436aa69b237283e39b66.r2.dev` set on Railway prod + local `.env`; `storage.service.ts` `baseUrl` prefers `CDN_URL` in S3 mode (was returning the signed S3 endpoint, which 400s anonymously). Verified: authenticated `POST /api/v1/app/media/upload` → r2.dev URLs; anonymous GET original + small/medium/large variants → 200 `image/webp`; objects listed in bucket. Caveat: pre-R2 DB rows still hold signed-endpoint URLs (fail anonymously) → merchants must re-upload; logo live re-test still partially open. |
+| 2026-10-18 | Platform role separation, support tickets, governed policies, report exports | Branch `fix/platform-role-authorization` — `platform_operator` and `operations` are now distinct DB roles (migration `20261018000000_platform_operator_role` backfills global `operations` assignments → `platform_operator`, adds `merchant-apps:review`, grants it to `super_admin` + `operations`); `auth.service`/`admin-invite.service`/`platform-role.guard`/`users.service` no longer collapse the two. New models `SupportTicket`/`SupportTicketEvent`/`PlatformPolicy` (migration `20261018010000_support_tickets_and_policies`) with `GET/POST /api/v1/admin/support-tickets` (+`:id/assign|escalate|resolve|comments`; `support_agent` allowed via method-level guard) and governed `/api/v1/admin/policies` (`draft→in_review→published→archived`, version bump, `super_admin`-only publish/archive). Added `GET /api/v1/admin/reports/:report/export` (allow-listed `subscriptions`/`support-tickets`/`policies`, `super_admin`/`platform_operator`, cap 5000, CSV formula-injection guard, `report.export` audit). All mutations write `auditLog` in a `$transaction`. Backend build 0 issues; jest 188/188. |
 
 ## Modules Implemented
 
