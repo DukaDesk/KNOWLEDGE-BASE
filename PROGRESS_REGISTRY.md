@@ -1,6 +1,8 @@
 # DUKADESK Progress Registry
 
-**Last Updated:** 2026-10-08
+**Last Updated:** 2026-10-18
+
+2026-10-18: **Admin portal support/policy, subscriptions, exports, and role separation delivered.** `DUKA-ADMIN` branch `fix/admin-authz-and-prd`: Support Tickets page (`/admin/support-tickets`) with timeline/comment/assign/escalate/resolve, governed platform policies in Settings (draft→in_review→published→archived; `super_admin` publish/archive), `ExportButton` (`reports:read`) on Subscriptions/Support/Policies, subscription capability visibility + read-only/unavailable states, `SlideOver` Escape/focus fixes, dead-code and empty-folder cleanup. `DUKA-BACKEND` branch `fix/platform-role-authorization`: distinct `platform_operator` vs `operations` (migration/backfill/`merchant-apps:review`), `SupportTicket`/`SupportTicketEvent`/`PlatformPolicy` models, guarded support endpoints, governed policy endpoints, and audited CSV `report.export`. Gate: backend 188/188 tests + build 0 issues; portal build + lint clean.
 
 2026-10-08: **AI-assisted merchant builder implemented locally** — the Section Editor now exposes a DukaDesk Builder Agent chat that classifies scope, uses the current registered component/property catalog, emits bounded declarative proposals, validates with the builder engine, and applies only after explicit merchant confirmation via undo-aware state. Canonical guidance: [builder AI contract](builder/AI_ASSISTED_BUILDER.md). Dedicated tenant-scoped backend enforcement remains open: `DUKA-BACKEND/docs/BUILDER_AGENT_BACKEND_TODO.md`.
 
