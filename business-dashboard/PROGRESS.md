@@ -6,8 +6,8 @@ This file tracks the current state of the business-dashboard repository. Impleme
 
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
-| E2E integration tests for all modules | UI-0003, SEC-0002, FEAT-0002 | In Progress (full Playwright suite deterministic/mocked; 27/27 on chromium) | Team H |
-| Performance optimization and query tuning | — | In Progress (stale-response guard added; measurement pending) | Team H |
+| E2E integration tests for all modules | UI-0003, SEC-0002, FEAT-0002 | Done (deterministic/mocked; 165/165 across 5 projects) | Team H |
+| Performance optimization and query tuning | — | In Progress (bundle-size budget guard wired into CI; live latency measurement pending) | Team H |
 | Surro-inspired visual upgrade (sidebar sections, KPI cards, quick actions, events feed, topbar search) | — | Implemented locally, unpushed | Team H |
 
 ## Completed Milestones
@@ -36,6 +36,7 @@ This file tracks the current state of the business-dashboard repository. Impleme
 
 | 2026-10-18 | Admin accessibility, stale-response hardening, deterministic E2E | DUKA-ADMIN branch `feat/admin-a11y-perf-and-e2e`: `EnhancedRemoteTablePage` now guards against stale responses with a monotonic `requestSeqRef` so only the newest in-flight fetch writes rows/total/error or clears loading; sortable `th`s became keyboard-operable buttons with `aria-sort` + "Sort by ..." names; the shared table gained a visually-hidden `<caption>` and `aria-busy`; `Toast` announces via `role="status"`/`role="alert"` + `aria-live`; `Field` now associates `<label htmlFor>`/`id` and exposes `aria-invalid`/`aria-describedby`; `SlideOver` Escape/focus fix and sidebar `aria-current` confirmed. Added `tests/support-policies-export.spec.ts` - fully mocked (no live backend/OTP) acceptance coverage for ticket list/detail/create, policy submit, CSV export download, and keyboard column sorting; passes on `--project=chromium` with the mocked `admin-login.spec.ts`. Portal build + lint clean. |
 | 2026-10-18 | Fully deterministic Playwright suite (branch `test/deterministic-e2e`) | Added `tests/utils/mocks.ts` (seeded admin session via `seedSession` + catch-all `/api/v1/**` mock via `installApiMocks`); `authenticatedPage` now mocks by default and no longer performs the live login/OTP (legacy path behind `E2E_LIVE=1`). Migrated `smoke.spec.ts` and `new-modules.spec.ts` to mocked data, refreshed `DashboardPage`/`MerchantsPage` page objects against current UI, and made the merchants status filter assert the API `active→published` mapping. CI E2E job now runs all five projects (chromium + firefox + webkit + Mobile Chrome + Mobile Safari); whole matrix green (135/135). CI builds the mocked test artifact with a non-routable `VITE_API_URL` (`https://api.ci.invalid`) since the app hard-fails when the API base is unset. Enabling mobile surfaced a responsive bug: on ≤480px the full-width drawer was hidden with a fixed `left:-300px`, leaving ~93px on-screen and intercepting taps (Settings tabs, row actions, quick filters); it is now offset by its own width (`left:-100%`). Build + lint clean. |
+| 2026-10-19 | Acceptance tests, rate-limit UX, bundle guard, 403 deep-link fix | DUKA-ADMIN branch `feat/acceptance-perf-rate-limit`: new `tests/acceptance.spec.ts` covers throttling feedback, mutation success/failure toasts, `operations`-role app-review-only actions, 403 denial, and dashboard metric accuracy. `apiClient` now surfaces HTTP `429` immediately with friendly copy plus `Retry-After` guidance (non-retryable) instead of silently retrying. Added dependency-free `scripts/check-bundle-size.mjs` (`npm run perf`) enforcing gzip budgets in the CI build job (largest JS chunk 140 kB, total JS 320 kB, total CSS 45 kB, raw 900 kB; baseline 226/15). Fixed a real P0 gap: a hard deep-link to a forbidden page rendered it because `App.jsx`'s initial route skipped the permission guard; the initial page + forbidden state are now permission-validated. Whole suite 165/165 across chromium/firefox/webkit/Mobile Chrome/Mobile Safari; build + lint + typecheck clean. |
 
 ## Blockers
 
@@ -46,9 +47,9 @@ This file tracks the current state of the business-dashboard repository. Impleme
 ## Next Up
 
 - Visual regression tests for shell/sidebar/settings per UI-0003 Verification
-- Rate limiting UI for `ThrottlerGuard 100/60s` (`app.module.ts:48`) — surface `429` + `Retry-After`
-- Commerce drill-down completeness: `fulfillments`, `variants`, `extended-pricing`, `TaxRules`/`Coupons` not yet surfaced beyond `Orders` status + `Products` stock
+- Rate limiting UI — DONE (2026-10-19): `429` + `Retry-After` surfaced via `apiClient` and the table error banner
+- Commerce drill-down (`fulfillments`, `variants`, `extended-pricing`, `TaxRules`/`Coupons`) — N/A for DUKA-ADMIN: the platform-admin portal has no Orders/Products/Customers pages; marketplace inventory is `MarketplaceListings`, and merchant commerce data is merchant-app/BFF tenant scope
 
 ## Last Updated
 
-2026-10-18
+2026-10-19
