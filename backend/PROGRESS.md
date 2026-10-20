@@ -3,7 +3,7 @@
 This file tracks the current state of the backend implementation repository. **Terminology:** an **app** is the published experience owned by a **merchant**; **users** are mobile customers. Legacy backend paths may still contain `tenant`, but app-owner reads and writes use the `/api/v1/app/*` scope.
 
 **KB Version:** 0.3.8
-**Last Updated:** 2026-10-18
+**Last Updated:** 2026-10-20
 
 ## Active Work
 
@@ -23,13 +23,14 @@ Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_
 | B4 active-release migration applied in production | `prisma/migrations/20260924000000_add_active_release` | Complete | Backend |
 | B7 runtime compatibility contract + merchant preflight | `GET /api/v1/compatibility`, `POST /merchants/:id/publishing/preflight` | Complete (deployed 2026-09-27) | Backend |
 | Media folderId FK fix + storage URL retention | `media.service.ts` | Complete | Backend |
-| E2E integration tests for all modules | KB v0.2.0 | Pending | Engineering |
+| E2E integration tests for all modules | KB v0.2.0 | In Progress (direct-API authorization e2e: 9 supertest cases; other modules pending) | Engineering |
 | Rate limiting and throttling configuration | KB v0.2.0 | In Progress | Backend |
 
 ## Completed Milestones
 
 | Date | Milestone | Notes |
 |------|-----------|-------|
+| 2026-10-20 | Direct-API authorization e2e | 9 supertest cases against the real `AdminController` + `PlatformRoleGuard`: 401, 403 + `access.denied` audit, missing/revoked roles, `operations` vs `platform_operator`, app-review approval, super-admin-only invites; CI runs `npm run test:e2e` after 201 unit tests |
 | 2026-07 | Phase 2 — Core Platform | Auth, IAM, Tenants, Builder, Commerce, Media |
 | 2026-07 | Phase 2.5 — Notification Platform | Templates, campaigns, SMS, push, analytics |
 | 2026-07 | Phase 3a — Gap Filling | Theme module, Commerce unified catalog + inventory, Booking locations/reminders/cancellation policies |
