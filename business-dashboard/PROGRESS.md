@@ -6,7 +6,7 @@ This file tracks the current state of the business-dashboard repository. Impleme
 
 | Task | Specification | Status | Owner |
 |------|---------------|--------|-------|
-| E2E integration tests for all modules | UI-0003, SEC-0002, FEAT-0002 | Done (deterministic/mocked; six specs 195/195, full run incl. desktop visual 204 passed + 6 mobile skips; backend direct-API e2e 9/9) | Team H |
+| E2E integration tests for all modules | UI-0003, SEC-0002, FEAT-0002 | Done (deterministic/mocked; six specs 215/215, full run incl. desktop visual 224 passed + 6 mobile skips; backend direct-API e2e 9/9) | Team H |
 | Performance optimization and query tuning | — | In Progress (bundle-size budget guard wired into CI; live latency measurement pending) | Team H |
 | Surro-inspired visual upgrade (sidebar sections, KPI cards, quick actions, events feed, topbar search) | — | Implemented locally, unpushed | Team H |
 
@@ -14,6 +14,7 @@ This file tracks the current state of the business-dashboard repository. Impleme
 
 | Date | Milestone | Notes |
 |------|-----------|-------|
+| 2026-10-20 | Marketplace & Subscriptions structural coverage | `tests/new-modules.spec.ts` adds deterministic checks for listings (records, category/status formatting, filtering, empty search, toast-confirmed moderation, bulk-action toolbar) and subscriptions (platform note, formatted amounts, distinct per-row action labels, plan-capabilities drawer, confirm-before-change-plan). Shared menu trigger now falls back to `merchantName` for distinct accessible names. Six mocked specs 215/215; full run 224 passed + 6 mobile visual skips; lint/typecheck/build/bundle budgets clean |
 | 2026-10-20 | Direct-API authorization coverage (backend) | `DUKA-BACKEND` PR #9 adds `test/admin-authorization.e2e-spec.ts` (9 supertest cases, real `AdminController` + `PlatformRoleGuard`, role-aware Prisma mock, no DB): 401, 403 + `access.denied` audit, missing/revoked roles, `operations` vs `platform_operator`, app-review approval, super-admin-only invites; CI runs `npm run test:e2e` after 201 unit tests |
 | 2026-09-16 | Dashboard shell, role-aware navigation, summary cards, user management, tenant settings | UI-0003 UR-01–UR-06 complete; shell `App.jsx:34`, sidebar `AdminSidebar.jsx:8` collapsible + badges, dashboard home `AdminDashboard.jsx:19` via `GET /bff/admin/overview` + `GET /admin/stats`, user management `PendingAdmins.jsx:11` + Settings team invite; `vite build 1889 modules ✓` |
 | 2026-09-16 | Live data integration — zero mocks, BFF Business Dashboard wired | Removed all `MOCK_*` (`businessDashboard.js:1` live-only `apiClient`), `VITE_API_URL=https://duka-backend-production.up.railway.app`, `Promise.allSettled` degraded rendering, `x-railway-request-id` trace |
@@ -54,6 +55,7 @@ This file tracks the current state of the business-dashboard repository. Impleme
 - Settings tablist keyboard pattern — DONE (2026-10-19): roving tabindex, ArrowLeft/ArrowRight, Home/End, focus follows selection; covered in `tests/smoke.spec.ts`
 - Row action menu keyboard pattern + non-blocking table refresh — DONE (2026-10-19): ARIA menu-button keys in `EnhancedRemoteTablePage`, blocking loading only before the first page of rows; covered in `tests/acceptance.spec.ts`
 - Confirm dialog focus management — DONE (2026-10-19): `ConfirmModal` initial focus, Tab trap, Escape close, ARIA labelling, focus return to the triggering row action; covered in `tests/acceptance.spec.ts`
+- Marketplace & Subscriptions structural/visual coverage — DONE (2026-10-20): deterministic records, filtering/empty state, toast-confirmed moderation, bulk actions, plan drawer, and confirm-before-change-plan in `tests/new-modules.spec.ts`; menu trigger uses `merchantName` for distinct names
 - Direct-API authorization (backend) — DONE (2026-10-20): `DUKA-BACKEND/test/admin-authorization.e2e-spec.ts` (9 supertest cases, no DB) wired into CI; covers 401, 403 + audit, role separation, revocation
 - Rate limiting UI — DONE (2026-10-19): `429` + `Retry-After` surfaced via `apiClient` and the table error banner
 - Commerce drill-down (`fulfillments`, `variants`, `extended-pricing`, `TaxRules`/`Coupons`) — N/A for DUKA-ADMIN: the platform-admin portal has no Orders/Products/Customers pages; marketplace inventory is `MarketplaceListings`, and merchant commerce data is merchant-app/BFF tenant scope
