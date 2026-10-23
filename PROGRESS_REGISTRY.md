@@ -2,6 +2,9 @@
 
 **Last Updated:** 2026-10-20
 
+2026-10-21: **Admin portal Promo Feed quota coverage.** `DUKA-ADMIN` branch `test/promo-feed-quotas`: Settings > Promo Feed renders per-plan defaults/configured quotas, asserts the exact plan `PUT` payload on save, verifies invalid input sends no request, and fixes the stale row that kept the old quota because the refetch result was discarded. Gate: six mocked specs 250/250, full run 259 passed + 6 mobile visual skips, lint/typecheck/build/bundle budgets clean.
+
+
 2026-10-20: **Admin portal Platform Messaging coverage + modal layering fix.** `DUKA-ADMIN` branch `test/messaging-coverage`: deterministic inbox/kind filters, broadcast compose payload + toast, and thread reply/retract coverage; tests exposed and fixed `ConfirmModal` (z 200) rendering behind the shared `Modal` (z 1000), now 1200/1201. Untitled cards use distinct accessible names. Gate: six mocked specs 240/240, full run 249 passed + 6 mobile visual skips, lint/typecheck/build/bundle budgets clean. Companion hotfix (#26) removes unused `merchantsCache` (main lint failure) and updates Settings shell invariant to 8 tabs.
 
 
