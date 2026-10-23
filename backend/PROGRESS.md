@@ -3,7 +3,7 @@
 This file tracks the current state of the backend implementation repository. **Terminology:** an **app** is the published experience owned by a **merchant**; **users** are mobile customers. Legacy backend paths may still contain `tenant`, but app-owner reads and writes use the `/api/v1/app/*` scope.
 
 **KB Version:** 0.3.8
-**Last Updated:** 2026-10-20
+**Last Updated:** 2026-10-23
 
 ## Active Work
 
@@ -23,13 +23,14 @@ Primary open plan: [Published app delivery backend TODO](PUBLISHED_APP_DELIVERY_
 | B4 active-release migration applied in production | `prisma/migrations/20260924000000_add_active_release` | Complete | Backend |
 | B7 runtime compatibility contract + merchant preflight | `GET /api/v1/compatibility`, `POST /merchants/:id/publishing/preflight` | Complete (deployed 2026-09-27) | Backend |
 | Media folderId FK fix + storage URL retention | `media.service.ts` | Complete | Backend |
-| E2E integration tests for all modules | KB v0.2.0 | In Progress (direct-API authorization e2e: 9 supertest cases; other modules pending) | Engineering |
+| E2E integration tests for all modules | KB v0.2.0 | In Progress (platform admin e2e: 22 supertest cases across 3 suites — authorization, messaging, plan quota; other modules pending) | Engineering |
 | Rate limiting and throttling configuration | KB v0.2.0 | In Progress | Backend |
 
 ## Completed Milestones
 
 | Date | Milestone | Notes |
 |------|-----------|-------|
+| 2026-10-23 | Platform messaging + plan quota e2e | 13 new supertest cases: `AdminMessagingController` (401, audited role denials, operator inbox filters, broadcast payload, DTO validation before service, thread/reply/retract, immediate revocation) and `PlatformAdminController` plan routes (401, audited `operations` denial, operator `limits.dailyPromoPosts` save, plan reads). E2E 22/22 across 3 suites; unit 230/230 across 30 suites; lint 0 errors / 60 warnings; build 0 issues. `npx prisma generate` required after announcement models |
 | 2026-10-20 | Direct-API authorization e2e | 9 supertest cases against the real `AdminController` + `PlatformRoleGuard`: 401, 403 + `access.denied` audit, missing/revoked roles, `operations` vs `platform_operator`, app-review approval, super-admin-only invites; CI runs `npm run test:e2e` after 201 unit tests |
 | 2026-07 | Phase 2 — Core Platform | Auth, IAM, Tenants, Builder, Commerce, Media |
 | 2026-07 | Phase 2.5 — Notification Platform | Templates, campaigns, SMS, push, analytics |

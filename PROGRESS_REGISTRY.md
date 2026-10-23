@@ -1,6 +1,8 @@
 # DUKADESK Progress Registry
 
-**Last Updated:** 2026-10-20
+**Last Updated:** 2026-10-23
+
+2026-10-23: **Backend platform messaging + plan quota e2e.** `DUKA-BACKEND` branch `test/platform-admin-comms-e2e` (PR #15): `test/admin-messaging.e2e-spec.ts` (9 cases) covers 401, role denials with `access.denied` audit, operator inbox filters, broadcast payload wiring, DTO rejection before the service, thread open/reply/retract, and immediate revocation; `test/platform-admin-plans.e2e-spec.ts` (4 cases) covers plan reads and the audited `operations` denial plus operator save of `limits.dailyPromoPosts` on `PUT /admin/plans/:id`. Gate: e2e 22/22 (3 suites), unit 230/230 (30 suites), lint 0 errors (60 pre-existing warnings), build 0 issues; `npx prisma generate` required after the announcement models.
 
 2026-10-21: **Admin portal Promo Feed quota coverage.** `DUKA-ADMIN` branch `test/promo-feed-quotas`: Settings > Promo Feed renders per-plan defaults/configured quotas, asserts the exact plan `PUT` payload on save, verifies invalid input sends no request, and fixes the stale row that kept the old quota because the refetch result was discarded. Gate: six mocked specs 250/250, full run 259 passed + 6 mobile visual skips, lint/typecheck/build/bundle budgets clean.
 
