@@ -2,6 +2,9 @@
 
 **Last Updated:** 2026-10-20
 
+2026-10-20: **Admin portal Platform Messaging coverage + modal layering fix.** `DUKA-ADMIN` branch `test/messaging-coverage`: deterministic inbox/kind filters, broadcast compose payload + toast, and thread reply/retract coverage; tests exposed and fixed `ConfirmModal` (z 200) rendering behind the shared `Modal` (z 1000), now 1200/1201. Untitled cards use distinct accessible names. Gate: six mocked specs 240/240, full run 249 passed + 6 mobile visual skips, lint/typecheck/build/bundle budgets clean. Companion hotfix (#26) removes unused `merchantsCache` (main lint failure) and updates Settings shell invariant to 8 tabs.
+
+
 2026-10-20: **Admin portal password-gated app approval coverage.** `DUKA-ADMIN` branch `test/password-gated-app-approval`: deterministic coverage for the unverified-merchant approval gate (password re-auth prompt, empty/incorrect password errors with no approve call, success after verification) and the submitted-app preview (screen list + navigation); `apiClient` maps verify-password 401s to "Incorrect password. Please try again." Gate: six mocked specs 225/225, full run 234 passed + 6 mobile visual skips, lint/typecheck/build/bundle budgets clean.
 
 
