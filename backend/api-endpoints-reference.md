@@ -950,3 +950,10 @@ This document catalogs all REST API endpoints exposed by the DUKA-BACKEND servic
 | 31 | BFF - Business Dashboard | 6 |
 | 32 | Health | 1 |
 | | **TOTAL** | **~447** |
+
+
+## App data sharing (local implementation, 2026-10-12)
+
+GET/POST /api/v1/app/data-consent/:merchantId: authenticated consumer reads/decides the current published request. POST requires policyId and boolean granted. GET /api/v1/app/data-consent/:merchantId/shared-profile/:userId: exact merchant owner/manager can read approved profile fields only. Deploy backend before enabling clients. See APP_DATA_CONSENT_TODO.md and ../ARCHITECTURE/APP_DATA_CONSENT_2026-10-12.md.
+
+Consent management: GET /api/v1/app/data-consent lists the authenticated user's choices; DELETE /api/v1/app/data-consent/:merchantId revokes without requiring a currently published app. Revocation removes data scopes and writes an audit record. These endpoints are implemented locally; deployment remains pending.
