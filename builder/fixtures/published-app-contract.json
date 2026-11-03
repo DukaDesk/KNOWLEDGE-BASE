@@ -1,0 +1,30 @@
+{
+  "screenArchetypes": [
+    "catalog",
+    "product_detail",
+    "cart",
+    "checkout",
+    "orders",
+    "order_detail",
+    "profile",
+    "content"
+  ],
+  "componentRoles": [
+    "select_product",
+    "add_to_cart",
+    "remove_from_cart",
+    "go_checkout",
+    "place_order",
+    "select_order",
+    "view_cart",
+    "contact"
+  ],
+  "dataBindings": [
+    "commerce.products",
+    "commerce.product",
+    "commerce.cart",
+    "commerce.orders",
+    "commerce.order",
+    "commerce.categories"
+  ]
+}
