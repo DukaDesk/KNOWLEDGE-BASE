@@ -46,9 +46,10 @@ Central register of all Tasks.
 | TASK-0024 | Fix publish permission — only tenant owner can publish (403/413 fallback) | Done | P1 | Publishing | backend | S | @agent-alpha |
 | TASK-0025 | Implement customizable dashboard endpoint (backend) | Done | P0 | FEAT-0008 | backend | M | @agent-alpha |
 | TASK-0026 | Integrate customizable dashboard endpoint in dukaDesk frontend | Ready | P0 | FEAT-0008 | dukaDesk | M | @agent-h |
+| TASK-0027 | Fix forgot-password flow (send reset email, validation, UI cleanup) | In Progress | P0 | FEAT-0001 | backend | M | @agent-h |
 
 ## Allocation
 
 | Next Available |
 |----------------|
-| TASK-0027 |
+| TASK-0028 |
